@@ -5,7 +5,7 @@ export default function Header(): JSX.Element {
   const [ isOpen, setIsOpen ] = useState(false);
 
   return (
-    <header className="bg-gray-800 text-white">
+    <header className="bg-primary text-white">
       <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
         <Link to="/" className="text-xl font-bold">
           My Website
