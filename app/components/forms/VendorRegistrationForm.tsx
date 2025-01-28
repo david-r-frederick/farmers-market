@@ -1,6 +1,9 @@
 // Import required libraries and hooks
 import { useForm } from "react-hook-form";
 import { IVendorRegistrationFormData } from "~/interfaces/IVendorRegistrationFormData";
+import { IVendorRegistrationFormProps } from "~/interfaces/IVendorRegistrationFormProps";
+import { Label } from "../common/form/Label";
+import TextInput from "../common/form/TextInput";
 
 export default function VendorRegistrationForm(): JSX.Element {
   const {
@@ -15,17 +18,15 @@ export default function VendorRegistrationForm(): JSX.Element {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-semibold text-center mb-4">Event Registration</h2>
+    <form onSubmit={handleSubmit(onSubmit)} className="bg-white shadow-md rounded-lg">
+      <h2 className="text-2xl font-semibold text-center mb-4 text-gray-800">Vendor Registration</h2>
 
       {/* First Name */}
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1"
-          htmlFor="FirstName">
+        <Label htmlFor="FirstName">
           First Name
-        </label>
-        <input
-          type="text"
+        </Label>
+        <TextInput
           {...register(
             "FirstName",
             { required: true }
@@ -39,11 +40,10 @@ export default function VendorRegistrationForm(): JSX.Element {
 
       {/* Last Name */}
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1"
-          htmlFor="LastName">
+        <Label htmlFor="LastName">
           Last Name
-        </label>
-        <input
+        </Label>
+        <TextInput
           type="text"
           {...register("LastName", { required: true })}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
@@ -55,11 +55,10 @@ export default function VendorRegistrationForm(): JSX.Element {
 
       {/* Email */}
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1"
-          htmlFor="Email">
+        <Label htmlFor="Email">
           Email
-        </label>
-        <input
+        </Label>
+        <TextInput
           type="email"
           {...register("Email", { required: true })}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
@@ -71,8 +70,8 @@ export default function VendorRegistrationForm(): JSX.Element {
 
       {/* Phone Number */}
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1" htmlFor="Phone">Phone Number</label>
-        <input
+        <Label htmlFor="Phone">Phone Number</Label>
+        <TextInput
           type="tel"
           {...register("Phone", { required: true })}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
@@ -84,8 +83,8 @@ export default function VendorRegistrationForm(): JSX.Element {
 
       {/* Address Fields */}
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1" htmlFor="Street1">Street 1</label>
-        <input
+        <Label htmlFor="Street1">Street 1</Label>
+        <TextInput
           type="text"
           {...register("Street1", { required: true })}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
@@ -96,8 +95,8 @@ export default function VendorRegistrationForm(): JSX.Element {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1" htmlFor="Street2">Street 2 (Optional)</label>
-        <input
+        <Label htmlFor="Street2">Street 2 (Optional)</Label>
+        <TextInput
           type="text"
           {...register("Street2")}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
@@ -105,8 +104,8 @@ export default function VendorRegistrationForm(): JSX.Element {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1" htmlFor="City">City</label>
-        <input
+        <Label htmlFor="City">City</Label>
+        <TextInput
           type="text"
           {...register("City", { required: true })}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
@@ -117,8 +116,8 @@ export default function VendorRegistrationForm(): JSX.Element {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1" htmlFor="State">State</label>
-        <input
+        <Label htmlFor="State">State</Label>
+        <TextInput
           type="text"
           {...register("State", { required: true })}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
@@ -129,8 +128,8 @@ export default function VendorRegistrationForm(): JSX.Element {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1" htmlFor="Zip">Zip Code</label>
-        <input
+        <Label htmlFor="Zip">Zip Code</Label>
+        <TextInput
           type="text"
           {...register("ZipCode", { required: true })}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
@@ -142,11 +141,10 @@ export default function VendorRegistrationForm(): JSX.Element {
 
       {/* Business Name */}
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1"
-          htmlFor="BusinessName">
+        <Label htmlFor="BusinessName">
           Business Name
-        </label>
-        <input
+        </Label>
+        <TextInput
           type="text"
           {...register("BusinessName", { required: true })}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
