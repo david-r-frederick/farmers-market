@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IEvent } from "../interfaces/IEvent";
 import { IUIStatus, useUIStatus } from "./useUIStatus";
-import eventsService from "../services/EventsService";
+import EventsService from "../services/EventsService";
 
 interface IUseUpcomingEventsData {
   upcomingEvents: IEvent[] | null;
@@ -21,7 +21,7 @@ export const useUpcomingEvents = (): IUseUpcomingEventsData => {
     const fetchUpcomingEvents = async () => {
       beginProcessing();
       try {
-        const res = await eventsService.getUpcomingEvents();
+        const res = await EventsService.getUpcomingEvents();
         setUpcomingEvents(res);
         endProcessing();
       } catch (err: unknown) {
