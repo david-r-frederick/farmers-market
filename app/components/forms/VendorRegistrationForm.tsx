@@ -156,49 +156,6 @@ export default function VendorRegistrationForm(): JSX.Element {
         </p>}
       </div>
 
-      {/* Products You Sell */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-1"
-          htmlFor="ProductsYouSell">
-          Products You Sell (Optional)
-        </label>
-        <input
-          type="text"
-          {...register("ProductsYouSell")}
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
-        />
-      </div>
-
-      {/* Preferred Spot Number */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-1"
-          htmlFor="PreferredSpotNumber">
-          Preferred Spot Number
-        </label>
-        <input
-          type="number"
-          {...register("PreferredSpotNumber", { required: true })}
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
-        />
-        {errors.PreferredSpotNumber && <p className="text-red-500 text-sm mt-1">
-          Preferred Spot Number is required
-        </p>}
-      </div>
-
-      {/* Checkbox */}
-      <div className="mb-4 flex items-center">
-        <input type="checkbox"
-          {...register("AgreeToPayUponArrival", { required: true })}
-          className="mr-2"
-        />
-        <label className="text-sm" htmlFor="AgreeToPayUponArrival">
-          I understand I will have to pay upon arrival
-        </label>
-        {errors.AgreeToPayUponArrival && <p className="text-red-500 text-sm ml-2">
-          This field is required
-        </p>}
-      </div>
-
       {/* Submit Button */}
       <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-md">
         Register

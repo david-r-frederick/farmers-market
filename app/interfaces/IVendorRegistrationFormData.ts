@@ -1,5 +1,3 @@
-import { IProduct } from "./IProduct";
-
 export interface IVendorRegistrationFormData {
     FirstName: string;
     LastName: string;
@@ -11,8 +9,4 @@ export interface IVendorRegistrationFormData {
     State: string;
     ZipCode: string;
     BusinessName: string;
-    ProductsYouSell: IProduct[];
-    PreferredSpotNumber: string;
-    SpotSizeOrLocation: string;
-    AgreeToPayUponArrival: boolean;
 }
