@@ -1,11 +1,5 @@
 import { IProduct } from "../interfaces/IProduct";
-
-interface IProductsService {
-  addProduct: (product: IProduct) => Promise<boolean>;
-  deleteProduct: (productID: number) => Promise<boolean>;
-  getAllProducts: () => Promise<IProduct[]>;
-  getProductsForEvent: (eventID: number) => Promise<IProduct[]>;
-}
+import { IProductsService } from "./_interfaces/IProductsService";
 
 const dummyProducts: IProduct[] = [];
 
