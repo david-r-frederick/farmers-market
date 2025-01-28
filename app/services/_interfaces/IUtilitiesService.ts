@@ -1,5 +1,5 @@
 import { ClassValue } from "clsx";
 
-export interface IutilitiesService {
+export interface IUtilitiesService {
   mergeClassNames: (classNames: ClassValue[]) => string;
 }
