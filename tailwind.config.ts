@@ -20,6 +20,9 @@ export default {
       colors: {
         primary: "#9A5F35",
         secondary: "#809165",
+        warning: "yellow",
+        success: "green",
+        danger: "red",
         light: "#F5F6F1",
       }
     },
