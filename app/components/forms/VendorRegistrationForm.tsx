@@ -5,17 +5,17 @@ import { IVendorRegistrationFormProps } from "~/interfaces/IVendorRegistrationFo
 import { Label } from "../common/form/Label";
 import TextInput from "../common/form/TextInput";
 
-export default function VendorRegistrationForm(): JSX.Element {
+export default function VendorRegistrationForm(props: IVendorRegistrationFormProps): JSX.Element {
+  const { onSubmit } = props;
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IVendorRegistrationFormData>();
-
-  const onSubmit = (data: IVendorRegistrationFormData) => {
-    console.log(data);
-    // Handle form submission
-  };
+  } = useForm<IVendorRegistrationFormData>({
+    mode: "onChange",
+    criteriaMode: "all",
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="bg-white shadow-md rounded-lg">
