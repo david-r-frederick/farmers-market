@@ -1,5 +1,5 @@
 import React from "react";
-import { UtilitiesService } from "../../../services/UtilitiesService";
+import UtilitiesService from "../../../services/UtilitiesService";
 
 interface H3Props extends React.ComponentProps<"h1"> {
   _?: string;
@@ -11,7 +11,7 @@ const H3 = React.forwardRef<HTMLHeadingElement, H3Props>(
     return (
       <h1
         ref={ref}
-        className={UtilitiesService.mergeClassNames("", className)}
+        className={utilitiesService.mergeClassNames("", className)}
         {...remainingProps}
       >
         {children}
