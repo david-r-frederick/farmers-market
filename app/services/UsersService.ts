@@ -1,12 +1,5 @@
 import { IUser } from "../interfaces/IUser";
-
-interface IUsersService {
-  addUser: (user: IUser) => Promise<boolean>;
-  deleteUser: (userID: number) => Promise<boolean>;
-  getAllUsers: () => Promise<IUser[]>;
-  getUsersForEvent: (eventID: number) => Promise<IUser[]>;
-  updateUser: (user: IUser) => Promise<boolean>;
-}
+import { IUsersService } from "./_interfaces/IUsersService";
 
 const dummyUsers: IUser[] = [];
 
@@ -25,6 +18,25 @@ class UsersService implements IUsersService {
   getAllUsers = async (): Promise<IUser[]> => {
     await Promise.resolve();
     return [];
+  };
+
+  getBlankUser = (): IUser => {
+    return {
+      ID: -1,
+      IsActive: true,
+      IsDeleted: false,
+      City: "",
+      County: "",
+      CreatedDate: new Date().toISOString(),
+      FirstName: "",
+      LastName: "",
+      MiddleInitial: "",
+      PostalCode: "",
+      State: "",
+      Street1: "",
+      Street2: "",
+      Key: "",
+    };
   };
 
   getUsersForEvent = async (eventID: number): Promise<IUser[]> => {
