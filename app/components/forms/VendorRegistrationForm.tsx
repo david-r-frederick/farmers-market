@@ -18,11 +18,13 @@ export default function VendorRegistrationForm(props: IVendorRegistrationFormPro
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-semibold text-center mb-4 text-gray-800">Vendor Registration</h2>
+    <form onSubmit={handleSubmit(onSubmit)} className="bg-white shadow-md rounded-lg pt-4">
+      <h2 className="text-2xl font-semibold text-center mb-4 text-gray-800">
+        Vendor Registration
+      </h2>
 
       {/* First Name */}
-      <div className="mb-4">
+      <div className="mb-4 mx-4">
         <Label htmlFor="FirstName">
           First Name
         </Label>
@@ -39,7 +41,7 @@ export default function VendorRegistrationForm(props: IVendorRegistrationFormPro
       </div>
 
       {/* Last Name */}
-      <div className="mb-4">
+      <div className="mb-4 mx-4">
         <Label htmlFor="LastName">
           Last Name
         </Label>
@@ -54,7 +56,7 @@ export default function VendorRegistrationForm(props: IVendorRegistrationFormPro
       </div>
 
       {/* Email */}
-      <div className="mb-4">
+      <div className="mb-4 mx-4">
         <Label htmlFor="Email">
           Email
         </Label>
@@ -69,7 +71,7 @@ export default function VendorRegistrationForm(props: IVendorRegistrationFormPro
       </div>
 
       {/* Phone Number */}
-      <div className="mb-4">
+      <div className="mb-4 mx-4">
         <Label htmlFor="Phone">Phone Number</Label>
         <TextInput
           type="tel"
@@ -82,7 +84,7 @@ export default function VendorRegistrationForm(props: IVendorRegistrationFormPro
       </div>
 
       {/* Address Fields */}
-      <div className="mb-4">
+      <div className="mb-4 mx-4">
         <Label htmlFor="Street1">Street 1</Label>
         <TextInput
           type="text"
@@ -94,7 +96,7 @@ export default function VendorRegistrationForm(props: IVendorRegistrationFormPro
         </p>}
       </div>
 
-      <div className="mb-4">
+      <div className="mb-4 mx-4">
         <Label htmlFor="Street2">Street 2 (Optional)</Label>
         <TextInput
           type="text"
@@ -103,7 +105,7 @@ export default function VendorRegistrationForm(props: IVendorRegistrationFormPro
         />
       </div>
 
-      <div className="mb-4">
+      <div className="mb-4 mx-4">
         <Label htmlFor="City">City</Label>
         <TextInput
           type="text"
@@ -115,7 +117,7 @@ export default function VendorRegistrationForm(props: IVendorRegistrationFormPro
         </p>}
       </div>
 
-      <div className="mb-4">
+      <div className="mb-4 mx-4">
         <Label htmlFor="State">State</Label>
         <TextInput
           type="text"
@@ -127,7 +129,7 @@ export default function VendorRegistrationForm(props: IVendorRegistrationFormPro
         </p>}
       </div>
 
-      <div className="mb-4">
+      <div className="mb-4 mx-4">
         <Label htmlFor="Zip">Zip Code</Label>
         <TextInput
           type="text"
@@ -140,7 +142,7 @@ export default function VendorRegistrationForm(props: IVendorRegistrationFormPro
       </div>
 
       {/* Business Name */}
-      <div className="mb-4">
+      <div className="mb-4 mx-4">
         <Label htmlFor="BusinessName">
           Business Name
         </Label>
