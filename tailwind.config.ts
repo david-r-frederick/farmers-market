@@ -1,5 +1,6 @@
 /* eslint-disable quotes */
 import type { Config } from "tailwindcss";
+import { intents } from "./intents";
 
 export default {
   content: [ "./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}" ],
@@ -17,14 +18,7 @@ export default {
           '"Noto Color Emoji"',
         ],
       },
-      colors: {
-        primary: "#9A5F35",
-        secondary: "#809165",
-        warning: "yellow",
-        success: "green",
-        danger: "red",
-        light: "#F5F6F1",
-      }
+      colors: intents
     },
   },
   plugins: [],

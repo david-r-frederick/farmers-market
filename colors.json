@@ -1,0 +1,9 @@
+{
+  "primaryHex": "#9A5F35",
+  "secondaryHex": "#809165",
+  "warningHex": "yellow",
+  "successHex": "green",
+  "dangerHex": "red",
+  "lightHex": "#F5F6F1",
+  "infoHex": "blue"
+}
