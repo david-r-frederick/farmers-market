@@ -1,8 +1,9 @@
 import React from "react";
+import Color from "color";
 import utilitiesService from "../../services/UtilitiesService";
 import { cva, type VariantProps } from "class-variance-authority";
 import { intents } from "../../../intents";
-import Color from "color";
+import { IntentSection } from "~/interfaces/IntentSection";
 
 export type ButtonVariant = "danger"
   | "info"
@@ -11,10 +12,6 @@ export type ButtonVariant = "danger"
   | "secondary"
   | "success"
   | "warning";
-
-interface IntentSection {
-  [intentWithWeight: string]: Array<string>;
-}
 
 const textWhiteOrBlack = (intent: ButtonVariant, weight: number): "text-white" | "text-black" => {
   const hexColor = intents[intent][weight] as string;
