@@ -1,9 +1,7 @@
 import React from "react";
-import utilitiesService from "../../services/UtilitiesService";
 import { cva, type VariantProps } from "class-variance-authority";
-import colorsService from "~/services/ColorsService";
-
-colorsService.printFullIntent();
+import colorsService from "../../services/ColorsService";
+import utilitiesService from "../../services/UtilitiesService";
 
 const button = cva(
   [

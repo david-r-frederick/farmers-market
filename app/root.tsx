@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Links,
   Meta,
@@ -33,8 +34,8 @@ export function Layout({ children }: { children: React.ReactNode }): JSX.Element
         <Meta />
         <Links />
       </head>
-      <Header />
-      <body>
+      <body className="bg-secondary-500">
+        <Header />
         {children}
         <ScrollRestoration />
         <Scripts />
