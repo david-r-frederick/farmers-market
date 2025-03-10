@@ -1,6 +1,6 @@
 export interface IBaseModel {
   ID: number;
-  CreatedDate: string;
+  CreatedOn: string;
   Key?: string;
   IsDeleted: boolean;
   IsActive: boolean;
