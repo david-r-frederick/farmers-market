@@ -367,7 +367,7 @@ module.exports = {
         "comma-spacing": "error",
         "comma-style": "error",
         "computed-property-spacing": "error",
-        "dot-location": "error",
+        "dot-location": "off",
         "eol-last": "error",
         "func-call-spacing": "error",
         "function-call-argument-newline": ["error", "consistent"],
