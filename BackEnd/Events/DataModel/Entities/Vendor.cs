@@ -1,9 +1,10 @@
 ﻿namespace Events.DataModel.Entities;
 
+using Core.DataModel;
 using Core.DataModel.Entities;
 using System.Text.Json.Serialization;
-using Users.DataModel.Entities;
 
+[SQLTable("Events", "Vendor")]
 public partial class Vendor : BaseEntity
 {
     public int UserId { get; set; }

@@ -1,7 +1,9 @@
 ﻿namespace Events.DataModel.Entities;
 
+using Core.DataModel;
 using Core.DataModel.Entities;
 
+[SQLTable("Events", "Company")]
 public partial class Company : BaseEntity
 {
     public string Name { get; set; } = null!;

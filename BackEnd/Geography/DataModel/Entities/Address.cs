@@ -1,7 +1,9 @@
 ﻿namespace Geography.DataModel.Entities;
 
+using Core.DataModel;
 using Core.DataModel.Entities;
 
+[SQLTable("Geography", "Address")]
 public partial class Address : BaseEntity
 {
     public string Street1 { get; set; } = null!;

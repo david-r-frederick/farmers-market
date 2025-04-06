@@ -1,7 +1,9 @@
 ﻿namespace Events.DataModel.Entities;
 
+using Core.DataModel;
 using Core.DataModel.Entities;
 
+[SQLTable("Events", "Booth")]
 public partial class Booth : BaseEntity
 {
     public int EventId { get; set; }

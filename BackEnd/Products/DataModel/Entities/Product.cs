@@ -1,7 +1,9 @@
 ﻿namespace Products.DataModel.Entities;
 
+using Core.DataModel;
 using Core.DataModel.Entities;
 
+[SQLTable("Products", "Product")]
 public partial class Product : BaseEntity
 {
     public string Name { get; set; } = null!;

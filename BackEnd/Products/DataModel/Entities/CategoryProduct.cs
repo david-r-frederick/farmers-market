@@ -1,7 +1,9 @@
 ﻿namespace Products.DataModel.Entities;
 
+using Core.DataModel;
 using Core.DataModel.Entities;
 
+[SQLTable("Products", "CategoryProduct")]
 public partial class CategoryProduct : BaseEntity
 {
     public int CategoryId { get; set; }
