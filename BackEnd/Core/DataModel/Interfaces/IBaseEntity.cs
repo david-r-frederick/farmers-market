@@ -13,7 +13,7 @@ public interface IBaseEntity
 
     DateTime DeletedOn { get; set; }
 
-    int ID { get; set; }
+    int Id { get; set; }
 
     bool IsActive { get; set; }
 

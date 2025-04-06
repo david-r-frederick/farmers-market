@@ -13,7 +13,7 @@ public partial class Event : BaseEntity
 
     public Address Address { get; set; } = null!;
 
-    public virtual ICollection<Vendor> Vendors { get; set; } = new HashSet<Vendor>();
+    public virtual ICollection<EventVendor> EventVendors { get; set; } = new HashSet<EventVendor>();
 
     public virtual ICollection<Booth> Booths { get; set; } = new HashSet<Booth>();
 }

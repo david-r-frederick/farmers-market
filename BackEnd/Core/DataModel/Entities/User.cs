@@ -3,12 +3,13 @@ namespace Core.DataModel.Entities;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Core.DataModel.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 [SQLTable("Auth", "User")]
-[Index(nameof(ID))]
+[Index(nameof(Id))]
 [Index(nameof(IsActive))]
 [Index(nameof(IsDeleted))]
 [Index(nameof(LastName))]
@@ -24,7 +25,18 @@ public partial class User : IdentityUser<int>, IBaseEntity
     public virtual DateTime DeletedOn { get; set; }
 
     [Key]
-    public virtual int ID { get; set; }
+    public override int Id { get; set; }
+
+    [JsonIgnore]
+    public override string? PasswordHash { get => base.PasswordHash; set => base.PasswordHash = value; }
+
+    /// <inheritdoc/>
+    [JsonIgnore]
+    public override string? SecurityStamp { get => base.SecurityStamp; set => base.SecurityStamp = value; }
+
+    /// <inheritdoc/>
+    [JsonIgnore]
+    public override string? ConcurrencyStamp { get => base.ConcurrencyStamp; set => base.ConcurrencyStamp = value; }
 
     [DefaultValue(true)]
     public virtual bool IsActive { get; set; }

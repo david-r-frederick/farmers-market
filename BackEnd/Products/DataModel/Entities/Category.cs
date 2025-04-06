@@ -13,6 +13,4 @@ public partial class Category : BaseEntity
     public virtual Category? Parent { get; set; }
 
     public virtual ICollection<Category> Children { get; set; } = new HashSet<Category>();
-
-    //public virtual ICollection<CategoryProduct> Products { get; set; } = new HashSet<CategoryProduct>();
 }

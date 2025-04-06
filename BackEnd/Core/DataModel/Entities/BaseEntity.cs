@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-[Index(nameof(ID))]
+[Index(nameof(Id))]
 [Index(nameof(IsActive))]
 [Index(nameof(IsDeleted))]
 public abstract class BaseEntity : IBaseEntity
@@ -14,7 +14,7 @@ public abstract class BaseEntity : IBaseEntity
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column(Order = 0)]
-    public virtual int ID { get; set; }
+    public virtual int Id { get; set; }
 
     [Column(Order = 1)]
     public virtual string? Key { get; set; }

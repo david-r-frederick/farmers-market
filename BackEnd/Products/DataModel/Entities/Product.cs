@@ -22,5 +22,5 @@ public partial class Product : BaseEntity
 
     public virtual ProductType? Type { get; set; }
 
-    public virtual ICollection<CategoryProduct> Categories { get; set; } = new HashSet<CategoryProduct>();
+    public virtual ICollection<CategoryProduct> CategoryProducts { get; set; } = new HashSet<CategoryProduct>();
 }
