@@ -4,8 +4,8 @@ import { IGeographyService } from "./_interfaces/IGeographyService";
 class GeographyService implements IGeographyService {
   getBlankAddress = (): IAddress => {
     return {
-      ID: -1,
-      CreatedDate: new Date().toISOString(),
+      Id: -1,
+      CreatedOn: new Date().toISOString(),
       IsActive: true,
       IsDeleted: false,
       Key: "",

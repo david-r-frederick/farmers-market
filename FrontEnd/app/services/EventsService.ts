@@ -6,66 +6,66 @@ import { IEventRegistration } from "~/interfaces/IEventRegistration";
 
 const dummyEvents: IEvent[] = [
   {
-    ID: 1,
-    CreatedDate: new Date().toISOString(),
+    Id: 1,
+    CreatedOn: new Date().toISOString(),
     StartDate: new Date("10/26/2024 09:00").toISOString(),
     EndDate: new Date("10/26/2024 13:00").toISOString(),
     IsActive: true,
     IsDeleted: false,
     Address: {
-      ID: 1,
-      CreatedDate: new Date().toISOString(),
+      Id: 1,
+      CreatedOn: new Date().toISOString(),
       IsActive: true,
       IsDeleted: false,
       Street1: "123 Main St",
       Street2: "",
       City: "Lumberton",
-      State: "Texas",
+      Region: "Texas",
       ZipCode: "77657",
     },
-    HostUserID: 1,
+    HostUserId: 1,
     Users: []
   },
   {
-    ID: 2,
-    CreatedDate: new Date().toISOString(),
+    Id: 2,
+    CreatedOn: new Date().toISOString(),
     StartDate: new Date("11/09/2024 09:00").toISOString(),
     EndDate: new Date("11/09/2024 13:00").toISOString(),
     IsActive: true,
     IsDeleted: false,
     Address: {
-      ID: 2,
-      CreatedDate: new Date().toISOString(),
+      Id: 2,
+      CreatedOn: new Date().toISOString(),
       IsActive: true,
       IsDeleted: false,
       Street1: "123 Main St",
       Street2: "",
       City: "Lumberton",
-      State: "Texas",
+      Region: "Texas",
       ZipCode: "77657",
     },
-    HostUserID: 1,
+    HostUserId: 1,
     Users: []
   },
   {
-    ID: 3,
-    CreatedDate: new Date().toISOString(),
+    Id: 3,
+    CreatedOn: new Date().toISOString(),
     StartDate: new Date("11/23/2024 09:00").toISOString(),
     EndDate: new Date("11/23/2024 13:00").toISOString(),
     IsActive: true,
     IsDeleted: false,
     Address: {
-      ID: 3,
-      CreatedDate: new Date().toISOString(),
+      Id: 3,
+      CreatedOn: new Date().toISOString(),
       IsActive: true,
       IsDeleted: false,
       Street1: "123 Main St",
       Street2: "",
       City: "Lumberton",
-      State: "Texas",
+      Region: "Texas",
       ZipCode: "77657",
     },
-    HostUserID: 1,
+    HostUserId: 1,
     Users: []
   },
 ];
@@ -79,12 +79,12 @@ class EventsService implements IEventsService {
   getBlankEvent = (): IEvent => {
     return {
       Address: geographyService.getBlankAddress(),
-      ID: -1,
-      CreatedDate: new Date().toISOString(),
+      Id: -1,
+      CreatedOn: new Date().toISOString(),
       IsActive: true,
       IsDeleted: false,
       EndDate: "",
-      HostUserID: -1,
+      HostUserId: -1,
       StartDate: "",
       Users: [],
       Key: "",
@@ -102,8 +102,8 @@ class EventsService implements IEventsService {
     };
   };
 
-  deleteEvent = async (eventID: number): Promise<boolean> => {
-    await Promise.resolve(eventID);
+  deleteEvent = async (eventId: number): Promise<boolean> => {
+    await Promise.resolve(eventId);
     return true;
   };
 

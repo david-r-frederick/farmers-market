@@ -10,8 +10,8 @@ class UsersService implements IUsersService {
     return true;
   };
 
-  deleteUser = async (userID: number): Promise<boolean> => {
-    await Promise.resolve(userID);
+  deleteUser = async (userId: number): Promise<boolean> => {
+    await Promise.resolve(userId);
     return true;
   };
 
@@ -22,12 +22,12 @@ class UsersService implements IUsersService {
 
   getBlankUser = (): IUser => {
     return {
-      ID: -1,
+      Id: -1,
       IsActive: true,
       IsDeleted: false,
       City: "",
       County: "",
-      CreatedDate: new Date().toISOString(),
+      CreatedOn: new Date().toISOString(),
       FirstName: "",
       LastName: "",
       MiddleInitial: "",
@@ -39,8 +39,8 @@ class UsersService implements IUsersService {
     };
   };
 
-  getUsersForEvent = async (eventID: number): Promise<IUser[]> => {
-    await Promise.resolve(eventID);
+  getUsersForEvent = async (eventId: number): Promise<IUser[]> => {
+    await Promise.resolve(eventId);
     return [];
   };
 

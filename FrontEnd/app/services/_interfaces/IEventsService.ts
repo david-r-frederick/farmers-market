@@ -5,7 +5,7 @@ import { IEventRegistrationFormData } from "~/interfaces/IEventRegistrationFormD
 export interface IEventsService {
   addEvent: (event: IEvent) => Promise<boolean>;
   getEventRegistrationDtoFromFormData: (formData: IEventRegistrationFormData) => IEventRegistration;
-  deleteEvent: (eventID: number) => Promise<boolean>;
+  deleteEvent: (eventId: number) => Promise<boolean>;
   getAllEvents: () => Promise<IEvent[]>;
   getBlankEvent: (formData: IEventRegistrationFormData) => IEvent;
   getPastEvents: () => Promise<IEvent[]>;

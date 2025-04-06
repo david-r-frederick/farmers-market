@@ -5,7 +5,7 @@ import { IUser } from "./IUser";
 export interface IEvent extends IBaseModel {
   StartDate: string;
   EndDate: string;
-  // HostUserID: number;
+  HostUserId: number;
   Users: IUser[];
   Address: IAddress;
 }

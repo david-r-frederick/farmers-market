@@ -1,5 +1,5 @@
 export interface IBaseModel {
-  ID: number;
+  Id: number;
   CreatedOn: string;
   Key?: string;
   IsDeleted: boolean;

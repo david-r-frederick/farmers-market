@@ -3,7 +3,7 @@ import React from "react";
 export interface IModalProps {
   size?: "sm" | "md" | "lg" | "xl";
   title?: string;
-  titleID?: string;
+  titleId?: string;
   showHeader?: boolean;
   onCancel: () => void;
   show: boolean;
@@ -13,7 +13,7 @@ export interface IModalProps {
 }
 
 export const Modal = (props: IModalProps): JSX.Element => {
-  const { title, titleID, onCancel, size, show, loading, showHeader, modalBodyClasses, children } = props;
+  const { title, titleId, onCancel, size, show, loading, showHeader, modalBodyClasses, children } = props;
 
   const onCancelButtonPressed = () => {
     if (onCancel) {
@@ -29,7 +29,7 @@ export const Modal = (props: IModalProps): JSX.Element => {
             className={`relative bg-white rounded-lg shadow-lg max-w-${size === "sm" ? "xs" : size} w-full`}>
             {showHeader && (
               <div className="flex items-center justify-between p-4 border-b rounded-t bg-gray-800">
-                <h5 className="text-lg font-medium text-white" id={titleID ?? ""}>
+                <h5 className="text-lg font-medium text-white" id={titleId ?? ""}>
                   {title ?? "Message"}
                 </h5>
                 <button

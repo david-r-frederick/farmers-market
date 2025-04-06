@@ -10,8 +10,8 @@ class ProductsService implements IProductsService {
     return true;
   };
 
-  deleteProduct = async (productID: number): Promise<boolean> => {
-    await Promise.resolve(productID);
+  deleteProduct = async (productId: number): Promise<boolean> => {
+    await Promise.resolve(productId);
     return true;
   };
 
@@ -20,8 +20,8 @@ class ProductsService implements IProductsService {
     return [];
   };
 
-  getProductsForEvent = async (eventID: number): Promise<IProduct[]> => {
-    await Promise.resolve(eventID);
+  getProductsForEvent = async (eventId: number): Promise<IProduct[]> => {
+    await Promise.resolve(eventId);
     return [];
   };
 }
