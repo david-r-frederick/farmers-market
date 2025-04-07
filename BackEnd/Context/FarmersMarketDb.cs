@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Reflection;
 using Core.DataModel;
+using Events.DataModel.Entities;
 
 public class FarmersMarketDb : IdentityDbContext<User, IdentityRole<int>, int>
 {
@@ -23,14 +24,22 @@ public class FarmersMarketDb : IdentityDbContext<User, IdentityRole<int>, int>
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        var assembliesToLoad = new[]
+        {
+            "Customers",
+            "Events",
+            "Geography",
+            "Media",
+            "Products",
+        };
+
+        foreach (var assemblyName in assembliesToLoad)
+        {
+            Assembly.Load(assemblyName);
+        }
+
         var assemblies = AppDomain.CurrentDomain.GetAssemblies()
             .ToList();
-
-        Console.WriteLine("Loaded Assemblies:");
-        foreach (var assembly in assemblies)
-        {
-            Console.WriteLine(assembly.FullName);
-        }
 
         var entityTypes = assemblies
             .SelectMany(a => a.GetTypes())
@@ -41,7 +50,7 @@ public class FarmersMarketDb : IdentityDbContext<User, IdentityRole<int>, int>
             var attribute = type.GetCustomAttribute<SQLTableAttribute>();
             if (attribute != null)
             {
-                modelBuilder.Entity(type).ToTable(type.Name, attribute.Schema);
+                modelBuilder.Entity(type).ToTable(attribute.TableName, attribute.Schema);
             }
         }
 
@@ -56,7 +65,7 @@ public class FarmersMarketDb : IdentityDbContext<User, IdentityRole<int>, int>
 
                 modelBuilder.Entity(entityType.ClrType)
                     .Property(nameof(BaseEntity.CreatedOn))
-                    .HasDefaultValueSql(DateTime.UtcNow.ToString());
+                    .HasDefaultValueSql("GETUTCDATE()");
 
                 modelBuilder.Entity(entityType.ClrType)
                     .Property(nameof(BaseEntity.IsDeleted))
@@ -67,6 +76,16 @@ public class FarmersMarketDb : IdentityDbContext<User, IdentityRole<int>, int>
                     .HasDefaultValue(true);
             }
         }
+
+        modelBuilder.Entity<EventVendor>()
+            .HasOne(ev => ev.Event)
+            .WithMany(e => e.EventVendors)
+            .HasForeignKey(ev => ev.EventId);
+
+        modelBuilder.Entity<EventVendor>()
+            .HasOne(ev => ev.Vendor)
+            .WithMany(v => v.EventVendors)
+            .HasForeignKey(ev => ev.VendorId);
 
         base.OnModelCreating(modelBuilder);
     }
