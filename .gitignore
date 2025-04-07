@@ -1,1 +1,3 @@
 FrontEnd/node_modules
+BackEnd/*/bin/
+BackEnd/*/obj/
