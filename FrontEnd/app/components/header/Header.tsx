@@ -1,9 +1,24 @@
+"use client";
+
 import { Link } from "@remix-run/react";
 import { useState } from "react";
 import { Button } from "../common/Button";
+// eslint-disable-next-line import/no-unresolved
+import { useApi } from "~/api/useApi";
 
 export default function Header(): JSX.Element {
   const [ isOpen, setIsOpen ] = useState(false);
+
+  const api = useApi();
+
+  const testConnection = async () => {
+    try {
+      const response = await api.starting_TestConnection();
+      console.log("Connection successful:", response);
+    } catch (error) {
+      console.error("Connection failed:", error);
+    }
+  };
 
   return (
     <header className="bg-primary text-white">
@@ -45,15 +60,7 @@ export default function Header(): JSX.Element {
         <nav className="hidden md:flex space-x-4">
           <Button
             type="button"
-            onClick={() => {
-              fetch("http://localhost:5224/weatherforecast/test-connection")
-                .then((res) => {
-                  return res.json();
-                })
-                .then((data) => {
-                  console.log(data);
-                });
-            }}
+            onClick={() => testConnection()}
           >
             Test API
           </Button>
