@@ -2,3 +2,4 @@ FrontEnd/node_modules
 BackEnd/*/bin/
 BackEnd/*/obj/
 BackEnd/.vs/
+BackEnd/WebApp/swagger.json
