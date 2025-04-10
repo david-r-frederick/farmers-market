@@ -1,5 +1,6 @@
 using Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +14,16 @@ builder.Services.AddDbContext<FarmersMarketDb>(options =>
 });
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+    c.CustomOperationIds(apiDesc =>
+    {
+        var controller = apiDesc.ActionDescriptor.RouteValues["controller"]?.ToLower();
+        var action = apiDesc.ActionDescriptor.RouteValues["action"];
+        return $"{controller}_{action}"; // e.g., starting_testTheConnection
+    });
+});
 builder.Services.AddHttpContextAccessor();
 
 var allowedOrigins = builder.Configuration
@@ -43,7 +53,7 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "My API v1"));
 }
 
 app.UseHttpsRedirection();
