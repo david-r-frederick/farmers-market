@@ -2,9 +2,10 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Context;
+using NSwag.Annotations;
 
 [ApiController]
-[Route("starting")]
+[Route("[controller]")]
 public class StartingController : ControllerBase
 {
     private readonly FarmersMarketDb _context;
@@ -16,9 +17,15 @@ public class StartingController : ControllerBase
 
     [HttpGet]
     [Route("test-connection")]
-    public IActionResult TestConnection()
+    [OpenApiOperation(operationId: "starting_TestConnection")]
+    public ActionResult<ConnectedResponse> TestConnection()
     {
         var canConnect = _context.CanConnect();
         return Ok(new { Connected = canConnect });
     }
+}
+
+public class ConnectedResponse
+{
+    public bool Connected { get; set; }
 }
