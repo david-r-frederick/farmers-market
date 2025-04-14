@@ -5,10 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 public static class DatabaseInitializer
 {
-    public static void Initialize(IServiceProvider serviceProvider)
+    public static async Task InitializeAsync(IServiceProvider serviceProvider)
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<FarmersMarketDb>();
-        context.Database.Migrate();
+        await context.Database.MigrateAsync();
     }
 }
