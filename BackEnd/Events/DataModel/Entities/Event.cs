@@ -1,7 +1,8 @@
-﻿namespace Entities.Events;
+﻿namespace Events.DataModel.Entities;
 
-using Entities.Core;
-using Entities.Geography;
+using Core.DataModel;
+using Core.DataModel.Entities;
+using Geography.DataModel.Entities;
 
 [SQLTable("Events", "Event")]
 public partial class Event : BaseEntity

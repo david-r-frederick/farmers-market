@@ -1,4 +1,4 @@
-﻿namespace Entities.Core;
+﻿namespace Core.DataModel.Entities;
 
 using System.ComponentModel.DataAnnotations;
 
