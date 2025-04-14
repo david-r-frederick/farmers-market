@@ -1,7 +1,6 @@
-﻿namespace Events.DataModel.Entities;
+﻿namespace Entities.Events;
 
-using Core.DataModel;
-using Core.DataModel.Entities;
+using Entities.Core;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 

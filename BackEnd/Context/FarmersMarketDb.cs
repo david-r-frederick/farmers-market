@@ -1,6 +1,7 @@
 ﻿namespace Context;
 
-using Core.DataModel.Entities;
+using Entities;
+using Entities.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
@@ -8,10 +9,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Reflection;
-using Core.DataModel;
-using Events.DataModel.Entities;
+using Entities.Events;
 
-public class FarmersMarketDb : IdentityDbContext<User, IdentityRole<int>, int>
+public sealed class FarmersMarketDb : IdentityDbContext<User, IdentityRole<int>, int>
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -24,20 +24,7 @@ public class FarmersMarketDb : IdentityDbContext<User, IdentityRole<int>, int>
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        var assembliesToLoad = new[]
-        {
-            "Customers",
-            "Events",
-            "Geography",
-            "Media",
-            "Products",
-        };
-
-        foreach (var assemblyName in assembliesToLoad)
-        {
-            Assembly.Load(assemblyName);
-        }
-
+        Assembly.Load("Entities");
         var assemblies = AppDomain.CurrentDomain.GetAssemblies()
             .ToList();
 

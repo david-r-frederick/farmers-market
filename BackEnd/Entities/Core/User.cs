@@ -1,10 +1,10 @@
-namespace Core.DataModel.Entities;
+namespace Entities.Core;
 
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using Core.DataModel.Interfaces;
+using Entities.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

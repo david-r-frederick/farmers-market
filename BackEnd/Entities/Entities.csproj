@@ -7,17 +7,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Core\Core.csproj" />
-		<ProjectReference Include="..\Customers\Customers.csproj" />
-		<ProjectReference Include="..\Entities\Entities.csproj" />
-		<ProjectReference Include="..\Events\Events.csproj" />
-		<ProjectReference Include="..\Geography\Geography.csproj" />
-		<ProjectReference Include="..\Media\Media.csproj" />
-		<ProjectReference Include="..\Products\Products.csproj" />
+		<Folder Include="Media\" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.14" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />

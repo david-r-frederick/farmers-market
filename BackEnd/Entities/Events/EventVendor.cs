@@ -1,7 +1,6 @@
-﻿namespace Events.DataModel.Entities;
+﻿namespace Entities.Events;
 
-using Core.DataModel;
-using Core.DataModel.Entities;
+using Entities.Core;
 
 [SQLTable("Events", "EventVendor")]
 public partial class EventVendor : BaseEntity

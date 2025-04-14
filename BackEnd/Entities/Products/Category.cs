@@ -1,7 +1,6 @@
-﻿using Core.DataModel;
-using Core.DataModel.Entities;
+﻿namespace Entities.Products;
 
-namespace Products.DataModel.Entities;
+using Entities.Core;
 
 [SQLTable("Products", "Category")]
 public partial class Category : BaseEntity
