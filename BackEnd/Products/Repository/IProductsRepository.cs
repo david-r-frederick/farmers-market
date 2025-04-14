@@ -1,10 +1,8 @@
 ﻿namespace Products.Repository;
 
+using Core;
 using Products.DataModel.Entities;
 
-public interface IProductsRepository
+public interface IProductsRepository : IRepository<Product>
 {
-    Task<Product?> GetByIdAsync(int id);
-
-    Task AddAsync(Product product);
 }
