@@ -1,7 +1,6 @@
-﻿namespace Geography.DataModel.Entities;
+﻿namespace Entities.Geography;
 
-using Core.DataModel;
-using Core.DataModel.Entities;
+using Entities.Core;
 
 [SQLTable("Geography", "Address")]
 public partial class Address : BaseEntity
