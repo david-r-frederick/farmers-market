@@ -37,7 +37,7 @@ public abstract class BaseEntity : IBaseEntity
     public virtual string? DeletedBy { get; set; }
 
     [Column(Order = 7)]
-    public virtual DateTime DeletedOn { get; set; }
+    public virtual DateTime? DeletedOn { get; set; }
 
     [Column(Order = 8)]
     public virtual string? UpdatedBy { get; set; }

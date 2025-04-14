@@ -11,7 +11,7 @@ public interface IBaseEntity
 
     string? DeletedBy { get; set; }
 
-    DateTime DeletedOn { get; set; }
+    DateTime? DeletedOn { get; set; }
 
     int Id { get; set; }
 

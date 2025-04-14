@@ -22,7 +22,7 @@ public partial class User : IdentityUser<int>, IBaseEntity
 
     public virtual string? DeletedBy { get; set; }
 
-    public virtual DateTime DeletedOn { get; set; }
+    public virtual DateTime? DeletedOn { get; set; }
 
     [Key]
     public override int Id { get; set; }
