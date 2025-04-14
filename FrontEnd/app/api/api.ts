@@ -27,8 +27,114 @@ export class Api {
     /**
      * @return OK
      */
+    product_GetProduct(id: number, cancelToken?: CancelToken): Promise<Product> {
+        let url_ = this.baseUrl + "/api/Product/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processProduct_GetProduct(_response);
+        });
+    }
+
+    protected processProduct_GetProduct(response: AxiosResponse): Promise<Product> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = Product.fromJS(resultData200);
+            return Promise.resolve<Product>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<Product>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    product_CreateProduct(body: Product | undefined, cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/api/Product";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processProduct_CreateProduct(_response);
+        });
+    }
+
+    protected processProduct_CreateProduct(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
     starting_TestConnection( cancelToken?: CancelToken): Promise<ConnectedResponse> {
-        let url_ = this.baseUrl + "/Starting/test-the-connection";
+        let url_ = this.baseUrl + "/Starting/test-connection";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -134,6 +240,198 @@ export class Api {
     }
 }
 
+export class Category implements ICategory {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    name?: string | undefined;
+    parentId?: number | undefined;
+    parent?: Category;
+    children?: Category[] | undefined;
+
+    constructor(data?: ICategory) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.isActive = true;
+            this.isDeleted = false;
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.key = _data["key"];
+            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
+            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
+            this.deletedBy = _data["deletedBy"];
+            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+            this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
+            this.name = _data["name"];
+            this.parentId = _data["parentId"];
+            this.parent = _data["parent"] ? Category.fromJS(_data["parent"]) : <any>undefined;
+            if (Array.isArray(_data["children"])) {
+                this.children = [] as any;
+                for (let item of _data["children"])
+                    this.children!.push(Category.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Category {
+        data = typeof data === 'object' ? data : {};
+        let result = new Category();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["key"] = this.key;
+        data["isActive"] = this.isActive;
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["isDeleted"] = this.isDeleted;
+        data["deletedBy"] = this.deletedBy;
+        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
+        data["name"] = this.name;
+        data["parentId"] = this.parentId;
+        data["parent"] = this.parent ? this.parent.toJSON() : <any>undefined;
+        if (Array.isArray(this.children)) {
+            data["children"] = [];
+            for (let item of this.children)
+                data["children"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface ICategory {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    name?: string | undefined;
+    parentId?: number | undefined;
+    parent?: Category;
+    children?: Category[] | undefined;
+}
+
+export class CategoryProduct implements ICategoryProduct {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    categoryId?: number;
+    category?: Category;
+    productId?: number;
+    product?: Product;
+
+    constructor(data?: ICategoryProduct) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.isActive = true;
+            this.isDeleted = false;
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.key = _data["key"];
+            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
+            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
+            this.deletedBy = _data["deletedBy"];
+            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+            this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
+            this.categoryId = _data["categoryId"];
+            this.category = _data["category"] ? Category.fromJS(_data["category"]) : <any>undefined;
+            this.productId = _data["productId"];
+            this.product = _data["product"] ? Product.fromJS(_data["product"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): CategoryProduct {
+        data = typeof data === 'object' ? data : {};
+        let result = new CategoryProduct();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["key"] = this.key;
+        data["isActive"] = this.isActive;
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["isDeleted"] = this.isDeleted;
+        data["deletedBy"] = this.deletedBy;
+        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
+        data["categoryId"] = this.categoryId;
+        data["category"] = this.category ? this.category.toJSON() : <any>undefined;
+        data["productId"] = this.productId;
+        data["product"] = this.product ? this.product.toJSON() : <any>undefined;
+        return data;
+    }
+}
+
+export interface ICategoryProduct {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    categoryId?: number;
+    category?: Category;
+    productId?: number;
+    product?: Product;
+}
+
 export class ConnectedResponse implements IConnectedResponse {
     connected?: boolean;
 
@@ -168,6 +466,202 @@ export class ConnectedResponse implements IConnectedResponse {
 
 export interface IConnectedResponse {
     connected?: boolean;
+}
+
+export class Product implements IProduct {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    name?: string | undefined;
+    description?: string | undefined;
+    ingredients?: string | undefined;
+    disclaimer?: string | undefined;
+    price?: number | undefined;
+    allergens?: string | undefined;
+    typeId!: number;
+    type?: ProductType;
+    categoryProducts?: CategoryProduct[] | undefined;
+
+    constructor(data?: IProduct) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.isActive = true;
+            this.isDeleted = false;
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.key = _data["key"];
+            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
+            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
+            this.deletedBy = _data["deletedBy"];
+            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+            this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
+            this.name = _data["name"];
+            this.description = _data["description"];
+            this.ingredients = _data["ingredients"];
+            this.disclaimer = _data["disclaimer"];
+            this.price = _data["price"];
+            this.allergens = _data["allergens"];
+            this.typeId = _data["typeId"];
+            this.type = _data["type"] ? ProductType.fromJS(_data["type"]) : <any>undefined;
+            if (Array.isArray(_data["categoryProducts"])) {
+                this.categoryProducts = [] as any;
+                for (let item of _data["categoryProducts"])
+                    this.categoryProducts!.push(CategoryProduct.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Product {
+        data = typeof data === 'object' ? data : {};
+        let result = new Product();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["key"] = this.key;
+        data["isActive"] = this.isActive;
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["isDeleted"] = this.isDeleted;
+        data["deletedBy"] = this.deletedBy;
+        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        data["ingredients"] = this.ingredients;
+        data["disclaimer"] = this.disclaimer;
+        data["price"] = this.price;
+        data["allergens"] = this.allergens;
+        data["typeId"] = this.typeId;
+        data["type"] = this.type ? this.type.toJSON() : <any>undefined;
+        if (Array.isArray(this.categoryProducts)) {
+            data["categoryProducts"] = [];
+            for (let item of this.categoryProducts)
+                data["categoryProducts"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IProduct {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    name?: string | undefined;
+    description?: string | undefined;
+    ingredients?: string | undefined;
+    disclaimer?: string | undefined;
+    price?: number | undefined;
+    allergens?: string | undefined;
+    typeId: number;
+    type?: ProductType;
+    categoryProducts?: CategoryProduct[] | undefined;
+}
+
+export class ProductType implements IProductType {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+
+    constructor(data?: IProductType) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.isActive = true;
+            this.isDeleted = false;
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.key = _data["key"];
+            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
+            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
+            this.deletedBy = _data["deletedBy"];
+            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+            this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ProductType {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProductType();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["key"] = this.key;
+        data["isActive"] = this.isActive;
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["isDeleted"] = this.isDeleted;
+        data["deletedBy"] = this.deletedBy;
+        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IProductType {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
 }
 
 export class WeatherForecast implements IWeatherForecast {
