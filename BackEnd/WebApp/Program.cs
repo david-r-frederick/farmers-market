@@ -17,9 +17,9 @@ builder.Services.AddDbContext<FarmersMarketDb>(
     },
     ServiceLifetime.Transient);
 builder.Services.AddScoped<IDatabaseContext>(provider => provider.GetService<FarmersMarketDb>()!);
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
 builder.Services.AddControllers()
-    .AddApplicationPart(typeof(ProductController).Assembly)
+    .AddApplicationPart(typeof(ProductsController).Assembly)
     .AddControllersAsServices();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

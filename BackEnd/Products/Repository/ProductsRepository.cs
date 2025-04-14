@@ -3,11 +3,11 @@
 using Products.DataModel.Entities;
 using Core;
 
-public class ProductRepository : IProductRepository
+public class ProductsRepository : IProductsRepository
 {
     private readonly IDatabaseContext databaseContext;
 
-    public ProductRepository(IDatabaseContext unitOfWork)
+    public ProductsRepository(IDatabaseContext unitOfWork)
     {
         databaseContext = unitOfWork;
     }

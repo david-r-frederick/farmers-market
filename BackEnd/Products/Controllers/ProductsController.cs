@@ -6,11 +6,11 @@ using Products.Repository;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ProductController : ControllerBase
+public class ProductsController : ControllerBase
 {
-    private readonly IProductRepository _productRepository;
+    private readonly IProductsRepository _productRepository;
 
-    public ProductController(IProductRepository productRepository)
+    public ProductsController(IProductsRepository productRepository)
     {
         _productRepository = productRepository;
     }
