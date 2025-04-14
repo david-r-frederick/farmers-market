@@ -2,6 +2,8 @@ using Context;
 using Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Products.Controllers;
+using Products.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,10 @@ builder.Services.AddDbContext<FarmersMarketDb>(
     },
     ServiceLifetime.Transient);
 builder.Services.AddScoped<IDatabaseContext>(provider => provider.GetService<FarmersMarketDb>()!);
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddControllers()
+    .AddApplicationPart(typeof(ProductController).Assembly)
+    .AddControllersAsServices();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
