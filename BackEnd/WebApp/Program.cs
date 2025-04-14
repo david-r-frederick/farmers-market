@@ -1,10 +1,10 @@
 using Context;
+using Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddDbContext<FarmersMarketDb>(
     options =>
@@ -14,7 +14,7 @@ builder.Services.AddDbContext<FarmersMarketDb>(
             b => b.MigrationsAssembly("WebApp"));
     },
     ServiceLifetime.Transient);
-builder.Services.AddControllers();
+builder.Services.AddScoped<IDatabaseContext>(provider => provider.GetService<FarmersMarketDb>()!);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {

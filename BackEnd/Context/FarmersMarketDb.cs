@@ -10,8 +10,9 @@ using Microsoft.AspNetCore.Identity;
 using System.Reflection;
 using Core.DataModel;
 using Events.DataModel.Entities;
+using Core;
 
-public class FarmersMarketDb : IdentityDbContext<User, IdentityRole<int>, int>
+public class FarmersMarketDb : IdentityDbContext<User, IdentityRole<int>, int>, IDatabaseContext
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
