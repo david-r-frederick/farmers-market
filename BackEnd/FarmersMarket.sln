@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Customers", "Customers\Cust
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Products", "Products\Products.csproj", "{2D38BAF0-EE0C-4D7A-B638-7A3C2887D532}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Context", "Context\Context.csproj", "{E9CB6A3D-7ED7-493B-9FDF-BD52D8718659}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Context", "Context\Context.csproj", "{E9CB6A3D-7ED7-493B-9FDF-BD52D8718659}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
