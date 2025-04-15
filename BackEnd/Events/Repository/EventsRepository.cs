@@ -1,25 +1,12 @@
 ﻿namespace Events.Repository;
 
-using Events.DataModel.Entities;
 using Core;
+using Events.DataModel.Entities;
 
-public class EventsRepository : IEventsRepository
+public class EventsRepository : Repository<Event>, IEventsRepository
 {
-    private readonly IDatabaseContext databaseContext;
-
-    public EventsRepository(IDatabaseContext unitOfWork)
+    public EventsRepository(IDatabaseContext databaseContext)
+        : base(databaseContext)
     {
-        databaseContext = unitOfWork;
-    }
-
-    public async Task<Event?> GetByIdAsync(int id)
-    {
-        return await databaseContext.Set<Event>().FindAsync(id);
-    }
-
-    public async Task AddAsync(Event product)
-    {
-        await databaseContext.Set<Event>().AddAsync(product);
-        await databaseContext.SaveChangesAsync(new());
     }
 }

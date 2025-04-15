@@ -2,24 +2,20 @@
 
 using Products.DataModel.Entities;
 using Core;
+using Microsoft.EntityFrameworkCore;
 
-public class ProductsRepository : IProductsRepository
+public class ProductsRepository : Repository<Product>, IProductsRepository
 {
-    private readonly IDatabaseContext databaseContext;
-
-    public ProductsRepository(IDatabaseContext unitOfWork)
+    public ProductsRepository(IDatabaseContext databaseContext)
+            : base(databaseContext)
     {
-        databaseContext = unitOfWork;
     }
 
-    public async Task<Product?> GetByIdAsync(int id)
+    public async Task<List<Product?>> GetMultipleByCategoryIDAsync(int categoryID)
     {
-        return await databaseContext.Set<Product>().FindAsync(id);
-    }
-
-    public async Task AddAsync(Product product)
-    {
-        await databaseContext.Set<Product>().AddAsync(product);
-        await databaseContext.SaveChangesAsync(new());
+        return await _databaseContext.Set<CategoryProduct>()
+            .Where(p => p.CategoryId == categoryID)
+            .Select(x => x.Product)
+            .ToListAsync();
     }
 }
