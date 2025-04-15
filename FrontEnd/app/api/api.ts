@@ -27,8 +27,8 @@ export class Api {
     /**
      * @return OK
      */
-    product_GetProduct(id: number, cancelToken?: CancelToken): Promise<Product> {
-        let url_ = this.baseUrl + "/api/Product/{id}";
+    events_GetEvent(id: number, cancelToken?: CancelToken): Promise<Event> {
+        let url_ = this.baseUrl + "/api/Events/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -50,11 +50,117 @@ export class Api {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processProduct_GetProduct(_response);
+            return this.processEvents_GetEvent(_response);
         });
     }
 
-    protected processProduct_GetProduct(response: AxiosResponse): Promise<Product> {
+    protected processEvents_GetEvent(response: AxiosResponse): Promise<Event> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = Event.fromJS(resultData200);
+            return Promise.resolve<Event>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<Event>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    events_CreateEvent(body: Event | undefined, cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/api/Events";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processEvents_CreateEvent(_response);
+        });
+    }
+
+    protected processEvents_CreateEvent(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    products_GetProduct(id: number, cancelToken?: CancelToken): Promise<Product> {
+        let url_ = this.baseUrl + "/api/Products/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processProducts_GetProduct(_response);
+        });
+    }
+
+    protected processProducts_GetProduct(response: AxiosResponse): Promise<Product> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -82,8 +188,8 @@ export class Api {
      * @param body (optional) 
      * @return OK
      */
-    product_CreateProduct(body: Product | undefined, cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/api/Product";
+    products_CreateProduct(body: Product | undefined, cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/api/Products";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -105,11 +211,11 @@ export class Api {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processProduct_CreateProduct(_response);
+            return this.processProducts_CreateProduct(_response);
         });
     }
 
-    protected processProduct_CreateProduct(response: AxiosResponse): Promise<void> {
+    protected processProducts_CreateProduct(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -238,6 +344,214 @@ export class Api {
         }
         return Promise.resolve<WeatherForecast[]>(null as any);
     }
+}
+
+export class Address implements IAddress {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    street1?: string | undefined;
+    street2?: string | undefined;
+    city?: string | undefined;
+    region?: string | undefined;
+    zipCode?: string | undefined;
+
+    constructor(data?: IAddress) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.isActive = true;
+            this.isDeleted = false;
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.key = _data["key"];
+            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
+            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
+            this.deletedBy = _data["deletedBy"];
+            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+            this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
+            this.street1 = _data["street1"];
+            this.street2 = _data["street2"];
+            this.city = _data["city"];
+            this.region = _data["region"];
+            this.zipCode = _data["zipCode"];
+        }
+    }
+
+    static fromJS(data: any): Address {
+        data = typeof data === 'object' ? data : {};
+        let result = new Address();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["key"] = this.key;
+        data["isActive"] = this.isActive;
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["isDeleted"] = this.isDeleted;
+        data["deletedBy"] = this.deletedBy;
+        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
+        data["street1"] = this.street1;
+        data["street2"] = this.street2;
+        data["city"] = this.city;
+        data["region"] = this.region;
+        data["zipCode"] = this.zipCode;
+        return data;
+    }
+}
+
+export interface IAddress {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    street1?: string | undefined;
+    street2?: string | undefined;
+    city?: string | undefined;
+    region?: string | undefined;
+    zipCode?: string | undefined;
+}
+
+export class Booth implements IBooth {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    eventId?: number;
+    event?: Event;
+    vendorId?: number;
+    vendor?: Vendor;
+    boothNumber?: string | undefined;
+    electricityAvailable?: boolean;
+    isInsidePavilion?: boolean;
+    x?: number | undefined;
+    y?: number | undefined;
+
+    constructor(data?: IBooth) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.isActive = true;
+            this.isDeleted = false;
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.key = _data["key"];
+            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
+            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
+            this.deletedBy = _data["deletedBy"];
+            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+            this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
+            this.eventId = _data["eventId"];
+            this.event = _data["event"] ? Event.fromJS(_data["event"]) : <any>undefined;
+            this.vendorId = _data["vendorId"];
+            this.vendor = _data["vendor"] ? Vendor.fromJS(_data["vendor"]) : <any>undefined;
+            this.boothNumber = _data["boothNumber"];
+            this.electricityAvailable = _data["electricityAvailable"];
+            this.isInsidePavilion = _data["isInsidePavilion"];
+            this.x = _data["x"];
+            this.y = _data["y"];
+        }
+    }
+
+    static fromJS(data: any): Booth {
+        data = typeof data === 'object' ? data : {};
+        let result = new Booth();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["key"] = this.key;
+        data["isActive"] = this.isActive;
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["isDeleted"] = this.isDeleted;
+        data["deletedBy"] = this.deletedBy;
+        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
+        data["eventId"] = this.eventId;
+        data["event"] = this.event ? this.event.toJSON() : <any>undefined;
+        data["vendorId"] = this.vendorId;
+        data["vendor"] = this.vendor ? this.vendor.toJSON() : <any>undefined;
+        data["boothNumber"] = this.boothNumber;
+        data["electricityAvailable"] = this.electricityAvailable;
+        data["isInsidePavilion"] = this.isInsidePavilion;
+        data["x"] = this.x;
+        data["y"] = this.y;
+        return data;
+    }
+}
+
+export interface IBooth {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    eventId?: number;
+    event?: Event;
+    vendorId?: number;
+    vendor?: Vendor;
+    boothNumber?: string | undefined;
+    electricityAvailable?: boolean;
+    isInsidePavilion?: boolean;
+    x?: number | undefined;
+    y?: number | undefined;
 }
 
 export class Category implements ICategory {
@@ -432,6 +746,90 @@ export interface ICategoryProduct {
     product?: Product;
 }
 
+export class Company implements ICompany {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    name?: string | undefined;
+    startedDate?: string | undefined;
+
+    constructor(data?: ICompany) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.isActive = true;
+            this.isDeleted = false;
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.key = _data["key"];
+            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
+            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
+            this.deletedBy = _data["deletedBy"];
+            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+            this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
+            this.name = _data["name"];
+            this.startedDate = _data["startedDate"];
+        }
+    }
+
+    static fromJS(data: any): Company {
+        data = typeof data === 'object' ? data : {};
+        let result = new Company();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["key"] = this.key;
+        data["isActive"] = this.isActive;
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["isDeleted"] = this.isDeleted;
+        data["deletedBy"] = this.deletedBy;
+        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
+        data["name"] = this.name;
+        data["startedDate"] = this.startedDate;
+        return data;
+    }
+}
+
+export interface ICompany {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    name?: string | undefined;
+    startedDate?: string | undefined;
+}
+
 export class ConnectedResponse implements IConnectedResponse {
     connected?: boolean;
 
@@ -466,6 +864,210 @@ export class ConnectedResponse implements IConnectedResponse {
 
 export interface IConnectedResponse {
     connected?: boolean;
+}
+
+export class Event implements IEvent {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    startDate?: string | undefined;
+    endDate?: string | undefined;
+    address?: Address;
+    eventVendors?: EventVendor[] | undefined;
+    booths?: Booth[] | undefined;
+
+    constructor(data?: IEvent) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.isActive = true;
+            this.isDeleted = false;
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.key = _data["key"];
+            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
+            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
+            this.deletedBy = _data["deletedBy"];
+            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+            this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
+            this.startDate = _data["startDate"];
+            this.endDate = _data["endDate"];
+            this.address = _data["address"] ? Address.fromJS(_data["address"]) : <any>undefined;
+            if (Array.isArray(_data["eventVendors"])) {
+                this.eventVendors = [] as any;
+                for (let item of _data["eventVendors"])
+                    this.eventVendors!.push(EventVendor.fromJS(item));
+            }
+            if (Array.isArray(_data["booths"])) {
+                this.booths = [] as any;
+                for (let item of _data["booths"])
+                    this.booths!.push(Booth.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Event {
+        data = typeof data === 'object' ? data : {};
+        let result = new Event();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["key"] = this.key;
+        data["isActive"] = this.isActive;
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["isDeleted"] = this.isDeleted;
+        data["deletedBy"] = this.deletedBy;
+        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
+        data["startDate"] = this.startDate;
+        data["endDate"] = this.endDate;
+        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
+        if (Array.isArray(this.eventVendors)) {
+            data["eventVendors"] = [];
+            for (let item of this.eventVendors)
+                data["eventVendors"].push(item.toJSON());
+        }
+        if (Array.isArray(this.booths)) {
+            data["booths"] = [];
+            for (let item of this.booths)
+                data["booths"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IEvent {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    startDate?: string | undefined;
+    endDate?: string | undefined;
+    address?: Address;
+    eventVendors?: EventVendor[] | undefined;
+    booths?: Booth[] | undefined;
+}
+
+export class EventVendor implements IEventVendor {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    eventId?: number;
+    event?: Event;
+    vendorId?: number;
+    vendor?: Vendor;
+
+    constructor(data?: IEventVendor) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.isActive = true;
+            this.isDeleted = false;
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.key = _data["key"];
+            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
+            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
+            this.deletedBy = _data["deletedBy"];
+            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+            this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
+            this.eventId = _data["eventId"];
+            this.event = _data["event"] ? Event.fromJS(_data["event"]) : <any>undefined;
+            this.vendorId = _data["vendorId"];
+            this.vendor = _data["vendor"] ? Vendor.fromJS(_data["vendor"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): EventVendor {
+        data = typeof data === 'object' ? data : {};
+        let result = new EventVendor();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["key"] = this.key;
+        data["isActive"] = this.isActive;
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["isDeleted"] = this.isDeleted;
+        data["deletedBy"] = this.deletedBy;
+        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
+        data["eventId"] = this.eventId;
+        data["event"] = this.event ? this.event.toJSON() : <any>undefined;
+        data["vendorId"] = this.vendorId;
+        data["vendor"] = this.vendor ? this.vendor.toJSON() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IEventVendor {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    eventId?: number;
+    event?: Event;
+    vendorId?: number;
+    vendor?: Vendor;
 }
 
 export class Product implements IProduct {
@@ -662,6 +1264,338 @@ export interface IProductType {
     deletedOn?: Date | undefined;
     updatedBy?: string | undefined;
     updatedOn?: Date | undefined;
+}
+
+export class Role implements IRole {
+    id?: number;
+    key?: string | undefined;
+    name?: string | undefined;
+
+    constructor(data?: IRole) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.key = _data["key"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): Role {
+        data = typeof data === 'object' ? data : {};
+        let result = new Role();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["key"] = this.key;
+        data["name"] = this.name;
+        return data;
+    }
+}
+
+export interface IRole {
+    id?: number;
+    key?: string | undefined;
+    name?: string | undefined;
+}
+
+export class User implements IUser {
+    userName?: string | undefined;
+    normalizedUserName?: string | undefined;
+    email?: string | undefined;
+    normalizedEmail?: string | undefined;
+    emailConfirmed?: boolean;
+    phoneNumber?: string | undefined;
+    phoneNumberConfirmed?: boolean;
+    twoFactorEnabled?: boolean;
+    lockoutEnd?: Date | undefined;
+    lockoutEnabled?: boolean;
+    accessFailedCount?: number;
+    createdOn?: Date;
+    createdBy?: string | undefined;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    id?: number;
+    isActive?: boolean;
+    isDeleted?: boolean;
+    key?: string | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    firstName!: string;
+    lastName!: string;
+    middleInitial?: string | undefined;
+    street1!: string | undefined;
+    street2?: string | undefined;
+    city!: string;
+    county!: string;
+    state!: string;
+    postalCode!: string;
+    readonly fullName?: string | undefined;
+    roles?: Role[] | undefined;
+
+    constructor(data?: IUser) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.isActive = true;
+            this.isDeleted = false;
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userName = _data["userName"];
+            this.normalizedUserName = _data["normalizedUserName"];
+            this.email = _data["email"];
+            this.normalizedEmail = _data["normalizedEmail"];
+            this.emailConfirmed = _data["emailConfirmed"];
+            this.phoneNumber = _data["phoneNumber"];
+            this.phoneNumberConfirmed = _data["phoneNumberConfirmed"];
+            this.twoFactorEnabled = _data["twoFactorEnabled"];
+            this.lockoutEnd = _data["lockoutEnd"] ? new Date(_data["lockoutEnd"].toString()) : <any>undefined;
+            this.lockoutEnabled = _data["lockoutEnabled"];
+            this.accessFailedCount = _data["accessFailedCount"];
+            this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
+            this.createdBy = _data["createdBy"];
+            this.deletedBy = _data["deletedBy"];
+            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
+            this.id = _data["id"];
+            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
+            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
+            this.key = _data["key"];
+            this.updatedBy = _data["updatedBy"];
+            this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+            this.middleInitial = _data["middleInitial"];
+            this.street1 = _data["street1"];
+            this.street2 = _data["street2"];
+            this.city = _data["city"];
+            this.county = _data["county"];
+            this.state = _data["state"];
+            this.postalCode = _data["postalCode"];
+            (<any>this).fullName = _data["fullName"];
+            if (Array.isArray(_data["roles"])) {
+                this.roles = [] as any;
+                for (let item of _data["roles"])
+                    this.roles!.push(Role.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): User {
+        data = typeof data === 'object' ? data : {};
+        let result = new User();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userName"] = this.userName;
+        data["normalizedUserName"] = this.normalizedUserName;
+        data["email"] = this.email;
+        data["normalizedEmail"] = this.normalizedEmail;
+        data["emailConfirmed"] = this.emailConfirmed;
+        data["phoneNumber"] = this.phoneNumber;
+        data["phoneNumberConfirmed"] = this.phoneNumberConfirmed;
+        data["twoFactorEnabled"] = this.twoFactorEnabled;
+        data["lockoutEnd"] = this.lockoutEnd ? this.lockoutEnd.toISOString() : <any>undefined;
+        data["lockoutEnabled"] = this.lockoutEnabled;
+        data["accessFailedCount"] = this.accessFailedCount;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["createdBy"] = this.createdBy;
+        data["deletedBy"] = this.deletedBy;
+        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
+        data["id"] = this.id;
+        data["isActive"] = this.isActive;
+        data["isDeleted"] = this.isDeleted;
+        data["key"] = this.key;
+        data["updatedBy"] = this.updatedBy;
+        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["middleInitial"] = this.middleInitial;
+        data["street1"] = this.street1;
+        data["street2"] = this.street2;
+        data["city"] = this.city;
+        data["county"] = this.county;
+        data["state"] = this.state;
+        data["postalCode"] = this.postalCode;
+        data["fullName"] = this.fullName;
+        if (Array.isArray(this.roles)) {
+            data["roles"] = [];
+            for (let item of this.roles)
+                data["roles"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IUser {
+    userName?: string | undefined;
+    normalizedUserName?: string | undefined;
+    email?: string | undefined;
+    normalizedEmail?: string | undefined;
+    emailConfirmed?: boolean;
+    phoneNumber?: string | undefined;
+    phoneNumberConfirmed?: boolean;
+    twoFactorEnabled?: boolean;
+    lockoutEnd?: Date | undefined;
+    lockoutEnabled?: boolean;
+    accessFailedCount?: number;
+    createdOn?: Date;
+    createdBy?: string | undefined;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    id?: number;
+    isActive?: boolean;
+    isDeleted?: boolean;
+    key?: string | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    firstName: string;
+    lastName: string;
+    middleInitial?: string | undefined;
+    street1: string | undefined;
+    street2?: string | undefined;
+    city: string;
+    county: string;
+    state: string;
+    postalCode: string;
+    fullName?: string | undefined;
+    roles?: Role[] | undefined;
+}
+
+export class Vendor implements IVendor {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    userId?: number;
+    user?: User;
+    signedDisclosure?: boolean;
+    company?: Company;
+    booths?: Booth[] | undefined;
+    eventVendors?: EventVendor[] | undefined;
+
+    constructor(data?: IVendor) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.isActive = true;
+            this.isDeleted = false;
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.key = _data["key"];
+            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
+            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
+            this.deletedBy = _data["deletedBy"];
+            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+            this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
+            this.userId = _data["userId"];
+            this.user = _data["user"] ? User.fromJS(_data["user"]) : <any>undefined;
+            this.signedDisclosure = _data["signedDisclosure"];
+            this.company = _data["company"] ? Company.fromJS(_data["company"]) : <any>undefined;
+            if (Array.isArray(_data["booths"])) {
+                this.booths = [] as any;
+                for (let item of _data["booths"])
+                    this.booths!.push(Booth.fromJS(item));
+            }
+            if (Array.isArray(_data["eventVendors"])) {
+                this.eventVendors = [] as any;
+                for (let item of _data["eventVendors"])
+                    this.eventVendors!.push(EventVendor.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Vendor {
+        data = typeof data === 'object' ? data : {};
+        let result = new Vendor();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["key"] = this.key;
+        data["isActive"] = this.isActive;
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["isDeleted"] = this.isDeleted;
+        data["deletedBy"] = this.deletedBy;
+        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
+        data["userId"] = this.userId;
+        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        data["signedDisclosure"] = this.signedDisclosure;
+        data["company"] = this.company ? this.company.toJSON() : <any>undefined;
+        if (Array.isArray(this.booths)) {
+            data["booths"] = [];
+            for (let item of this.booths)
+                data["booths"].push(item.toJSON());
+        }
+        if (Array.isArray(this.eventVendors)) {
+            data["eventVendors"] = [];
+            for (let item of this.eventVendors)
+                data["eventVendors"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IVendor {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    userId?: number;
+    user?: User;
+    signedDisclosure?: boolean;
+    company?: Company;
+    booths?: Booth[] | undefined;
+    eventVendors?: EventVendor[] | undefined;
 }
 
 export class WeatherForecast implements IWeatherForecast {
