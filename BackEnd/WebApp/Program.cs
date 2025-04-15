@@ -1,5 +1,6 @@
 using Context;
 using Core;
+using Events.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Products.Controllers;
@@ -16,6 +17,7 @@ builder.Services.AddDbContext<FarmersMarketDb>(
     ServiceLifetime.Transient);
 builder.Services.AddScoped<IDatabaseContext>(provider => provider.GetService<FarmersMarketDb>()!);
 builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
+builder.Services.AddScoped<IEventsRepository, EventsRepository>();
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(ProductsController).Assembly)
     .AddControllersAsServices();
