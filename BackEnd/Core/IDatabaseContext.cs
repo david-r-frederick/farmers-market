@@ -6,5 +6,5 @@ public interface IDatabaseContext : IDisposable
 {
     DbSet<T> Set<T>() where T : class;
 
-    Task<int> SaveChangesAsync(CancellationToken token);
+    Task<int> SaveChangesAsync(CancellationToken token = default);
 }
