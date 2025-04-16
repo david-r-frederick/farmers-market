@@ -1,7 +1,8 @@
 ﻿namespace Events.DataModel.Entities;
 
-using Core.DataModel;
-using Core.DataModel.Entities;
+using Core;
+using Core.Entities;
+using Customers.DataModel.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 

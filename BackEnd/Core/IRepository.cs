@@ -1,6 +1,6 @@
 ﻿namespace Core;
 
-using Core.DataModel.Entities;
+using Core.Entities;
 
 public interface IRepository<TEntity> where TEntity : BaseEntity
 {

@@ -1,8 +1,7 @@
 ﻿namespace Events.DataModel.Entities;
 
-using Core.DataModel;
-using Core.DataModel.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
+using Core;
+using Core.Entities;
 
 [SQLTable("Events", "Company")]
 public partial class Company : BaseEntity

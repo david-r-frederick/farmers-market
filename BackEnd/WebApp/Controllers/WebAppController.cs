@@ -1,16 +1,14 @@
-﻿namespace WebApp;
-
+﻿using Context;
 using Microsoft.AspNetCore.Mvc;
-using Context;
 using NSwag.Annotations;
 
-[ApiController]
-[Route("[controller]")]
-public class StartingController : ControllerBase
+namespace WebApp.Controllers;
+
+public class WebAppController : ControllerBase
 {
     private readonly FarmersMarketDb _context;
 
-    public StartingController(FarmersMarketDb context)
+    public WebAppController(FarmersMarketDb context)
     {
         _context = context;
     }
@@ -23,9 +21,9 @@ public class StartingController : ControllerBase
         var canConnect = _context.CanConnect();
         return Ok(new { Connected = canConnect });
     }
-}
 
-public class ConnectedResponse
-{
-    public bool Connected { get; set; }
+    public class ConnectedResponse
+    {
+        public bool Connected { get; set; }
+    }
 }

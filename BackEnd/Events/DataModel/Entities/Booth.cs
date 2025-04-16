@@ -1,7 +1,7 @@
 ﻿namespace Events.DataModel.Entities;
 
-using Core.DataModel;
-using Core.DataModel.Entities;
+using Core;
+using Core.Entities;
 
 [SQLTable("Events", "Booth")]
 public partial class Booth : BaseEntity

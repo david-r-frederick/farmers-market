@@ -27,6 +27,166 @@ export class Api {
     /**
      * @return OK
      */
+    addresses_GetAddressByID(id: number, cancelToken?: CancelToken): Promise<Address> {
+        let url_ = this.baseUrl + "/api/addresses/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processAddresses_GetAddressByID(_response);
+        });
+    }
+
+    protected processAddresses_GetAddressByID(response: AxiosResponse): Promise<Address> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = Address.fromJS(resultData200);
+            return Promise.resolve<Address>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<Address>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    addresses_CreateAddress(body: Address | undefined, cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/api/addresses";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processAddresses_CreateAddress(_response);
+        });
+    }
+
+    protected processAddresses_CreateAddress(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    customers_GetCustomerByID(id: number, cancelToken?: CancelToken): Promise<Customer> {
+        let url_ = this.baseUrl + "/api/Customers/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processCustomers_GetCustomerByID(_response);
+        });
+    }
+
+    protected processCustomers_GetCustomerByID(response: AxiosResponse): Promise<Customer> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = Customer.fromJS(resultData200);
+            return Promise.resolve<Customer>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<Customer>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
     events_GetEvent(id: number, cancelToken?: CancelToken): Promise<Event> {
         let url_ = this.baseUrl + "/api/Events/{id}";
         if (id === undefined || id === null)
@@ -133,8 +293,8 @@ export class Api {
     /**
      * @return OK
      */
-    products_GetProduct(id: number, cancelToken?: CancelToken): Promise<Product> {
-        let url_ = this.baseUrl + "/api/Products/{id}";
+    products_GetProductByID(id: number, cancelToken?: CancelToken): Promise<Product> {
+        let url_ = this.baseUrl + "/api/products/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -156,11 +316,11 @@ export class Api {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processProducts_GetProduct(_response);
+            return this.processProducts_GetProductByID(_response);
         });
     }
 
-    protected processProducts_GetProduct(response: AxiosResponse): Promise<Product> {
+    protected processProducts_GetProductByID(response: AxiosResponse): Promise<Product> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -189,7 +349,7 @@ export class Api {
      * @return OK
      */
     products_CreateProduct(body: Product | undefined, cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/api/Products";
+        let url_ = this.baseUrl + "/api/products";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -239,8 +399,11 @@ export class Api {
     /**
      * @return OK
      */
-    starting_TestConnection( cancelToken?: CancelToken): Promise<ConnectedResponse> {
-        let url_ = this.baseUrl + "/Starting/test-connection";
+    users_GetUserByID(id: number, cancelToken?: CancelToken): Promise<User> {
+        let url_ = this.baseUrl + "/api/Users/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -259,11 +422,62 @@ export class Api {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processStarting_TestConnection(_response);
+            return this.processUsers_GetUserByID(_response);
         });
     }
 
-    protected processStarting_TestConnection(response: AxiosResponse): Promise<ConnectedResponse> {
+    protected processUsers_GetUserByID(response: AxiosResponse): Promise<User> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = User.fromJS(resultData200);
+            return Promise.resolve<User>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<User>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    webapp_TestConnection( cancelToken?: CancelToken): Promise<ConnectedResponse> {
+        let url_ = this.baseUrl + "/test-connection";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processWebapp_TestConnection(_response);
+        });
+    }
+
+    protected processWebapp_TestConnection(response: AxiosResponse): Promise<ConnectedResponse> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -285,64 +499,6 @@ export class Api {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Promise.resolve<ConnectedResponse>(null as any);
-    }
-
-    /**
-     * @return OK
-     */
-    weatherforecast_GetLatestFive( cancelToken?: CancelToken): Promise<WeatherForecast[]> {
-        let url_ = this.baseUrl + "/WeatherForecast/get-latest-5";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "text/plain"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processWeatherforecast_GetLatestFive(_response);
-        });
-    }
-
-    protected processWeatherforecast_GetLatestFive(response: AxiosResponse): Promise<WeatherForecast[]> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(WeatherForecast.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return Promise.resolve<WeatherForecast[]>(result200);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<WeatherForecast[]>(null as any);
     }
 }
 
@@ -864,6 +1020,82 @@ export class ConnectedResponse implements IConnectedResponse {
 
 export interface IConnectedResponse {
     connected?: boolean;
+}
+
+export class Customer implements ICustomer {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+
+    constructor(data?: ICustomer) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.isActive = true;
+            this.isDeleted = false;
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.key = _data["key"];
+            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
+            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
+            this.deletedBy = _data["deletedBy"];
+            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+            this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): Customer {
+        data = typeof data === 'object' ? data : {};
+        let result = new Customer();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["key"] = this.key;
+        data["isActive"] = this.isActive;
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["isDeleted"] = this.isDeleted;
+        data["deletedBy"] = this.deletedBy;
+        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
+        return data;
+    }
+}
+
+export interface ICustomer {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
 }
 
 export class Event implements IEvent {
@@ -1596,60 +1828,6 @@ export interface IVendor {
     company?: Company;
     booths?: Booth[] | undefined;
     eventVendors?: EventVendor[] | undefined;
-}
-
-export class WeatherForecast implements IWeatherForecast {
-    date?: Date;
-    temperatureC?: number;
-    readonly temperatureF?: number;
-    summary?: string | undefined;
-
-    constructor(data?: IWeatherForecast) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.date = _data["date"] ? new Date(_data["date"].toString()) : <any>undefined;
-            this.temperatureC = _data["temperatureC"];
-            (<any>this).temperatureF = _data["temperatureF"];
-            this.summary = _data["summary"];
-        }
-    }
-
-    static fromJS(data: any): WeatherForecast {
-        data = typeof data === 'object' ? data : {};
-        let result = new WeatherForecast();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["date"] = this.date ? formatDate(this.date) : <any>undefined;
-        data["temperatureC"] = this.temperatureC;
-        data["temperatureF"] = this.temperatureF;
-        data["summary"] = this.summary;
-        return data;
-    }
-}
-
-export interface IWeatherForecast {
-    date?: Date;
-    temperatureC?: number;
-    temperatureF?: number;
-    summary?: string | undefined;
-}
-
-function formatDate(d: Date) {
-    return d.getFullYear() + '-' + 
-        (d.getMonth() < 9 ? ('0' + (d.getMonth()+1)) : (d.getMonth()+1)) + '-' +
-        (d.getDate() < 10 ? ('0' + d.getDate()) : d.getDate());
 }
 
 export class ApiException extends Error {

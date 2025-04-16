@@ -13,7 +13,7 @@ export default function Header(): JSX.Element {
 
   const testConnection = async () => {
     try {
-      const response = await api.starting_TestConnection();
+      const response = await api.webapp_TestConnection();
       console.log("Connection successful:", response);
     } catch (error) {
       console.error("Connection failed:", error);

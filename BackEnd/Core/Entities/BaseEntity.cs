@@ -1,6 +1,5 @@
-﻿namespace Core.DataModel.Entities;
+﻿namespace Core.Entities;
 
-using Core.DataModel.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;

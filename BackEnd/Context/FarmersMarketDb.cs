@@ -1,6 +1,6 @@
 ﻿namespace Context;
 
-using Core.DataModel.Entities;
+using Customers.DataModel.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Reflection;
-using Core.DataModel;
 using Events.DataModel.Entities;
 using Core;
+using Core.Entities;
 
 public class FarmersMarketDb : IdentityDbContext<User, IdentityRole<int>, int>, IDatabaseContext
 {

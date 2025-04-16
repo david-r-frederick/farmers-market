@@ -1,7 +1,7 @@
 ﻿namespace Core;
 
 using System.Threading.Tasks;
-using Core.DataModel.Entities;
+using Core.Entities;
 
 public abstract class Repository<T> : IRepository<T> where T : BaseEntity
 {

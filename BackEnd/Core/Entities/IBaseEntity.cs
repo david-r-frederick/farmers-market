@@ -1,4 +1,4 @@
-namespace Core.DataModel.Interfaces;
+namespace Core.Entities;
 
 /// <summary>
 /// Interface for base entity properties that all database entities should implement

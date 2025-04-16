@@ -1,6 +1,11 @@
 using Context;
 using Core;
+using Customers.Controllers;
+using Customers.Repository;
+using Events.Controllers;
 using Events.Repository;
+using Geography.Controllers;
+using Geography.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Products.Controllers;
@@ -16,8 +21,23 @@ builder.Services.AddDbContext<FarmersMarketDb>(
     },
     ServiceLifetime.Transient);
 builder.Services.AddScoped<IDatabaseContext>(provider => provider.GetService<FarmersMarketDb>()!);
-builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<ICustomersRepository, CustomersRepository>();
 builder.Services.AddScoped<IEventsRepository, EventsRepository>();
+builder.Services.AddScoped<IAddressesRepository, AddressesRepository>();
+builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
+builder.Services.AddControllers()
+    .AddApplicationPart(typeof(UsersController).Assembly)
+    .AddControllersAsServices();
+builder.Services.AddControllers()
+    .AddApplicationPart(typeof(CustomersController).Assembly)
+    .AddControllersAsServices();
+builder.Services.AddControllers()
+    .AddApplicationPart(typeof(EventsController).Assembly)
+    .AddControllersAsServices();
+builder.Services.AddControllers()
+    .AddApplicationPart(typeof(AddressesController).Assembly)
+    .AddControllersAsServices();
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(ProductsController).Assembly)
     .AddControllersAsServices();

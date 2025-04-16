@@ -4,21 +4,21 @@ using Microsoft.AspNetCore.Mvc;
 using Products.DataModel.Entities;
 using Products.Repository;
 
-[Route("api/[controller]")]
+[Route("api/products")]
 [ApiController]
 public class ProductsController : ControllerBase
 {
-    private readonly IProductsRepository _productRepository;
+    private readonly IProductsRepository _productsRepository;
 
     public ProductsController(IProductsRepository productRepository)
     {
-        _productRepository = productRepository;
+        _productsRepository = productRepository;
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Product>> GetProduct(int id)
+    public async Task<ActionResult<Product>> GetProductByID(int id)
     {
-        var product = await _productRepository.GetByIdAsync(id);
+        var product = await _productsRepository.GetByIdAsync(id);
         if (product == null) return NotFound();
         return Ok(product);
     }
@@ -26,7 +26,7 @@ public class ProductsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateProduct([FromBody] Product product)
     {
-        await _productRepository.AddAsync(product);
-        return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
+        await _productsRepository.AddAsync(product);
+        return CreatedAtAction(nameof(GetProductByID), new { id = product.Id }, product);
     }
 }

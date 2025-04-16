@@ -1,4 +1,4 @@
-﻿namespace Core.DataModel;
+﻿namespace Core;
 
 public class SQLTableAttribute : Attribute
 {

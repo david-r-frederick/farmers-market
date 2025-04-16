@@ -1,5 +1,6 @@
-﻿namespace Core.DataModel.Entities;
+﻿namespace Customers.DataModel.Entities;
 
+using Core;
 using System.ComponentModel.DataAnnotations;
 
 [SQLTable("Auth", "Role")]

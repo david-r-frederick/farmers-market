@@ -1,5 +1,5 @@
-﻿using Core.DataModel;
-using Core.DataModel.Entities;
+﻿using Core;
+using Core.Entities;
 
 namespace Products.DataModel.Entities;
 
