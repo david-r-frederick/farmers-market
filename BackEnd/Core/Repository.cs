@@ -5,37 +5,41 @@ using Core.Entities;
 
 public abstract class Repository<T> : IRepository<T> where T : BaseEntity
 {
-    protected readonly IDatabaseContext _databaseContext;
+    protected readonly IDbContextFactoryWrapper _dbFactory;
 
-    protected Repository(IDatabaseContext context)
+    protected Repository(IDbContextFactoryWrapper dbContextFactoryWrapper)
     {
-        _databaseContext = context;
+        _dbFactory = dbContextFactoryWrapper;
     }
 
     public async Task<T?> GetByIdAsync(int id)
     {
-        return await _databaseContext.Set<T>().FindAsync(id);
+        using var context = _dbFactory.GetContext();
+        return await context.Set<T>().FindAsync(id);
     }
 
     public async Task AddAsync(T entity)
     {
-        await _databaseContext.Set<T>().AddAsync(entity);
-        await _databaseContext.SaveChangesAsync();
+        using var context = _dbFactory.GetContext();
+        await context.Set<T>().AddAsync(entity);
+        await context.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(T entity)
     {
-        _databaseContext.Set<T>().Update(entity);
-        await _databaseContext.SaveChangesAsync();
+        using var context = _dbFactory.GetContext();
+        context.Set<T>().Update(entity);
+        await context.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(int id)
     {
+        using var context = _dbFactory.GetContext();
         var entity = await GetByIdAsync(id);
         if (entity != null)
         {
-            _databaseContext.Set<T>().Remove(entity);
-            await _databaseContext.SaveChangesAsync();
+            context.Set<T>().Remove(entity);
+            await context.SaveChangesAsync();
         }
     }
 }

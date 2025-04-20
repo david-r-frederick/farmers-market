@@ -5,8 +5,8 @@ using Events.DataModel.Entities;
 
 public class EventsRepository : Repository<Event>, IEventsRepository
 {
-    public EventsRepository(IDatabaseContext databaseContext)
-        : base(databaseContext)
+    public EventsRepository(IDbContextFactoryWrapper dbFactory)
+        : base(dbFactory)
     {
     }
 }

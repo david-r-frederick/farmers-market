@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<FarmersMarketDb>(
+builder.Services.AddDbContextFactory<FarmersMarketDb>(
     options =>
     {
         options.UseSqlServer(
@@ -13,6 +13,13 @@ builder.Services.AddDbContext<FarmersMarketDb>(
     },
     ServiceLifetime.Transient);
 builder.Services.AddScoped<IDatabaseContext>(provider => provider.GetService<FarmersMarketDb>()!);
+builder.Services.AddScoped<IDbContextFactoryWrapper, DbContextFactoryWrapper>();
+builder.Services.AddScoped(provider =>
+{
+    var factory = provider.GetRequiredService<IDbContextFactory<FarmersMarketDb>>();
+    var httpContextAccessor = provider.GetRequiredService<IHttpContextAccessor>();
+    return new DbContextFactoryWrapper(factory, httpContextAccessor);
+});
 
 var assemblies = AppDomain.CurrentDomain.GetAssemblies()
     .Where(a => !a.IsDynamic)

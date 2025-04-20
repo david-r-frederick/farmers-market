@@ -5,8 +5,8 @@ namespace Media.Repository;
 
 public class MediaRepository : Repository<StoredFile>, IMediaRepository
 {
-    public MediaRepository(IDatabaseContext databaseContext)
-        : base(databaseContext)
+    public MediaRepository(IDbContextFactoryWrapper dbFactory)
+        : base(dbFactory)
     {
     }
 }

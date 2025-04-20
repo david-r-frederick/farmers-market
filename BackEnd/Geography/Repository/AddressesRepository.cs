@@ -5,8 +5,8 @@ using Core;
 
 public class AddressesRepository : Repository<Address>, IAddressesRepository
 {
-    public AddressesRepository(IDatabaseContext databaseContext)
-            : base(databaseContext)
+    public AddressesRepository(IDbContextFactoryWrapper dbFactory)
+            : base(dbFactory)
     {
     }
 }

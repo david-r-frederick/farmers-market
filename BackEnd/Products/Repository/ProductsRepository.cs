@@ -1,19 +1,19 @@
 ﻿namespace Products.Repository;
 
-using Products.DataModel.Entities;
 using Core;
+using Products.DataModel.Entities;
 using Microsoft.EntityFrameworkCore;
 
 public class ProductsRepository : Repository<Product>, IProductsRepository
 {
-    public ProductsRepository(IDatabaseContext databaseContext)
-            : base(databaseContext)
+    public ProductsRepository(IDbContextFactoryWrapper dbFactory) : base(dbFactory)
     {
     }
 
     public async Task<List<Product?>> GetMultipleByCategoryIDAsync(int categoryID)
     {
-        return await _databaseContext.Set<CategoryProduct>()
+        using var context = _dbFactory.GetContext();
+        return await context.Set<CategoryProduct>()
             .Where(p => p.CategoryId == categoryID)
             .Select(x => x.Product)
             .ToListAsync();
