@@ -1,15 +1,7 @@
 using Context;
 using Core;
-using Customers.Controllers;
-using Customers.Repository;
-using Events.Controllers;
-using Events.Repository;
-using Geography.Controllers;
-using Geography.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Products.Controllers;
-using Products.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<FarmersMarketDb>(
@@ -21,26 +13,39 @@ builder.Services.AddDbContext<FarmersMarketDb>(
     },
     ServiceLifetime.Transient);
 builder.Services.AddScoped<IDatabaseContext>(provider => provider.GetService<FarmersMarketDb>()!);
-builder.Services.AddScoped<IUsersRepository, UsersRepository>();
-builder.Services.AddScoped<ICustomersRepository, CustomersRepository>();
-builder.Services.AddScoped<IEventsRepository, EventsRepository>();
-builder.Services.AddScoped<IAddressesRepository, AddressesRepository>();
-builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
-builder.Services.AddControllers()
-    .AddApplicationPart(typeof(UsersController).Assembly)
-    .AddControllersAsServices();
-builder.Services.AddControllers()
-    .AddApplicationPart(typeof(CustomersController).Assembly)
-    .AddControllersAsServices();
-builder.Services.AddControllers()
-    .AddApplicationPart(typeof(EventsController).Assembly)
-    .AddControllersAsServices();
-builder.Services.AddControllers()
-    .AddApplicationPart(typeof(AddressesController).Assembly)
-    .AddControllersAsServices();
-builder.Services.AddControllers()
-    .AddApplicationPart(typeof(ProductsController).Assembly)
-    .AddControllersAsServices();
+
+var assemblies = AppDomain.CurrentDomain.GetAssemblies()
+    .Where(a => !a.IsDynamic)
+    .ToList();
+assemblies.AddRange(new[]
+{
+    typeof(Products.ProductsPlugin).Assembly,
+    typeof(Customers.CustomersPlugin).Assembly,
+    typeof(Events.EventsPlugin).Assembly,
+    typeof(Geography.GeographyPlugin).Assembly,
+    typeof(Media.MediaPlugin).Assembly
+}.Distinct());
+var plugins = new List<IPlugin>();
+foreach (var assembly in assemblies)
+{
+    var pluginTypes = assembly.GetTypes()
+        .Where(t => typeof(IPlugin).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
+    foreach (var type in pluginTypes)
+    {
+        try
+        {
+            var plugin = (IPlugin)Activator.CreateInstance(type)!;
+            plugins.Add(plugin);
+            plugin.Initialize(builder.Services);
+            plugin.RegisterControllers(builder.Services.AddControllers());
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to initialize plugin {type.FullName}: {ex.Message}");
+        }
+    }
+}
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
