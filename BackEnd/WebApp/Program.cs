@@ -32,6 +32,7 @@ assemblies.AddRange(new[]
     typeof(Geography.GeographyPlugin).Assembly,
     typeof(Media.MediaPlugin).Assembly,
     typeof(Categories.CategoriesPlugin).Assembly,
+    typeof(Core.Mapping.BaseMappingProfile).Assembly,
 }.Distinct());
 var plugins = new List<IPlugin>();
 foreach (var assembly in assemblies)
@@ -66,7 +67,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 builder.Services.AddHttpContextAccessor();
-
+builder.Services.AddAutoMapper(assemblies);
 var allowedOrigins = builder.Configuration
     .GetSection("AllowedOrigins")
     .Get<string[]>();
