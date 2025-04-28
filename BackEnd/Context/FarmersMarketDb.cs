@@ -16,10 +16,6 @@ public class FarmersMarketDb : IdentityDbContext<User, IdentityRole<int>, int>, 
 {
     private readonly IHttpContextAccessor? _httpContextAccessor;
 
-    public FarmersMarketDb(DbContextOptions<FarmersMarketDb> options) : base(options)
-    {
-    }
-
     public FarmersMarketDb(
         DbContextOptions<FarmersMarketDb> options,
         IHttpContextAccessor? httpContextAccessor) : base(options)
