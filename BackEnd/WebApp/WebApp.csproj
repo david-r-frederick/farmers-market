@@ -18,6 +18,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Categories\Categories.csproj" />
 		<ProjectReference Include="..\Context\Context.csproj" />
 		<ProjectReference Include="..\Core\Core.csproj" />
 		<ProjectReference Include="..\Customers\Customers.csproj" />

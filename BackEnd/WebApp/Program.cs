@@ -30,7 +30,8 @@ assemblies.AddRange(new[]
     typeof(Customers.CustomersPlugin).Assembly,
     typeof(Events.EventsPlugin).Assembly,
     typeof(Geography.GeographyPlugin).Assembly,
-    typeof(Media.MediaPlugin).Assembly
+    typeof(Media.MediaPlugin).Assembly,
+    typeof(Categories.CategoriesPlugin).Assembly,
 }.Distinct());
 var plugins = new List<IPlugin>();
 foreach (var assembly in assemblies)

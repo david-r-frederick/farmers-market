@@ -1,9 +1,9 @@
 ﻿using Core;
 using Core.Entities;
 
-namespace Products.DataModel.Entities;
+namespace Categories.DataModel.Entities;
 
-[SQLTable("Products", "Category")]
+[SQLTable("Categories", "Category")]
 public partial class Category : BaseEntity
 {
     public string Name { get; set; } = null!;

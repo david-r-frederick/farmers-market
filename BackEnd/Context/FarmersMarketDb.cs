@@ -31,6 +31,7 @@ public class FarmersMarketDb : IdentityDbContext<User, IdentityRole<int>, int>, 
     {
         var assembliesToLoad = new[]
         {
+            "Categories",
             "Customers",
             "Events",
             "Geography",

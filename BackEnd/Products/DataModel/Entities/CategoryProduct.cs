@@ -2,6 +2,7 @@
 
 using Core;
 using Core.Entities;
+using Categories.DataModel.Entities;
 
 [SQLTable("Products", "CategoryProduct")]
 public partial class CategoryProduct : BaseEntity
