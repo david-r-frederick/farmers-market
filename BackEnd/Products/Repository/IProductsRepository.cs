@@ -3,7 +3,7 @@
 using Core;
 using Products.DataModel.Models;
 
-public interface IProductsRepository : IRepository<ProductModel>
+public interface IProductsRepository : IRepository<FullProductModel>
 {
-    Task<List<ProductModel?>> GetMultipleByCategoryIDAsync(int categoryID);
+    Task<List<FullProductModel?>> GetMultipleByCategoryIDAsync(int categoryID);
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Products.DataModel.Models;
 
-public class ProductsRepository : Repository<ProductModel>, IProductsRepository
+public class ProductsRepository : Repository<FullProductModel>, IProductsRepository
 {
     private readonly IMapper _mapper;
 
@@ -17,7 +17,7 @@ public class ProductsRepository : Repository<ProductModel>, IProductsRepository
         _mapper = mapper;
     }
 
-    public override async Task<ProductModel?> GetByIdAsync(int productId)
+    public override async Task<FullProductModel?> GetByIdAsync(int productId)
     {
         using var context = _dbFactory.GetContext();
         var product = await context.Set<Product>()
@@ -27,10 +27,10 @@ public class ProductsRepository : Repository<ProductModel>, IProductsRepository
             .ThenInclude(x => x.Category)
             .FirstOrDefaultAsync()
             .ConfigureAwait(false);
-        return _mapper.Map<ProductModel>(product);
+        return _mapper.Map<FullProductModel>(product);
     }
 
-    public async Task<List<ProductModel?>> GetMultipleByCategoryIDAsync(int categoryID)
+    public async Task<List<FullProductModel?>> GetMultipleByCategoryIDAsync(int categoryID)
     {
         using var context = _dbFactory.GetContext();
         var products = await context.Set<CategoryProduct>()

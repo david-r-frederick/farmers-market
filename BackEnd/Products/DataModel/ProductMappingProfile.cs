@@ -8,14 +8,16 @@ public class ProductMappingProfile : Profile
 {
     public ProductMappingProfile()
     {
-        CreateMap<Product, ProductModel>()
+        CreateMap<Product, FullProductModel>()
             .ForMember(
                 dest => dest.Categories,
                 opt => opt.MapFrom(src => src.CategoryProducts
                     .Where(cp => cp.IsActive && cp.Category != null)
                     .Select(cp => cp.Category!)));
 
-        CreateMap<ProductModel, Product>()
+        CreateMap<Product, ListProductModel>();
+
+        CreateMap<FullProductModel, Product>()
             .ForMember(dest => dest.CreatedOn, opt => opt.Ignore())
             .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
             .ForMember(dest => dest.IsActive, opt => opt.Ignore())

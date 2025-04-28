@@ -16,7 +16,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<ProductModel>> GetProductByID(int id)
+    public async Task<ActionResult<FullProductModel>> GetProductByID(int id)
     {
         var product = await _productsRepository.GetByIdAsync(id);
         if (product == null) return NotFound();
@@ -24,7 +24,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateProduct([FromBody] ProductModel product)
+    public async Task<IActionResult> CreateProduct([FromBody] FullProductModel product)
     {
         await _productsRepository.AddAsync(product);
         return CreatedAtAction(nameof(GetProductByID), new { id = product.Id }, product);
