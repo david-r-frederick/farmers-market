@@ -1,7 +1,7 @@
 ﻿namespace Geography.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
-using Geography.DataModel.Entities;
+using Geography.DataModel.Models;
 using Geography.Repository;
 
 [Route("api/addresses")]
@@ -16,7 +16,7 @@ public class AddressesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Address>> GetAddressByID(int id)
+    public async Task<ActionResult<AddressModel>> GetAddressByID(int id)
     {
         var address = await _addressesRepository.GetByIdAsync(id);
         if (address == null) return NotFound();
@@ -24,7 +24,7 @@ public class AddressesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateAddress([FromBody] Address address)
+    public async Task<IActionResult> CreateAddress([FromBody] AddressModel address)
     {
         await _addressesRepository.AddAsync(address);
         return CreatedAtAction(nameof(GetAddressByID), new { id = address.Id }, address);

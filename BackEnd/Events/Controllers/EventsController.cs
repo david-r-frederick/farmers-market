@@ -1,7 +1,7 @@
 ﻿namespace Events.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
-using Events.DataModel.Entities;
+using Events.DataModel.Models;
 using Events.Repository;
 
 [Route("api/[controller]")]
@@ -16,7 +16,7 @@ public class EventsController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Event>> GetEvent(int id)
+    public async Task<ActionResult<EventModel>> GetEvent(int id)
     {
         var ev = await _eventsRepository.GetByIdAsync(id);
         if (ev == null) return NotFound();
@@ -24,7 +24,7 @@ public class EventsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateEvent([FromBody] Event ev)
+    public async Task<IActionResult> CreateEvent([FromBody] EventModel ev)
     {
         await _eventsRepository.AddAsync(ev);
         return CreatedAtAction(nameof(GetEvent), new { id = ev.Id }, ev);

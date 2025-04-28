@@ -1,8 +1,8 @@
 ﻿namespace Geography.Repository;
 
 using Core;
-using Geography.DataModel.Entities;
+using Geography.DataModel.Models;
 
-public interface IAddressesRepository : IRepository<Address>
+public interface IAddressesRepository : IRepository<AddressModel>
 {
 }

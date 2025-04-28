@@ -1,9 +1,9 @@
 ﻿namespace Products.Repository;
 
 using Core;
-using Products.DataModel.Entities;
+using Products.DataModel.Models;
 
-public interface IProductsRepository : IRepository<Product>
+public interface IProductsRepository : IRepository<ProductModel>
 {
-    Task<List<Product?>> GetMultipleByCategoryIDAsync(int categoryID);
+    Task<List<ProductModel?>> GetMultipleByCategoryIDAsync(int categoryID);
 }

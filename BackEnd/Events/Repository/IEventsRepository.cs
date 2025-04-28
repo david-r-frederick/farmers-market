@@ -1,8 +1,8 @@
 ﻿namespace Events.Repository;
 
 using Core;
-using Events.DataModel.Entities;
+using Events.DataModel.Models;
 
-public interface IEventsRepository : IRepository<Event>
+public interface IEventsRepository : IRepository<EventModel>
 {
 }

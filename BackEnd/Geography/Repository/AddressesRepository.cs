@@ -1,9 +1,9 @@
 ﻿namespace Geography.Repository;
 
-using Geography.DataModel.Entities;
 using Core;
+using Geography.DataModel.Models;
 
-public class AddressesRepository : Repository<Address>, IAddressesRepository
+public class AddressesRepository : Repository<AddressModel>, IAddressesRepository
 {
     public AddressesRepository(IDbContextFactoryWrapper dbFactory)
             : base(dbFactory)

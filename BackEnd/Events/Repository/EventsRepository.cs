@@ -1,9 +1,9 @@
 ﻿namespace Events.Repository;
 
 using Core;
-using Events.DataModel.Entities;
+using Events.DataModel.Models;
 
-public class EventsRepository : Repository<Event>, IEventsRepository
+public class EventsRepository : Repository<EventModel>, IEventsRepository
 {
     public EventsRepository(IDbContextFactoryWrapper dbFactory)
         : base(dbFactory)

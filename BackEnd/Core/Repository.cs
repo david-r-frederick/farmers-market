@@ -1,9 +1,9 @@
 ﻿namespace Core;
 
 using System.Threading.Tasks;
-using Core.Entities;
+using Core.Models;
 
-public abstract class Repository<T> : IRepository<T> where T : BaseEntity
+public abstract class Repository<T> : IRepository<T> where T : BaseModel
 {
     protected readonly IDbContextFactoryWrapper _dbFactory;
 
@@ -12,27 +12,27 @@ public abstract class Repository<T> : IRepository<T> where T : BaseEntity
         _dbFactory = dbContextFactoryWrapper;
     }
 
-    public async Task<T?> GetByIdAsync(int id)
+    public virtual async Task<T?> GetByIdAsync(int id)
     {
         using var context = _dbFactory.GetContext();
         return await context.Set<T>().FindAsync(id);
     }
 
-    public async Task AddAsync(T entity)
+    public virtual async Task AddAsync(T entity)
     {
         using var context = _dbFactory.GetContext();
         await context.Set<T>().AddAsync(entity);
         await context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(T entity)
+    public virtual async Task UpdateAsync(T entity)
     {
         using var context = _dbFactory.GetContext();
         context.Set<T>().Update(entity);
         await context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(int id)
+    public virtual async Task DeleteAsync(int id)
     {
         using var context = _dbFactory.GetContext();
         var entity = await GetByIdAsync(id);

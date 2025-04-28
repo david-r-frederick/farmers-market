@@ -1,7 +1,7 @@
 ﻿namespace Categories.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
-using Categories.DataModel.Entities;
+using Categories.DataModel.Models;
 using Categories.Repository;
 
 [Route("api/categories")]
@@ -16,7 +16,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Category>> GetCategoryByID(int id)
+    public async Task<ActionResult<CategoryModel>> GetCategoryByID(int id)
     {
         var category = await _categoriesRepository.GetByIdAsync(id);
         if (category == null) return NotFound();
@@ -24,7 +24,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCategory([FromBody] Category category)
+    public async Task<IActionResult> CreateCategory([FromBody] CategoryModel category)
     {
         await _categoriesRepository.AddAsync(category);
         return CreatedAtAction(nameof(GetCategoryByID), new { id = category.Id }, category);

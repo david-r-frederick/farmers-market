@@ -1,8 +1,8 @@
 ﻿namespace Customers.Repository;
 
 using Core;
-using Customers.DataModel.Entities;
+using Customers.DataModel.Models;
 
-public interface ICustomersRepository : IRepository<Customer>
+public interface ICustomersRepository : IRepository<CustomerModel>
 {
 }

@@ -1,14 +1,14 @@
 ﻿namespace Core;
 
-using Core.Entities;
+using Core.Models;
 
-public interface IRepository<TEntity> where TEntity : BaseEntity
+public interface IRepository<TModel> where TModel : BaseModel
 {
-    Task<TEntity?> GetByIdAsync(int id);
+    Task<TModel?> GetByIdAsync(int id);
 
-    Task AddAsync(TEntity entity);
+    Task AddAsync(TModel entity);
 
-    Task UpdateAsync(TEntity entity);
+    Task UpdateAsync(TModel entity);
 
     Task DeleteAsync(int id);
 }

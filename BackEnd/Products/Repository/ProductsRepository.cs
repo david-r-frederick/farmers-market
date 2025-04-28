@@ -4,13 +4,13 @@ using Core;
 using Products.DataModel.Entities;
 using Microsoft.EntityFrameworkCore;
 
-public class ProductsRepository : Repository<Product>, IProductsRepository
+public class ProductsRepository : Repository<ProductModel>, IProductsRepository
 {
     public ProductsRepository(IDbContextFactoryWrapper dbFactory) : base(dbFactory)
     {
     }
 
-    public async Task<List<Product?>> GetMultipleByCategoryIDAsync(int categoryID)
+    public async Task<List<ProductModel?>> GetMultipleByCategoryIDAsync(int categoryID)
     {
         using var context = _dbFactory.GetContext();
         return await context.Set<CategoryProduct>()

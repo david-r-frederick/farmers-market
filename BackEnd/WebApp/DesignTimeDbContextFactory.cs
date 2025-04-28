@@ -18,6 +18,6 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<FarmersMar
 
         builder.UseSqlServer(connectionString, b => b.MigrationsAssembly("WebApp"));
 
-        return new FarmersMarketDb(builder.Options);
+        return new FarmersMarketDb(builder.Options, null);
     }
 }

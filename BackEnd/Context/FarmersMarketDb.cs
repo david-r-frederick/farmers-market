@@ -22,7 +22,7 @@ public class FarmersMarketDb : IdentityDbContext<User, IdentityRole<int>, int>, 
 
     public FarmersMarketDb(
         DbContextOptions<FarmersMarketDb> options,
-        IHttpContextAccessor httpContextAccessor) : base(options)
+        IHttpContextAccessor? httpContextAccessor) : base(options)
     {
         _httpContextAccessor = httpContextAccessor;
     }

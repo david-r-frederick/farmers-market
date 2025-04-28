@@ -1,8 +1,8 @@
 ﻿namespace Categories.Repository;
 
 using Core;
-using Categories.DataModel.Entities;
+using Categories.DataModel.Models;
 
-public interface ICategoriesRepository : IRepository<Category>
+public interface ICategoriesRepository : IRepository<CategoryModel>
 {
 }

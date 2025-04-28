@@ -1,8 +1,8 @@
 ﻿namespace Media.Repository;
 
 using Core;
-using Media.DataModel.Entities;
+using Media.DataModel.Models;
 
-public interface IMediaRepository : IRepository<StoredFile>
+public interface IMediaRepository : IRepository<StoredFileModel>
 {
 }
