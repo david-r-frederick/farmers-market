@@ -2,7 +2,7 @@
 
 using Core.Models;
 
-public class EventModel : BaseModel
+public class ListEventModel : BaseModel
 {
     public string StartDate { get; set; } = null!;
 

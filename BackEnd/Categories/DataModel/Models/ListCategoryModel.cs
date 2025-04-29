@@ -2,7 +2,7 @@
 
 namespace Categories.DataModel.Models;
 
-public partial class CategoryModel : BaseModel
+public partial class ListCategoryModel : BaseModel
 {
     public string Name { get; set; } = string.Empty;
 

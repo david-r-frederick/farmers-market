@@ -3,6 +3,6 @@
 using Core;
 using Customers.DataModel.Models;
 
-public interface ICustomersRepository : IRepository<CustomerModel>
+public interface ICustomersRepository : IRepository<FullCustomerModel, ListCustomerModel>
 {
 }

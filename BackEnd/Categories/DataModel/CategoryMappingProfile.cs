@@ -8,9 +8,9 @@ public sealed class CategoryMappingProfile : Profile
 {
     public CategoryMappingProfile()
     {
-        CreateMap<Category, CategoryModel>();
+        CreateMap<Category, FullCategoryModel>();
 
-        CreateMap<CategoryModel, Category>()
+        CreateMap<FullCategoryModel, Category>()
             .ForMember(dest => dest.CreatedOn, opt => opt.Ignore())
             .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
             .ForMember(dest => dest.IsActive, opt => opt.Ignore());

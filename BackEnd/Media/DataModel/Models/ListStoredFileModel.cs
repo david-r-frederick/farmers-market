@@ -2,6 +2,6 @@
 
 using Core.Models;
 
-public class StoredFileModel : BaseModel
+public class ListStoredFileModel : BaseModel
 {
 }

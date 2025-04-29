@@ -3,6 +3,6 @@
 using Core;
 using Events.DataModel.Models;
 
-public interface IEventsRepository : IRepository<EventModel>
+public interface IEventsRepository : IRepository<FullEventModel, ListEventModel>
 {
 }

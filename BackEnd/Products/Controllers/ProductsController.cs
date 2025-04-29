@@ -1,5 +1,6 @@
 ﻿namespace Products.Controllers;
 
+using Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Products.DataModel.Models;
 using Products.Repository;
@@ -28,5 +29,12 @@ public class ProductsController : ControllerBase
     {
         await _productsRepository.AddAsync(product);
         return CreatedAtAction(nameof(GetProductByID), new { id = product.Id }, product);
+    }
+
+    [HttpPost("all")]
+    public async Task<ActionResult<List<ListProductModel>>> GetAllProducts([FromBody] Paging paging)
+    {
+        var products = await _productsRepository.GetAllAsync(paging);
+        return Ok(products);
     }
 }

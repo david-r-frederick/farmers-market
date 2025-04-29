@@ -16,7 +16,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<CategoryModel>> GetCategoryByID(int id)
+    public async Task<ActionResult<FullCategoryModel>> GetCategoryByID(int id)
     {
         var category = await _categoriesRepository.GetByIdAsync(id);
         if (category == null) return NotFound();
@@ -24,7 +24,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCategory([FromBody] CategoryModel category)
+    public async Task<IActionResult> CreateCategory([FromBody] FullCategoryModel category)
     {
         await _categoriesRepository.AddAsync(category);
         return CreatedAtAction(nameof(GetCategoryByID), new { id = category.Id }, category);

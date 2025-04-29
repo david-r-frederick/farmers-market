@@ -16,7 +16,7 @@ public class AddressesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<AddressModel>> GetAddressByID(int id)
+    public async Task<ActionResult<FullAddressModel>> GetAddressByID(int id)
     {
         var address = await _addressesRepository.GetByIdAsync(id);
         if (address == null) return NotFound();
@@ -24,7 +24,7 @@ public class AddressesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateAddress([FromBody] AddressModel address)
+    public async Task<IActionResult> CreateAddress([FromBody] FullAddressModel address)
     {
         await _addressesRepository.AddAsync(address);
         return CreatedAtAction(nameof(GetAddressByID), new { id = address.Id }, address);

@@ -2,13 +2,17 @@
 
 using Core.Models;
 
-public interface IRepository<TModel> where TModel : BaseModel
+public interface IRepository<TFullModel, TListModel>
+    where TFullModel : BaseModel
+    where TListModel : BaseModel
 {
-    Task<TModel?> GetByIdAsync(int id);
+    Task<TFullModel?> GetByIdAsync(int id);
 
-    Task AddAsync(TModel entity);
+    Task<PagedResult<TListModel>> GetAllAsync(Paging paging);
 
-    Task UpdateAsync(TModel entity);
+    Task<int> AddAsync(TFullModel model);
+
+    Task UpdateAsync(TFullModel model);
 
     Task DeleteAsync(int id);
 }

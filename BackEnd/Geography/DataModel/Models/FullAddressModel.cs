@@ -2,7 +2,7 @@
 
 using Core.Models;
 
-public class AddressModel : BaseModel
+public class FullAddressModel : BaseModel
 {
     public string Street1 { get; set; } = null!;
 

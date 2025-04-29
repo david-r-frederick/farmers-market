@@ -3,6 +3,6 @@
 using Core;
 using Categories.DataModel.Models;
 
-public interface ICategoriesRepository : IRepository<CategoryModel>
+public interface ICategoriesRepository : IRepository<FullCategoryModel, ListCategoryModel>
 {
 }

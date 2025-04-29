@@ -2,6 +2,6 @@
 
 using Core.Models;
 
-public class CustomerModel : BaseModel
+public class ListCustomerModel : BaseModel
 {
 }

@@ -22,5 +22,5 @@ public partial class FullProductModel : BaseModel
 
     public ProductType? Type { get; set; }
 
-    public List<CategoryModel>? Categories { get; set; }
+    public List<FullCategoryModel>? Categories { get; set; }
 }
