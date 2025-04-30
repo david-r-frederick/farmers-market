@@ -27,7 +27,7 @@ export class Api {
     /**
      * @return OK
      */
-    addresses_GetAddressByID(id: number, cancelToken?: CancelToken): Promise<AddressModel> {
+    addresses_GetAddressByID(id: number, cancelToken?: CancelToken): Promise<FullAddressModel> {
         let url_ = this.baseUrl + "/api/addresses/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -54,7 +54,7 @@ export class Api {
         });
     }
 
-    protected processAddresses_GetAddressByID(response: AxiosResponse): Promise<AddressModel> {
+    protected processAddresses_GetAddressByID(response: AxiosResponse): Promise<FullAddressModel> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -68,21 +68,21 @@ export class Api {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = AddressModel.fromJS(resultData200);
-            return Promise.resolve<AddressModel>(result200);
+            result200 = FullAddressModel.fromJS(resultData200);
+            return Promise.resolve<FullAddressModel>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<AddressModel>(null as any);
+        return Promise.resolve<FullAddressModel>(null as any);
     }
 
     /**
      * @param body (optional) 
      * @return OK
      */
-    addresses_CreateAddress(body: AddressModel | undefined, cancelToken?: CancelToken): Promise<void> {
+    addresses_CreateAddress(body: FullAddressModel | undefined, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/addresses";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -133,7 +133,7 @@ export class Api {
     /**
      * @return OK
      */
-    categories_GetCategoryByID(id: number, cancelToken?: CancelToken): Promise<CategoryModel> {
+    categories_GetCategoryByID(id: number, cancelToken?: CancelToken): Promise<FullCategoryModel> {
         let url_ = this.baseUrl + "/api/categories/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -160,7 +160,7 @@ export class Api {
         });
     }
 
-    protected processCategories_GetCategoryByID(response: AxiosResponse): Promise<CategoryModel> {
+    protected processCategories_GetCategoryByID(response: AxiosResponse): Promise<FullCategoryModel> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -174,21 +174,21 @@ export class Api {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = CategoryModel.fromJS(resultData200);
-            return Promise.resolve<CategoryModel>(result200);
+            result200 = FullCategoryModel.fromJS(resultData200);
+            return Promise.resolve<FullCategoryModel>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<CategoryModel>(null as any);
+        return Promise.resolve<FullCategoryModel>(null as any);
     }
 
     /**
      * @param body (optional) 
      * @return OK
      */
-    categories_CreateCategory(body: CategoryModel | undefined, cancelToken?: CancelToken): Promise<void> {
+    categories_CreateCategory(body: FullCategoryModel | undefined, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/categories";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -293,7 +293,7 @@ export class Api {
     /**
      * @return OK
      */
-    events_GetEvent(id: number, cancelToken?: CancelToken): Promise<EventModel> {
+    events_GetEvent(id: number, cancelToken?: CancelToken): Promise<FullEventModel> {
         let url_ = this.baseUrl + "/api/Events/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -320,7 +320,7 @@ export class Api {
         });
     }
 
-    protected processEvents_GetEvent(response: AxiosResponse): Promise<EventModel> {
+    protected processEvents_GetEvent(response: AxiosResponse): Promise<FullEventModel> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -334,21 +334,21 @@ export class Api {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = EventModel.fromJS(resultData200);
-            return Promise.resolve<EventModel>(result200);
+            result200 = FullEventModel.fromJS(resultData200);
+            return Promise.resolve<FullEventModel>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<EventModel>(null as any);
+        return Promise.resolve<FullEventModel>(null as any);
     }
 
     /**
      * @param body (optional) 
      * @return OK
      */
-    events_CreateEvent(body: EventModel | undefined, cancelToken?: CancelToken): Promise<void> {
+    events_CreateEvent(body: FullEventModel | undefined, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/Events";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -503,16 +503,21 @@ export class Api {
     }
 
     /**
+     * @param body (optional) 
      * @return OK
      */
-    products_GetAllProducts( cancelToken?: CancelToken): Promise<ListProductModel[]> {
+    products_GetAllProducts(body: Paging | undefined, cancelToken?: CancelToken): Promise<ListProductModel[]> {
         let url_ = this.baseUrl + "/api/products/all";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_: AxiosRequestConfig = {
-            method: "GET",
+            data: content_,
+            method: "POST",
             url: url_,
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "text/plain"
             },
             cancelToken
@@ -666,114 +671,6 @@ export class Api {
     }
 }
 
-export class AddressModel implements IAddressModel {
-    id?: number;
-    key?: string | undefined;
-    street1?: string | undefined;
-    street2?: string | undefined;
-    city?: string | undefined;
-    region?: string | undefined;
-    zipCode?: string | undefined;
-
-    constructor(data?: IAddressModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.key = _data["key"];
-            this.street1 = _data["street1"];
-            this.street2 = _data["street2"];
-            this.city = _data["city"];
-            this.region = _data["region"];
-            this.zipCode = _data["zipCode"];
-        }
-    }
-
-    static fromJS(data: any): AddressModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new AddressModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["key"] = this.key;
-        data["street1"] = this.street1;
-        data["street2"] = this.street2;
-        data["city"] = this.city;
-        data["region"] = this.region;
-        data["zipCode"] = this.zipCode;
-        return data;
-    }
-}
-
-export interface IAddressModel {
-    id?: number;
-    key?: string | undefined;
-    street1?: string | undefined;
-    street2?: string | undefined;
-    city?: string | undefined;
-    region?: string | undefined;
-    zipCode?: string | undefined;
-}
-
-export class CategoryModel implements ICategoryModel {
-    id?: number;
-    key?: string | undefined;
-    name?: string | undefined;
-    parentId?: number | undefined;
-
-    constructor(data?: ICategoryModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.key = _data["key"];
-            this.name = _data["name"];
-            this.parentId = _data["parentId"];
-        }
-    }
-
-    static fromJS(data: any): CategoryModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new CategoryModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["key"] = this.key;
-        data["name"] = this.name;
-        data["parentId"] = this.parentId;
-        return data;
-    }
-}
-
-export interface ICategoryModel {
-    id?: number;
-    key?: string | undefined;
-    name?: string | undefined;
-    parentId?: number | undefined;
-}
-
 export class ConnectedResponse implements IConnectedResponse {
     connected?: boolean;
 
@@ -886,13 +783,121 @@ export interface ICustomer {
     updatedOn?: Date | undefined;
 }
 
-export class EventModel implements IEventModel {
+export class FullAddressModel implements IFullAddressModel {
+    id?: number;
+    key?: string | undefined;
+    street1?: string | undefined;
+    street2?: string | undefined;
+    city?: string | undefined;
+    region?: string | undefined;
+    zipCode?: string | undefined;
+
+    constructor(data?: IFullAddressModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.key = _data["key"];
+            this.street1 = _data["street1"];
+            this.street2 = _data["street2"];
+            this.city = _data["city"];
+            this.region = _data["region"];
+            this.zipCode = _data["zipCode"];
+        }
+    }
+
+    static fromJS(data: any): FullAddressModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new FullAddressModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["key"] = this.key;
+        data["street1"] = this.street1;
+        data["street2"] = this.street2;
+        data["city"] = this.city;
+        data["region"] = this.region;
+        data["zipCode"] = this.zipCode;
+        return data;
+    }
+}
+
+export interface IFullAddressModel {
+    id?: number;
+    key?: string | undefined;
+    street1?: string | undefined;
+    street2?: string | undefined;
+    city?: string | undefined;
+    region?: string | undefined;
+    zipCode?: string | undefined;
+}
+
+export class FullCategoryModel implements IFullCategoryModel {
+    id?: number;
+    key?: string | undefined;
+    name?: string | undefined;
+    parentId?: number | undefined;
+
+    constructor(data?: IFullCategoryModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.key = _data["key"];
+            this.name = _data["name"];
+            this.parentId = _data["parentId"];
+        }
+    }
+
+    static fromJS(data: any): FullCategoryModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new FullCategoryModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["key"] = this.key;
+        data["name"] = this.name;
+        data["parentId"] = this.parentId;
+        return data;
+    }
+}
+
+export interface IFullCategoryModel {
+    id?: number;
+    key?: string | undefined;
+    name?: string | undefined;
+    parentId?: number | undefined;
+}
+
+export class FullEventModel implements IFullEventModel {
     id?: number;
     key?: string | undefined;
     startDate?: string | undefined;
     endDate?: string | undefined;
 
-    constructor(data?: IEventModel) {
+    constructor(data?: IFullEventModel) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -910,9 +915,9 @@ export class EventModel implements IEventModel {
         }
     }
 
-    static fromJS(data: any): EventModel {
+    static fromJS(data: any): FullEventModel {
         data = typeof data === 'object' ? data : {};
-        let result = new EventModel();
+        let result = new FullEventModel();
         result.init(data);
         return result;
     }
@@ -927,7 +932,7 @@ export class EventModel implements IEventModel {
     }
 }
 
-export interface IEventModel {
+export interface IFullEventModel {
     id?: number;
     key?: string | undefined;
     startDate?: string | undefined;
@@ -945,7 +950,7 @@ export class FullProductModel implements IFullProductModel {
     price?: number;
     typeId?: number;
     type?: ProductType;
-    categories?: CategoryModel[] | undefined;
+    categories?: FullCategoryModel[] | undefined;
 
     constructor(data?: IFullProductModel) {
         if (data) {
@@ -971,7 +976,7 @@ export class FullProductModel implements IFullProductModel {
             if (Array.isArray(_data["categories"])) {
                 this.categories = [] as any;
                 for (let item of _data["categories"])
-                    this.categories!.push(CategoryModel.fromJS(item));
+                    this.categories!.push(FullCategoryModel.fromJS(item));
             }
         }
     }
@@ -1015,7 +1020,7 @@ export interface IFullProductModel {
     price?: number;
     typeId?: number;
     type?: ProductType;
-    categories?: CategoryModel[] | undefined;
+    categories?: FullCategoryModel[] | undefined;
 }
 
 export class ListProductModel implements IListProductModel {
@@ -1076,6 +1081,46 @@ export interface IListProductModel {
     price?: number;
     typeId?: number;
     type?: ProductType;
+}
+
+export class Paging implements IPaging {
+    pageNumber?: number | undefined;
+    pageSize?: number | undefined;
+
+    constructor(data?: IPaging) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
+        }
+    }
+
+    static fromJS(data: any): Paging {
+        data = typeof data === 'object' ? data : {};
+        let result = new Paging();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        return data;
+    }
+}
+
+export interface IPaging {
+    pageNumber?: number | undefined;
+    pageSize?: number | undefined;
 }
 
 export class ProductType implements IProductType {
