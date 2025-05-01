@@ -4,7 +4,7 @@ using Core.Seeding;
 
 public abstract class Seeder<TEntity> : ISeedDataProvider<TEntity> where TEntity : BaseEntity
 {
-    public async Task SeedAsync(IDatabaseContext dbContext)
+    public virtual async Task SeedAsync(IDatabaseContext dbContext)
     {
         var keys = GetSeedData();
         var entities = keys
