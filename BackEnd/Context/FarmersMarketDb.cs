@@ -117,6 +117,32 @@ public class FarmersMarketDb : IdentityDbContext<User, IdentityRole<int>, int>, 
         return base.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task SeedEntitiesAsync<T>(IEnumerable<T> entities) where T : BaseEntity
+    {
+        foreach (var entity in entities)
+        {
+            var existingEntity = await Set<T>()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.Key == entity.Key);
+            if (existingEntity == null)
+            {
+                await Set<T>().AddAsync(entity);
+            }
+        }
+        await SaveChangesAsync();
+    }
+
+    public T CreateBaseEntity<T>(string key) where T : BaseEntity
+    {
+        var entity = Activator.CreateInstance<T>();
+        entity.Key = key;
+        entity.CreatedOn = DateTime.UtcNow;
+        entity.CreatedBy = "System";
+        entity.IsActive = true;
+        entity.IsDeleted = false;
+        return entity;
+    }
+
     private void AssignCreationValues(BaseEntity entity)
     {
         var currentUser = _httpContextAccessor?.HttpContext?.User?.Identity?.Name ?? "System";

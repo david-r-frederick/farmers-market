@@ -1134,6 +1134,7 @@ export class ProductType implements IProductType {
     deletedOn?: Date | undefined;
     updatedBy?: string | undefined;
     updatedOn?: Date | undefined;
+    name?: string | undefined;
 
     constructor(data?: IProductType) {
         if (data) {
@@ -1160,6 +1161,7 @@ export class ProductType implements IProductType {
             this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
             this.updatedBy = _data["updatedBy"];
             this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
+            this.name = _data["name"];
         }
     }
 
@@ -1182,6 +1184,7 @@ export class ProductType implements IProductType {
         data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
         data["updatedBy"] = this.updatedBy;
         data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
+        data["name"] = this.name;
         return data;
     }
 }
@@ -1197,6 +1200,7 @@ export interface IProductType {
     deletedOn?: Date | undefined;
     updatedBy?: string | undefined;
     updatedOn?: Date | undefined;
+    name?: string | undefined;
 }
 
 export class Role implements IRole {

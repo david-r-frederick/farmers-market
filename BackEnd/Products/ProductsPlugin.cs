@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Core;
 using Products.Controllers;
 using Products.Repository;
+using Products.Seeders;
+using Core.Seeding;
 
 public class ProductsPlugin : IPlugin
 {
@@ -16,6 +18,7 @@ public class ProductsPlugin : IPlugin
     public void Initialize(IServiceCollection services)
     {
         services.AddScoped<IProductsRepository, ProductsRepository>();
+        services.AddScoped<ISeeder, ProductTypeSeeder>();
     }
 
     public void RegisterControllers(IMvcBuilder builder)

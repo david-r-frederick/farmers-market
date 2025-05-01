@@ -1,5 +1,6 @@
 using Context;
 using Core;
+using Core.Seeding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -89,9 +90,21 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     await DatabaseInitializer.InitializeAsync(scope.ServiceProvider);
+    var dbContext = scope.ServiceProvider.GetRequiredService<FarmersMarketDb>();
+    var seeders = scope.ServiceProvider.GetServices<ISeeder>();
+    foreach (var seeder in seeders)
+    {
+        try
+        {
+            await seeder.SeedAsync(dbContext);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to seed data using {seeder.GetType().Name}: {ex.Message}");
+        }
+    }
 }
 
-// Configure the HTTP request pipeline.
 app.UsePathBase("/api");
 if (app.Environment.IsDevelopment())
 {
