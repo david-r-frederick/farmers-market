@@ -32,6 +32,15 @@ public abstract class Repository<TEntity, TFullModel, TListModel> : IRepository<
         return _mapper.Map<TFullModel>(result);
     }
 
+    public virtual async Task<TFullModel?> GetByKeyAsync(string key)
+    {
+        using var context = _dbFactory.GetContext();
+        var result = await context.Set<TEntity>()
+            .Where(x => !x.IsDeleted && x.IsActive && x.Key == key)
+            .FirstOrDefaultAsync();
+        return _mapper.Map<TFullModel>(result);
+    }
+
     public virtual async Task<PagedResult<TListModel>> GetAllAsync(Paging paging)
     {
         var pageNumber = paging.PageNumber ?? 1;

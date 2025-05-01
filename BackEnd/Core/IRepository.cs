@@ -8,6 +8,8 @@ public interface IRepository<TFullModel, TListModel>
 {
     Task<TFullModel?> GetByIdAsync(int id);
 
+    Task<TFullModel?> GetByKeyAsync(string key);
+
     Task<PagedResult<TListModel>> GetAllAsync(Paging paging);
 
     Task<int> AddAsync(TFullModel model);
