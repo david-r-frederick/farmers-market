@@ -27,6 +27,7 @@ var assemblies = AppDomain.CurrentDomain.GetAssemblies()
     .ToList();
 assemblies.AddRange(new[]
 {
+    typeof(CorePlugin).Assembly,
     typeof(Products.ProductsPlugin).Assembly,
     typeof(Customers.CustomersPlugin).Assembly,
     typeof(Events.EventsPlugin).Assembly,
