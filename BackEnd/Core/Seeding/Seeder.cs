@@ -2,7 +2,7 @@
 using Core.Entities;
 using Core.Seeding;
 
-public abstract class Seeder<TEntity> : ISeedDataProvider<TEntity> where TEntity : BaseEntity, new()
+public abstract class Seeder<TEntity> : ISeedDataProvider<TEntity> where TEntity : BaseEntity
 {
     public async Task SeedAsync(IDatabaseContext dbContext)
     {

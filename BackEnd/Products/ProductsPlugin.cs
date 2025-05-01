@@ -19,6 +19,7 @@ public class ProductsPlugin : IPlugin
     {
         services.AddScoped<IProductsRepository, ProductsRepository>();
         services.AddScoped<ISeeder, ProductTypeSeeder>();
+        services.AddScoped<ISeeder, ProductSeeder>();
     }
 
     public void RegisterControllers(IMvcBuilder builder)
