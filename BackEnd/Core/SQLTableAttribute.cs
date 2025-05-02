@@ -1,5 +1,6 @@
 ﻿namespace Core;
 
+[AttributeUsage(AttributeTargets.Class)]
 public class SQLTableAttribute : Attribute
 {
     public string Schema { get; }

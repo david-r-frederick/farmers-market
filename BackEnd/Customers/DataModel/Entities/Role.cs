@@ -1,15 +1,10 @@
 ﻿namespace Customers.DataModel.Entities;
 
 using Core;
-using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 [SQLTable("Auth", "Role")]
-public partial class Role
+public partial class Role : IdentityRole<int>
 {
-    [Key]
-    public int Id { get; set; }
-
     public string Key { get; set; } = null!;
-
-    public string Name { get; set; } = null!;
 }

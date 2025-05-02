@@ -11,6 +11,7 @@ public class ProductSeeder : Seeder<Product>
         product.Name = seedKey;
         product.Description = $"Description for {seedKey}";
         product.TypeId = 1;
+        product.Price = 1.5;
         return product;
     }
 }

@@ -6,14 +6,27 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using System.Reflection;
 using Events.DataModel.Entities;
 using Core;
 using Core.Entities;
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
-public class FarmersMarketDb : IdentityDbContext<User, IdentityRole<int>, int>, IDatabaseContext
+public class FarmersMarketDb
+    : IdentityDbContext<
+        User,
+        Role,
+        int,
+        UserClaim,
+        UserRole,
+        UserLogin,
+        RoleClaim,
+        UserToken>,
+        IDatabaseContext
 {
+    public DbSet<DataProtectionKey> DataProtectionKeys => Set<DataProtectionKey>();
+
     private readonly IHttpContextAccessor? _httpContextAccessor;
 
     public FarmersMarketDb(
@@ -25,6 +38,8 @@ public class FarmersMarketDb : IdentityDbContext<User, IdentityRole<int>, int>, 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<DataProtectionKey>().ToTable(nameof(DataProtectionKey), "Core");
         var assembliesToLoad = new[]
         {
             "Categories",
@@ -88,8 +103,6 @@ public class FarmersMarketDb : IdentityDbContext<User, IdentityRole<int>, int>, 
             .HasOne(ev => ev.Vendor)
             .WithMany(v => v.EventVendors)
             .HasForeignKey(ev => ev.VendorId);
-
-        base.OnModelCreating(modelBuilder);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

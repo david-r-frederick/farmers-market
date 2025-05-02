@@ -2,8 +2,9 @@
 
 using Core.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 
-public interface IDatabaseContext : IDisposable
+public interface IDatabaseContext : IDisposable, IDataProtectionKeyContext
 {
     DbSet<T> Set<T>() where T : class;
 

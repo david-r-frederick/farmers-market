@@ -1363,8 +1363,10 @@ export interface IProductType {
 
 export class Role implements IRole {
     id?: number;
-    key?: string | undefined;
     name?: string | undefined;
+    normalizedName?: string | undefined;
+    concurrencyStamp?: string | undefined;
+    key?: string | undefined;
 
     constructor(data?: IRole) {
         if (data) {
@@ -1378,8 +1380,10 @@ export class Role implements IRole {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.key = _data["key"];
             this.name = _data["name"];
+            this.normalizedName = _data["normalizedName"];
+            this.concurrencyStamp = _data["concurrencyStamp"];
+            this.key = _data["key"];
         }
     }
 
@@ -1393,16 +1397,20 @@ export class Role implements IRole {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["key"] = this.key;
         data["name"] = this.name;
+        data["normalizedName"] = this.normalizedName;
+        data["concurrencyStamp"] = this.concurrencyStamp;
+        data["key"] = this.key;
         return data;
     }
 }
 
 export interface IRole {
     id?: number;
-    key?: string | undefined;
     name?: string | undefined;
+    normalizedName?: string | undefined;
+    concurrencyStamp?: string | undefined;
+    key?: string | undefined;
 }
 
 export class SettingModel implements ISettingModel {
