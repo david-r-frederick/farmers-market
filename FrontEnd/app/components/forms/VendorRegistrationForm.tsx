@@ -1,9 +1,10 @@
 // Import required libraries and hooks
 import { useForm } from "react-hook-form";
-import { IVendorRegistrationFormData } from "~/interfaces/IVendorRegistrationFormData";
 import { IVendorRegistrationFormProps } from "~/interfaces/IVendorRegistrationFormProps";
 import { Label } from "../common/form/Label";
 import TextInput from "../common/form/TextInput";
+import PasswordInput from "../common/form/PasswordInput";
+import { VendorRegistrationFormData } from "~/api/api";
 
 export default function VendorRegistrationForm(props: IVendorRegistrationFormProps): JSX.Element {
   const { onSubmit } = props;
@@ -12,7 +13,7 @@ export default function VendorRegistrationForm(props: IVendorRegistrationFormPro
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IVendorRegistrationFormData>({
+  } = useForm<VendorRegistrationFormData>({
     mode: "onChange",
     criteriaMode: "all",
   });
@@ -25,48 +26,62 @@ export default function VendorRegistrationForm(props: IVendorRegistrationFormPro
 
       {/* First Name */}
       <div className="mb-4 mx-4">
-        <Label htmlFor="FirstName">
+        <Label htmlFor="firstName">
           First Name
         </Label>
         <TextInput
           {...register(
-            "FirstName",
+            "firstName",
             { required: true }
           )}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
         />
-        {errors.FirstName && <p className="text-red-500 text-sm mt-1">
+        {errors.firstName && <p className="text-red-500 text-sm mt-1">
           First Name is required
         </p>}
       </div>
 
       {/* Last Name */}
       <div className="mb-4 mx-4">
-        <Label htmlFor="LastName">
+        <Label htmlFor="lastName">
           Last Name
         </Label>
         <TextInput
           type="text"
-          {...register("LastName", { required: true })}
+          {...register("lastName", { required: true })}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
         />
-        {errors.LastName && <p className="text-red-500 text-sm mt-1">
+        {errors.lastName && <p className="text-red-500 text-sm mt-1">
           Last Name is required
         </p>}
       </div>
 
       {/* Email */}
       <div className="mb-4 mx-4">
-        <Label htmlFor="Email">
+        <Label htmlFor="email">
           Email
         </Label>
         <TextInput
           type="email"
-          {...register("Email", { required: true })}
+          {...register("email", { required: true })}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
         />
-        {errors.Email && <p className="text-red-500 text-sm mt-1">
+        {errors.email && <p className="text-red-500 text-sm mt-1">
           Email is required
+        </p>}
+      </div>
+
+      {/* Password */}
+      <div className="mb-4 mx-4">
+        <Label htmlFor="password">
+          Password
+        </Label>
+        <PasswordInput
+          {...register("password", { required: true })}
+          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
+        />
+        {errors.password && <p className="text-red-500 text-sm mt-1">
+          Password is required
         </p>}
       </div>
 
@@ -75,10 +90,10 @@ export default function VendorRegistrationForm(props: IVendorRegistrationFormPro
         <Label htmlFor="Phone">Phone Number</Label>
         <TextInput
           type="tel"
-          {...register("Phone", { required: true })}
+          {...register("phone", { required: true })}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
         />
-        {errors.Phone && <p className="text-red-500 text-sm mt-1">
+        {errors.phone && <p className="text-red-500 text-sm mt-1">
           Phone Number is required
         </p>}
       </div>
@@ -88,70 +103,82 @@ export default function VendorRegistrationForm(props: IVendorRegistrationFormPro
         <Label htmlFor="Street1">Street 1</Label>
         <TextInput
           type="text"
-          {...register("Street1", { required: true })}
+          {...register("street1", { required: true })}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
         />
-        {errors.Street1 && <p className="text-red-500 text-sm mt-1">
+        {errors.street1 && <p className="text-red-500 text-sm mt-1">
           Street 1 is required
         </p>}
       </div>
 
       <div className="mb-4 mx-4">
-        <Label htmlFor="Street2">Street 2 (Optional)</Label>
+        <Label htmlFor="street2">Street 2 (Optional)</Label>
         <TextInput
           type="text"
-          {...register("Street2")}
+          {...register("street2")}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
         />
       </div>
 
       <div className="mb-4 mx-4">
-        <Label htmlFor="City">City</Label>
+        <Label htmlFor="city">City</Label>
         <TextInput
           type="text"
-          {...register("City", { required: true })}
+          {...register("city", { required: true })}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
         />
-        {errors.City && <p className="text-red-500 text-sm mt-1">
+        {errors.city && <p className="text-red-500 text-sm mt-1">
           City is required
         </p>}
       </div>
 
       <div className="mb-4 mx-4">
-        <Label htmlFor="State">State</Label>
+        <Label htmlFor="county">County</Label>
         <TextInput
           type="text"
-          {...register("State", { required: true })}
+          {...register("county", { required: true })}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
         />
-        {errors.State && <p className="text-red-500 text-sm mt-1">
+        {errors.county && <p className="text-red-500 text-sm mt-1">
+          County is required
+        </p>}
+      </div>
+
+      <div className="mb-4 mx-4">
+        <Label htmlFor="state">State</Label>
+        <TextInput
+          type="text"
+          {...register("state", { required: true })}
+          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
+        />
+        {errors.state && <p className="text-red-500 text-sm mt-1">
           State is required
         </p>}
       </div>
 
       <div className="mb-4 mx-4">
-        <Label htmlFor="Zip">Zip Code</Label>
+        <Label htmlFor="zipCode">Zip Code</Label>
         <TextInput
           type="text"
-          {...register("ZipCode", { required: true })}
+          {...register("zipCode", { required: true })}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
         />
-        {errors.ZipCode && <p className="text-red-500 text-sm mt-1">
+        {errors.zipCode && <p className="text-red-500 text-sm mt-1">
           Zip Code is required
         </p>}
       </div>
 
       {/* Business Name */}
       <div className="mb-4 mx-4">
-        <Label htmlFor="BusinessName">
+        <Label htmlFor="businessName">
           Business Name
         </Label>
         <TextInput
           type="text"
-          {...register("BusinessName", { required: true })}
+          {...register("businessName", { required: true })}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
         />
-        {errors.BusinessName && <p className="text-red-500 text-sm mt-1">
+        {errors.businessName && <p className="text-red-500 text-sm mt-1">
           Business Name is required
         </p>}
       </div>

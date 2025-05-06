@@ -294,7 +294,7 @@ export class Api {
      * @return OK
      */
     events_GetEvent(id: number, cancelToken?: CancelToken): Promise<FullEventModel> {
-        let url_ = this.baseUrl + "/api/Events/{id}";
+        let url_ = this.baseUrl + "/api/events/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -349,7 +349,7 @@ export class Api {
      * @return OK
      */
     events_CreateEvent(body: FullEventModel | undefined, cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/api/Events";
+        let url_ = this.baseUrl + "/api/events";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -775,6 +775,63 @@ export class Api {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Promise.resolve<User>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    vendors_RegisterAsVendor(body: VendorRegistrationFormData | undefined, cancelToken?: CancelToken): Promise<number> {
+        let url_ = this.baseUrl + "/api/vendors/register";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processVendors_RegisterAsVendor(_response);
+        });
+    }
+
+    protected processVendors_RegisterAsVendor(response: AxiosResponse): Promise<number> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return Promise.resolve<number>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<number>(null as any);
     }
 
     /**
@@ -1362,11 +1419,19 @@ export interface IProductType {
 }
 
 export class Role implements IRole {
-    id?: number;
     name?: string | undefined;
     normalizedName?: string | undefined;
     concurrencyStamp?: string | undefined;
+    id?: number;
+    createdOn?: Date;
+    createdBy?: string | undefined;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    isActive?: boolean;
+    isDeleted?: boolean;
     key?: string | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
 
     constructor(data?: IRole) {
         if (data) {
@@ -1375,15 +1440,27 @@ export class Role implements IRole {
                     (<any>this)[property] = (<any>data)[property];
             }
         }
+        if (!data) {
+            this.isActive = true;
+            this.isDeleted = false;
+        }
     }
 
     init(_data?: any) {
         if (_data) {
-            this.id = _data["id"];
             this.name = _data["name"];
             this.normalizedName = _data["normalizedName"];
             this.concurrencyStamp = _data["concurrencyStamp"];
+            this.id = _data["id"];
+            this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
+            this.createdBy = _data["createdBy"];
+            this.deletedBy = _data["deletedBy"];
+            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
+            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
+            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
             this.key = _data["key"];
+            this.updatedBy = _data["updatedBy"];
+            this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
         }
     }
 
@@ -1396,21 +1473,37 @@ export class Role implements IRole {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
         data["name"] = this.name;
         data["normalizedName"] = this.normalizedName;
         data["concurrencyStamp"] = this.concurrencyStamp;
+        data["id"] = this.id;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["createdBy"] = this.createdBy;
+        data["deletedBy"] = this.deletedBy;
+        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
+        data["isActive"] = this.isActive;
+        data["isDeleted"] = this.isDeleted;
         data["key"] = this.key;
+        data["updatedBy"] = this.updatedBy;
+        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
         return data;
     }
 }
 
 export interface IRole {
-    id?: number;
     name?: string | undefined;
     normalizedName?: string | undefined;
     concurrencyStamp?: string | undefined;
+    id?: number;
+    createdOn?: Date;
+    createdBy?: string | undefined;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    isActive?: boolean;
+    isDeleted?: boolean;
     key?: string | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
 }
 
 export class SettingModel implements ISettingModel {
@@ -1480,8 +1573,8 @@ export class User implements IUser {
     updatedBy?: string | undefined;
     updatedOn?: Date | undefined;
     firstName!: string;
-    lastName!: string;
     middleInitial?: string | undefined;
+    lastName!: string;
     street1!: string | undefined;
     street2?: string | undefined;
     city!: string;
@@ -1528,8 +1621,8 @@ export class User implements IUser {
             this.updatedBy = _data["updatedBy"];
             this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
             this.firstName = _data["firstName"];
-            this.lastName = _data["lastName"];
             this.middleInitial = _data["middleInitial"];
+            this.lastName = _data["lastName"];
             this.street1 = _data["street1"];
             this.street2 = _data["street2"];
             this.city = _data["city"];
@@ -1576,8 +1669,8 @@ export class User implements IUser {
         data["updatedBy"] = this.updatedBy;
         data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
         data["firstName"] = this.firstName;
-        data["lastName"] = this.lastName;
         data["middleInitial"] = this.middleInitial;
+        data["lastName"] = this.lastName;
         data["street1"] = this.street1;
         data["street2"] = this.street2;
         data["city"] = this.city;
@@ -1617,8 +1710,8 @@ export interface IUser {
     updatedBy?: string | undefined;
     updatedOn?: Date | undefined;
     firstName: string;
-    lastName: string;
     middleInitial?: string | undefined;
+    lastName: string;
     street1: string | undefined;
     street2?: string | undefined;
     city: string;
@@ -1627,6 +1720,90 @@ export interface IUser {
     postalCode: string;
     fullName?: string | undefined;
     roles?: Role[] | undefined;
+}
+
+export class VendorRegistrationFormData implements IVendorRegistrationFormData {
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    email?: string | undefined;
+    password?: string | undefined;
+    phone?: string | undefined;
+    street1?: string | undefined;
+    street2?: string | undefined;
+    city?: string | undefined;
+    county?: string | undefined;
+    state?: string | undefined;
+    zipCode?: string | undefined;
+    businessName?: string | undefined;
+    businessStartDate?: Date | undefined;
+
+    constructor(data?: IVendorRegistrationFormData) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+            this.email = _data["email"];
+            this.password = _data["password"];
+            this.phone = _data["phone"];
+            this.street1 = _data["street1"];
+            this.street2 = _data["street2"];
+            this.city = _data["city"];
+            this.county = _data["county"];
+            this.state = _data["state"];
+            this.zipCode = _data["zipCode"];
+            this.businessName = _data["businessName"];
+            this.businessStartDate = _data["businessStartDate"] ? new Date(_data["businessStartDate"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): VendorRegistrationFormData {
+        data = typeof data === 'object' ? data : {};
+        let result = new VendorRegistrationFormData();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["email"] = this.email;
+        data["password"] = this.password;
+        data["phone"] = this.phone;
+        data["street1"] = this.street1;
+        data["street2"] = this.street2;
+        data["city"] = this.city;
+        data["county"] = this.county;
+        data["state"] = this.state;
+        data["zipCode"] = this.zipCode;
+        data["businessName"] = this.businessName;
+        data["businessStartDate"] = this.businessStartDate ? this.businessStartDate.toISOString() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IVendorRegistrationFormData {
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    email?: string | undefined;
+    password?: string | undefined;
+    phone?: string | undefined;
+    street1?: string | undefined;
+    street2?: string | undefined;
+    city?: string | undefined;
+    county?: string | undefined;
+    state?: string | undefined;
+    zipCode?: string | undefined;
+    businessName?: string | undefined;
+    businessStartDate?: Date | undefined;
 }
 
 export class ApiException extends Error {
