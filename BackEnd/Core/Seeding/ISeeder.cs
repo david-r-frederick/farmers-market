@@ -8,7 +8,7 @@ public interface ISeeder
     Task SeedAsync(IDatabaseContext dbContext);
 }
 
-public interface ISeedDataProvider<TEntity> : ISeeder where TEntity : BaseEntity
+public interface ISeedDataProvider<TEntity> : ISeeder where TEntity : class, IBaseEntity
 {
     List<string> GetSeedData();
 

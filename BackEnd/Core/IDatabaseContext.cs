@@ -10,7 +10,7 @@ public interface IDatabaseContext : IDisposable, IDataProtectionKeyContext
 
     Task<int> SaveChangesAsync(CancellationToken token = default);
 
-    Task SeedEntitiesAsync<T>(IEnumerable<T> entities) where T : BaseEntity;
+    Task SeedEntitiesAsync<T>(IEnumerable<T> entities) where T : class, IBaseEntity;
 
-    T CreateBaseEntity<T>(string key) where T : BaseEntity;
+    T CreateBaseEntity<T>(string key) where T : class, IBaseEntity;
 }

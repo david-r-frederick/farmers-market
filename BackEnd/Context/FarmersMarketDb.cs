@@ -130,7 +130,7 @@ public class FarmersMarketDb
         return base.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task SeedEntitiesAsync<T>(IEnumerable<T> entities) where T : BaseEntity
+    public async Task SeedEntitiesAsync<T>(IEnumerable<T> entities) where T : class, IBaseEntity
     {
         foreach (var entity in entities)
         {
@@ -145,7 +145,7 @@ public class FarmersMarketDb
         await SaveChangesAsync();
     }
 
-    public T CreateBaseEntity<T>(string key) where T : BaseEntity
+    public T CreateBaseEntity<T>(string key) where T : class, IBaseEntity
     {
         var entity = Activator.CreateInstance<T>();
         entity.Key = key;

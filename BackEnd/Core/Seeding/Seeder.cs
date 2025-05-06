@@ -2,7 +2,7 @@
 using Core.Entities;
 using Core.Seeding;
 
-public abstract class Seeder<TEntity> : ISeedDataProvider<TEntity> where TEntity : BaseEntity
+public abstract class Seeder<TEntity> : ISeedDataProvider<TEntity> where TEntity : class, IBaseEntity
 {
     public virtual async Task SeedAsync(IDatabaseContext dbContext)
     {
@@ -16,5 +16,4 @@ public abstract class Seeder<TEntity> : ISeedDataProvider<TEntity> where TEntity
     public abstract List<string> GetSeedData();
 
     public abstract TEntity MapCustomFieldsToSeedData(string seedKey, TEntity entity);
-
 }
