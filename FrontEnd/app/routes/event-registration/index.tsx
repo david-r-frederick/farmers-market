@@ -2,7 +2,7 @@ import { useState } from "react";
 import { EventRegistrationForm } from "~/components/forms/EventRegistrationForm";
 import { useUIStatus } from "~/hooks/useUIStatus";
 import { IEventRegistrationFormData } from "~/interfaces/IEventRegistrationFormData";
-import eventsService from "~/services/EventsService";
+import { useEventsService } from "~/services/useEventsService";
 
 const EventRegistrationPage = (): JSX.Element => {
   const [ didSave, setDidSave ] = useState<boolean>(false);
@@ -13,7 +13,12 @@ const EventRegistrationPage = (): JSX.Element => {
     endProcessing
   } = useUIStatus();
 
+  const eventsService = useEventsService();
+
   const handleEventRegistrationFormSubmit = (formData: IEventRegistrationFormData): void => {
+    if (!eventsService) {
+      return;
+    }
     // a separate function so I can use async/await
     const doSubmit = async () => {
       beginProcessing();

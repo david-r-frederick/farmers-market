@@ -1,6 +1,6 @@
 import { IAddress } from "./IAddress";
 import { IBaseModel } from "./IBaseModel";
-import { IUser } from "./IUser";
+import { IUser } from "~/api/api";
 
 export interface IEvent extends IBaseModel {
   StartDate: string;

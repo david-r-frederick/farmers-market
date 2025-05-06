@@ -1,8 +1,8 @@
 import { useState } from "react";
+import { VendorRegistrationFormData } from "~/api/api";
 import VendorRegistrationForm from "~/components/forms/VendorRegistrationForm";
 import { useUIStatus } from "~/hooks/useUIStatus";
-import { IVendorRegistrationFormData } from "~/interfaces/IVendorRegistrationFormData";
-import vendorsService from "~/services/VendorsService";
+import useVendorsService from "~/services/useVendorsService";
 
 const VendorRegistrationPage = (): JSX.Element => {
   const [ didSave, setDidSave ] = useState<boolean>(false);
@@ -13,12 +13,14 @@ const VendorRegistrationPage = (): JSX.Element => {
     endProcessing,
   } = useUIStatus();
 
-  const handleVendorRegistrationFormSubmit = (formData: IVendorRegistrationFormData): void => {
+  const vendorsService = useVendorsService();
+
+  const handleVendorRegistrationFormSubmit = (formData: VendorRegistrationFormData): void => {
     // a separate function so I can use async/await
     const doSubmit = async () => {
       beginProcessing();
       try {
-        await vendorsService.createVendor(formData);
+        await vendorsService!.createVendor(formData);
         setDidSave(true);
         endProcessing();
       } catch (err) {
