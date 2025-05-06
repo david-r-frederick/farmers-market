@@ -2,18 +2,18 @@ import { useEffect, useState } from "react";
 import { IEventRegistrationFormData } from "~/interfaces/IEventRegistrationFormData";
 import { useGeographyService } from "./useGeographyService";
 import { IEventRegistration } from "~/interfaces/IEventRegistration";
-import { FullEventModel, ListEventModel } from "~/api/api";
+import { IFullEventModel, IListEventModel } from "~/api/api";
 
 export interface IEventsService {
-  addEvent: (event: FullEventModel) => Promise<boolean>;
+  addEvent: (event: IFullEventModel) => Promise<boolean>;
   getEventRegistrationDtoFromFormData: (formData: IEventRegistrationFormData) => IEventRegistration;
   deleteEvent: (eventId: number) => Promise<boolean>;
-  getAllEvents: () => Promise<ListEventModel[]>;
-  getBlankEvent: (formData: IEventRegistrationFormData) => FullEventModel;
-  getPastEvents: () => Promise<ListEventModel[]>;
-  getUpcomingEvents: () => Promise<ListEventModel[]>;
+  getAllEvents: () => Promise<IListEventModel[]>;
+  getBlankEvent: (formData: IEventRegistrationFormData) => IFullEventModel;
+  getPastEvents: () => Promise<IListEventModel[]>;
+  getUpcomingEvents: () => Promise<IListEventModel[]>;
   submitEventRegistration: (eventRegistrationDto: IEventRegistration) => Promise<boolean>;
-  updateEvent: (event: FullEventModel) => Promise<boolean>;
+  updateEvent: (event: IFullEventModel) => Promise<boolean>;
 }
 
 export const useEventsService = (): IEventsService | undefined => {
@@ -26,12 +26,12 @@ export const useEventsService = (): IEventsService | undefined => {
       return;
     }
     const service = {
-      addEvent: async (event: FullEventModel): Promise<boolean> => {
+      addEvent: async (event: IFullEventModel): Promise<boolean> => {
         await Promise.resolve(event);
         return true;
       },
 
-      getBlankEvent: (): FullEventModel => {
+      getBlankEvent: (): IFullEventModel => {
         return {
           address: geographyService.getBlankAddress(),
           id: -1,
@@ -40,7 +40,7 @@ export const useEventsService = (): IEventsService | undefined => {
           startDate: "",
           key: "",
           addressId: -1,
-        } as FullEventModel;
+        };
       },
     
       getEventRegistrationDtoFromFormData: (formData: IEventRegistrationFormData): IEventRegistration => {
@@ -59,11 +59,11 @@ export const useEventsService = (): IEventsService | undefined => {
         return true;
       },
   
-      getAllEvents: (): Promise<ListEventModel[]> => {
+      getAllEvents: (): Promise<IListEventModel[]> => {
         return Promise.resolve([]);
       },
     
-      getPastEvents: (): Promise<ListEventModel[]> => {
+      getPastEvents: (): Promise<IListEventModel[]> => {
         return new Promise((resolve) => {
           const timeout = setTimeout(() => {
             clearTimeout(timeout);
@@ -72,7 +72,7 @@ export const useEventsService = (): IEventsService | undefined => {
         });
       },
   
-      getUpcomingEvents: (): Promise<ListEventModel[]> => {
+      getUpcomingEvents: (): Promise<IListEventModel[]> => {
         return new Promise((resolve) => {
           const timeout = setTimeout(() => {
             clearTimeout(timeout);
@@ -86,7 +86,7 @@ export const useEventsService = (): IEventsService | undefined => {
         return true;
       },
   
-      updateEvent: async (user: FullEventModel): Promise<boolean> => {
+      updateEvent: async (user: IFullEventModel): Promise<boolean> => {
         await Promise.resolve(user);
         return true;
       },
