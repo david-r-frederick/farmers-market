@@ -4,6 +4,8 @@ using Core;
 using Microsoft.Extensions.DependencyInjection;
 using Customers.Repository;
 using Customers.Controllers;
+using Core.Seeding;
+using Customers.DataModel.Seeding;
 
 public class CustomersPlugin : IPlugin
 {
@@ -15,6 +17,7 @@ public class CustomersPlugin : IPlugin
 
     public void Initialize(IServiceCollection services)
     {
+        services.AddScoped<ISeeder, RoleSeeder>();
         services.AddScoped<ICustomersRepository, CustomersRepository>();
         services.AddScoped<IUsersRepository, UsersRepository>();
     }
