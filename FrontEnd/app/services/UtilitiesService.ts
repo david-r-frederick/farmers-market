@@ -1,6 +1,9 @@
 import clsx, { ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { IUtilitiesService } from "./_interfaces/IUtilitiesService";
+
+export interface IUtilitiesService {
+  mergeClassNames: (classNames: ClassValue[]) => string;
+}
 
 class UtilitiesServiceClass implements IUtilitiesService {
   public mergeClassNames = (...classNames: ClassValue[]): string => {

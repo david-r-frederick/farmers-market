@@ -1,8 +1,14 @@
 import Color from "color";
-import { IColorsService } from "./_interfaces/IColorsService";
+import { ButtonVariant } from "~/components/common/Button";
 import { Intent } from "~/components/common/_interfaces/Intent";
 import { intents } from "../../intents";
 import { IntentSection } from "~/interfaces/IntentSection";
+
+export interface IColorsService {
+  printFullIntent: () => void;
+  setUpIntent: (intent: ButtonVariant) => IntentSection;
+  textWhiteOrBlack: (intent: ButtonVariant, weight: number) => "text-white" | "text-black";
+}
 
 class ColorsService implements IColorsService {
   public textWhiteOrBlack = (intent: Intent, weight: number): "text-white" | "text-black" => {
