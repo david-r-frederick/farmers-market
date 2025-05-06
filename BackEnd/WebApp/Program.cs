@@ -95,6 +95,8 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+Logger.Initialize(app.Services);
+
 using (var scope = app.Services.CreateScope())
 {
     await DatabaseInitializer.InitializeAsync(scope.ServiceProvider);

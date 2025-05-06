@@ -5,6 +5,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\**" />
+    <EmbeddedResource Remove="Controllers\**" />
+    <None Remove="Controllers\**" />
+  </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="14.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.3.0" />
