@@ -16,10 +16,10 @@ public partial class Vendor : BaseEntity
     public bool SignedDisclosure { get; set; }
 
     [JsonIgnore]
-    [ForeignKey("Company")]
-    public int? CompanyId { get; set; }
+    [ForeignKey("Business")]
+    public int? BusinessId { get; set; }
 
-    public virtual Company? Company { get; set; }
+    public virtual Business? Business { get; set; }
 
     public ICollection<Booth> Booths { get; set; } = new HashSet<Booth>();
 
