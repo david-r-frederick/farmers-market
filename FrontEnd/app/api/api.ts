@@ -240,7 +240,7 @@ export class Api {
      * @return OK
      */
     customers_GetCustomerByID(id: number, cancelToken?: CancelToken): Promise<Customer> {
-        let url_ = this.baseUrl + "/api/Customers/{id}";
+        let url_ = this.baseUrl + "/api/customers/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -727,7 +727,7 @@ export class Api {
      * @return OK
      */
     users_GetUserByID(id: number, cancelToken?: CancelToken): Promise<User> {
-        let url_ = this.baseUrl + "/api/Users/{id}";
+        let url_ = this.baseUrl + "/api/users/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1423,15 +1423,15 @@ export class Role implements IRole {
     normalizedName?: string | undefined;
     concurrencyStamp?: string | undefined;
     id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
     createdOn?: Date;
     createdBy?: string | undefined;
-    deletedBy?: string | undefined;
-    deletedOn?: Date | undefined;
-    isActive?: boolean;
-    isDeleted?: boolean;
-    key?: string | undefined;
     updatedBy?: string | undefined;
     updatedOn?: Date | undefined;
+    isDeleted?: boolean;
+    deletedOn?: Date | undefined;
+    deletedBy?: string | undefined;
 
     constructor(data?: IRole) {
         if (data) {
@@ -1452,15 +1452,15 @@ export class Role implements IRole {
             this.normalizedName = _data["normalizedName"];
             this.concurrencyStamp = _data["concurrencyStamp"];
             this.id = _data["id"];
+            this.key = _data["key"];
+            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
             this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
             this.createdBy = _data["createdBy"];
-            this.deletedBy = _data["deletedBy"];
-            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
-            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
-            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
-            this.key = _data["key"];
             this.updatedBy = _data["updatedBy"];
             this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
+            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
+            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
+            this.deletedBy = _data["deletedBy"];
         }
     }
 
@@ -1477,15 +1477,15 @@ export class Role implements IRole {
         data["normalizedName"] = this.normalizedName;
         data["concurrencyStamp"] = this.concurrencyStamp;
         data["id"] = this.id;
+        data["key"] = this.key;
+        data["isActive"] = this.isActive;
         data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
         data["createdBy"] = this.createdBy;
-        data["deletedBy"] = this.deletedBy;
-        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
-        data["isActive"] = this.isActive;
-        data["isDeleted"] = this.isDeleted;
-        data["key"] = this.key;
         data["updatedBy"] = this.updatedBy;
         data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
+        data["isDeleted"] = this.isDeleted;
+        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
+        data["deletedBy"] = this.deletedBy;
         return data;
     }
 }
@@ -1495,15 +1495,15 @@ export interface IRole {
     normalizedName?: string | undefined;
     concurrencyStamp?: string | undefined;
     id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
     createdOn?: Date;
     createdBy?: string | undefined;
-    deletedBy?: string | undefined;
-    deletedOn?: Date | undefined;
-    isActive?: boolean;
-    isDeleted?: boolean;
-    key?: string | undefined;
     updatedBy?: string | undefined;
     updatedOn?: Date | undefined;
+    isDeleted?: boolean;
+    deletedOn?: Date | undefined;
+    deletedBy?: string | undefined;
 }
 
 export class SettingModel implements ISettingModel {
@@ -1562,16 +1562,16 @@ export class User implements IUser {
     lockoutEnd?: Date | undefined;
     lockoutEnabled?: boolean;
     accessFailedCount?: number;
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
     createdOn?: Date;
     createdBy?: string | undefined;
-    deletedBy?: string | undefined;
-    deletedOn?: Date | undefined;
-    id?: number;
-    isActive?: boolean;
-    isDeleted?: boolean;
-    key?: string | undefined;
     updatedBy?: string | undefined;
     updatedOn?: Date | undefined;
+    isDeleted?: boolean;
+    deletedOn?: Date | undefined;
+    deletedBy?: string | undefined;
     firstName!: string;
     middleInitial?: string | undefined;
     lastName!: string;
@@ -1610,16 +1610,16 @@ export class User implements IUser {
             this.lockoutEnd = _data["lockoutEnd"] ? new Date(_data["lockoutEnd"].toString()) : <any>undefined;
             this.lockoutEnabled = _data["lockoutEnabled"];
             this.accessFailedCount = _data["accessFailedCount"];
+            this.id = _data["id"];
+            this.key = _data["key"];
+            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
             this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
             this.createdBy = _data["createdBy"];
-            this.deletedBy = _data["deletedBy"];
-            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
-            this.id = _data["id"];
-            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
-            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
-            this.key = _data["key"];
             this.updatedBy = _data["updatedBy"];
             this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
+            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
+            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
+            this.deletedBy = _data["deletedBy"];
             this.firstName = _data["firstName"];
             this.middleInitial = _data["middleInitial"];
             this.lastName = _data["lastName"];
@@ -1658,16 +1658,16 @@ export class User implements IUser {
         data["lockoutEnd"] = this.lockoutEnd ? this.lockoutEnd.toISOString() : <any>undefined;
         data["lockoutEnabled"] = this.lockoutEnabled;
         data["accessFailedCount"] = this.accessFailedCount;
+        data["id"] = this.id;
+        data["key"] = this.key;
+        data["isActive"] = this.isActive;
         data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
         data["createdBy"] = this.createdBy;
-        data["deletedBy"] = this.deletedBy;
-        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
-        data["id"] = this.id;
-        data["isActive"] = this.isActive;
-        data["isDeleted"] = this.isDeleted;
-        data["key"] = this.key;
         data["updatedBy"] = this.updatedBy;
         data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
+        data["isDeleted"] = this.isDeleted;
+        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
+        data["deletedBy"] = this.deletedBy;
         data["firstName"] = this.firstName;
         data["middleInitial"] = this.middleInitial;
         data["lastName"] = this.lastName;
@@ -1699,16 +1699,16 @@ export interface IUser {
     lockoutEnd?: Date | undefined;
     lockoutEnabled?: boolean;
     accessFailedCount?: number;
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
     createdOn?: Date;
     createdBy?: string | undefined;
-    deletedBy?: string | undefined;
-    deletedOn?: Date | undefined;
-    id?: number;
-    isActive?: boolean;
-    isDeleted?: boolean;
-    key?: string | undefined;
     updatedBy?: string | undefined;
     updatedOn?: Date | undefined;
+    isDeleted?: boolean;
+    deletedOn?: Date | undefined;
+    deletedBy?: string | undefined;
     firstName: string;
     middleInitial?: string | undefined;
     lastName: string;
