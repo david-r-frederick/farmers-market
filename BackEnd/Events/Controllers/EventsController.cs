@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Events.DataModel.Models;
 using Events.Repository;
 
-[Route("api/[controller]")]
+[Route("api/events")]
 [ApiController]
 public class EventsController : ControllerBase
 {

@@ -4,7 +4,7 @@ using Customers.DataModel.Entities;
 using Customers.Repository;
 using Microsoft.AspNetCore.Mvc;
 
-[Route("api/[controller]")]
+[Route("api/customers")]
 [ApiController]
 public class CustomersController : ControllerBase
 {
