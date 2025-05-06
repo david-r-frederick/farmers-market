@@ -1,7 +1,7 @@
 ﻿namespace Events.DataModel.Entities;
 
 using Core;
-using Core.Entities;
+using Core.DataModel.Entities;
 using Geography.DataModel.Entities;
 
 [SQLTable("Events", "Event")]

@@ -1,7 +1,7 @@
 ﻿namespace Customers.DataModel.Entities;
 
 using Core;
-using Core.Entities;
+using Core.DataModel.Entities;
 
 [SQLTable("Auth", "Customer")]
 public partial class Customer : BaseEntity

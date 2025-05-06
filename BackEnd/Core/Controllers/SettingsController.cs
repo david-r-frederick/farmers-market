@@ -1,7 +1,7 @@
 ﻿namespace Core.Controllers;
 
 using Core.Repository;
-using Core.Models;
+using Core.DataModel.Models;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/settings")]

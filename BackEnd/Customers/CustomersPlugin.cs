@@ -4,7 +4,7 @@ using Core;
 using Microsoft.Extensions.DependencyInjection;
 using Customers.Repository;
 using Customers.Controllers;
-using Core.Seeding;
+using Core.DataModel.Seeding;
 using Customers.DataModel.Seeding;
 
 public class CustomersPlugin : IPlugin

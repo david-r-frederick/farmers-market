@@ -1,6 +1,6 @@
 ﻿using Core;
-using Core.Entities;
-using Core.Seeding;
+using Core.DataModel.Entities;
+using Core.DataModel.Seeding;
 
 public abstract class Seeder<TEntity> : ISeedDataProvider<TEntity> where TEntity : class, IBaseEntity
 {

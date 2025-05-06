@@ -1,6 +1,6 @@
 ﻿namespace Media.DataModel.Models;
 
-using Core.Models;
+using Core.DataModel.Models;
 
 public class FullStoredFileModel : BaseModel
 {

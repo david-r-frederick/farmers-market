@@ -1,6 +1,6 @@
 ﻿namespace Core;
 
-using Core.Models;
+using Core.DataModel.Models;
 
 public interface IRepository<TFullModel, TListModel>
     where TFullModel : BaseModel

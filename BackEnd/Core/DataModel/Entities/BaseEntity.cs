@@ -1,4 +1,4 @@
-﻿namespace Core.Entities;
+﻿namespace Core.DataModel.Entities;
 
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;

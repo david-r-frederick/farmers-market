@@ -1,6 +1,6 @@
 ﻿namespace Events.DataModel.Models;
 
-using Core.Models;
+using Core.DataModel.Models;
 
 public class ListEventModel : BaseModel
 {

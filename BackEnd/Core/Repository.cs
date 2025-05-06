@@ -2,8 +2,8 @@
 
 using System.Threading.Tasks;
 using AutoMapper;
-using Core.Entities;
-using Core.Models;
+using Core.DataModel.Entities;
+using Core.DataModel.Models;
 using Microsoft.EntityFrameworkCore;
 
 public abstract class Repository<TEntity, TFullModel, TListModel> : IRepository<TFullModel, TListModel>

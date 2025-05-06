@@ -1,8 +1,8 @@
 ﻿namespace Core;
 
 using AutoMapper;
-using Core.Entities;
-using Core.Models;
+using Core.DataModel.Entities;
+using Core.DataModel.Models;
 
 public class SettingMappingProfile : Profile
 {

@@ -1,6 +1,6 @@
 ﻿namespace Core;
 
-using Core.Entities;
+using Core.DataModel.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 

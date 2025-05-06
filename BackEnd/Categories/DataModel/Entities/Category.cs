@@ -1,5 +1,5 @@
 ﻿using Core;
-using Core.Entities;
+using Core.DataModel.Entities;
 
 namespace Categories.DataModel.Entities;
 

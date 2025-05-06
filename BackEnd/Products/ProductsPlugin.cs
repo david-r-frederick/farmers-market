@@ -5,7 +5,7 @@ using Core;
 using Products.Controllers;
 using Products.Repository;
 using Products.Seeders;
-using Core.Seeding;
+using Core.DataModel.Seeding;
 
 public class ProductsPlugin : IPlugin
 {

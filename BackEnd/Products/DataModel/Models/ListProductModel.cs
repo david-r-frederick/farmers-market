@@ -1,6 +1,6 @@
 ﻿namespace Products.DataModel.Models;
 
-using Core.Models;
+using Core.DataModel.Models;
 using Products.DataModel.Entities;
 
 public partial class ListProductModel : BaseModel

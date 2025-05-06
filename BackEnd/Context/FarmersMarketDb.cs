@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using System.Reflection;
 using Events.DataModel.Entities;
 using Core;
-using Core.Entities;
+using Core.DataModel.Entities;
 using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 

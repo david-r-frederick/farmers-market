@@ -1,4 +1,4 @@
-﻿namespace Core.Models;
+﻿namespace Core.DataModel.Models;
 
 public class Paging
 {

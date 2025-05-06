@@ -1,7 +1,7 @@
 ﻿namespace Products.DataModel.Models;
 
 using Categories.DataModel.Models;
-using Core.Models;
+using Core.DataModel.Models;
 using Products.DataModel.Entities;
 
 public partial class FullProductModel : BaseModel

@@ -1,4 +1,4 @@
-﻿using Core.Entities;
+﻿using Core.DataModel.Entities;
 
 namespace Media.DataModel.Entities;
 

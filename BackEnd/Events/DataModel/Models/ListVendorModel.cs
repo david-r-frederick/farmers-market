@@ -1,4 +1,4 @@
-﻿using Core.Models;
+﻿using Core.DataModel.Models;
 
 namespace Events.DataModel.Models;
 

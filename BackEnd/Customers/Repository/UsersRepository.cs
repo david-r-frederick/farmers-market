@@ -2,7 +2,7 @@ namespace Customers.Repository;
 
 using AutoMapper;
 using Core;
-using Core.Models;
+using Core.DataModel.Models;
 using Customers.DataModel.Entities;
 using Customers.DataModel.Models;
 using Microsoft.AspNetCore.Identity;
@@ -58,6 +58,7 @@ public class UsersRepository : IUsersRepository
             );
         }
         await _userManager.AddToRoleAsync(asEntity, "Vendor");
+        await Logger.LogInfoAsync("A user was created.");
         return asEntity.Id;
     }
 

@@ -1,6 +1,6 @@
 ﻿namespace Products.Controllers;
 
-using Core.Models;
+using Core.DataModel.Models;
 using Microsoft.AspNetCore.Mvc;
 using Products.DataModel.Models;
 using Products.Repository;

@@ -1,7 +1,6 @@
 ﻿using Core.Controllers;
-using Core.Models;
+using Core.DataModel.Seeding;
 using Core.Repository;
-using Core.Seeding;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Core;

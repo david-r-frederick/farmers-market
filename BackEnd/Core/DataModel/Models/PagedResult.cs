@@ -1,4 +1,4 @@
-﻿namespace Core.Models;
+﻿namespace Core.DataModel.Models;
 
 public class PagedResult<T>(List<T> items, int pageNumber, int pageSize, int totalCount)
 {

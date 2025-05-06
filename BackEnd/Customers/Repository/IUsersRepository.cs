@@ -1,7 +1,6 @@
 namespace Customers.Repository;
 
-using Core.Models;
-using Customers.DataModel.Entities;
+using Core.DataModel.Models;
 using Customers.DataModel.Models;
 
 public interface IUsersRepository

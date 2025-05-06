@@ -1,7 +1,7 @@
-﻿namespace Core.Seeding;
+﻿namespace Core.DataModel.Seeding;
 
 using Core;
-using Core.Entities;
+using Core.DataModel.Entities;
 
 public interface ISeeder
 {

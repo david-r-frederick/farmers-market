@@ -1,4 +1,4 @@
-﻿namespace Core.Entities;
+﻿namespace Core.DataModel.Entities;
 
 [SQLTable("Core", "Setting")]
 public class Setting : BaseEntity

@@ -1,6 +1,6 @@
 using Context;
 using Core;
-using Core.Seeding;
+using Core.DataModel.Seeding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -21,6 +21,13 @@ builder.Services.AddScoped(provider =>
     var httpContextAccessor = provider.GetRequiredService<IHttpContextAccessor>();
     return new DbContextFactoryWrapper(factory, httpContextAccessor);
 });
+builder.Services.AddIdentity<
+    Customers.DataModel.Entities.User,
+    Customers.DataModel.Entities.Role>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = false;
+    })
+    .AddEntityFrameworkStores<FarmersMarketDb>();
 
 var assemblies = AppDomain.CurrentDomain.GetAssemblies()
     .Where(a => !a.IsDynamic)

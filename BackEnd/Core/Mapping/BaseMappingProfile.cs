@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Core.Entities;
-using Core.Models;
+using Core.DataModel.Entities;
+using Core.DataModel.Models;
 
 namespace Core.Mapping;
 

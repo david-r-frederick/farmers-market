@@ -1,6 +1,6 @@
 ﻿namespace Customers.DataModel.Models;
 
-using Core.Models;
+using Core.DataModel.Models;
 
 public class FullCustomerModel : BaseModel
 {

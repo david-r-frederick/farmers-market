@@ -1,6 +1,6 @@
 ﻿namespace Geography.DataModel.Models;
 
-using Core.Models;
+using Core.DataModel.Models;
 
 public class FullAddressModel : BaseModel
 {
