@@ -11,7 +11,11 @@ public partial class Event : BaseEntity
 
     public string EndDate { get; set; } = null!;
 
-    public Address Address { get; set; } = null!;
+    public int HostUserId { get; set; }
+
+    public required int AddressId { get; set; }
+
+    public virtual Address? Address { get; set; } = null!;
 
     public virtual ICollection<EventVendor> EventVendors { get; set; } = new HashSet<EventVendor>();
 

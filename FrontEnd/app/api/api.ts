@@ -397,6 +397,69 @@ export class Api {
     }
 
     /**
+     * @param body (optional) 
+     * @return OK
+     */
+    events_GetAllEvents(body: Paging | undefined, cancelToken?: CancelToken): Promise<ListEventModel[]> {
+        let url_ = this.baseUrl + "/api/events/all";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processEvents_GetAllEvents(_response);
+        });
+    }
+
+    protected processEvents_GetAllEvents(response: AxiosResponse): Promise<ListEventModel[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ListEventModel.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<ListEventModel[]>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<ListEventModel[]>(null as any);
+    }
+
+    /**
      * @return OK
      */
     products_GetProductByID(id: number, cancelToken?: CancelToken): Promise<FullProductModel> {
@@ -886,6 +949,102 @@ export class Api {
     }
 }
 
+export class Address implements IAddress {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    street1?: string | undefined;
+    street2?: string | undefined;
+    city?: string | undefined;
+    region?: string | undefined;
+    zipCode?: string | undefined;
+
+    constructor(data?: IAddress) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.isActive = true;
+            this.isDeleted = false;
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.key = _data["key"];
+            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
+            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
+            this.deletedBy = _data["deletedBy"];
+            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+            this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
+            this.street1 = _data["street1"];
+            this.street2 = _data["street2"];
+            this.city = _data["city"];
+            this.region = _data["region"];
+            this.zipCode = _data["zipCode"];
+        }
+    }
+
+    static fromJS(data: any): Address {
+        data = typeof data === 'object' ? data : {};
+        let result = new Address();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["key"] = this.key;
+        data["isActive"] = this.isActive;
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["isDeleted"] = this.isDeleted;
+        data["deletedBy"] = this.deletedBy;
+        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
+        data["street1"] = this.street1;
+        data["street2"] = this.street2;
+        data["city"] = this.city;
+        data["region"] = this.region;
+        data["zipCode"] = this.zipCode;
+        return data;
+    }
+}
+
+export interface IAddress {
+    id?: number;
+    key?: string | undefined;
+    isActive?: boolean;
+    createdBy?: string | undefined;
+    createdOn?: Date;
+    isDeleted?: boolean;
+    deletedBy?: string | undefined;
+    deletedOn?: Date | undefined;
+    updatedBy?: string | undefined;
+    updatedOn?: Date | undefined;
+    street1?: string | undefined;
+    street2?: string | undefined;
+    city?: string | undefined;
+    region?: string | undefined;
+    zipCode?: string | undefined;
+}
+
 export class ConnectedResponse implements IConnectedResponse {
     connected?: boolean;
 
@@ -1111,6 +1270,9 @@ export class FullEventModel implements IFullEventModel {
     key?: string | undefined;
     startDate?: string | undefined;
     endDate?: string | undefined;
+    hostUserId?: number;
+    addressId?: number;
+    address?: Address;
 
     constructor(data?: IFullEventModel) {
         if (data) {
@@ -1127,6 +1289,9 @@ export class FullEventModel implements IFullEventModel {
             this.key = _data["key"];
             this.startDate = _data["startDate"];
             this.endDate = _data["endDate"];
+            this.hostUserId = _data["hostUserId"];
+            this.addressId = _data["addressId"];
+            this.address = _data["address"] ? Address.fromJS(_data["address"]) : <any>undefined;
         }
     }
 
@@ -1143,6 +1308,9 @@ export class FullEventModel implements IFullEventModel {
         data["key"] = this.key;
         data["startDate"] = this.startDate;
         data["endDate"] = this.endDate;
+        data["hostUserId"] = this.hostUserId;
+        data["addressId"] = this.addressId;
+        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
         return data;
     }
 }
@@ -1152,6 +1320,9 @@ export interface IFullEventModel {
     key?: string | undefined;
     startDate?: string | undefined;
     endDate?: string | undefined;
+    hostUserId?: number;
+    addressId?: number;
+    address?: Address;
 }
 
 export class FullProductModel implements IFullProductModel {
@@ -1236,6 +1407,54 @@ export interface IFullProductModel {
     typeId?: number;
     type?: ProductType;
     categories?: FullCategoryModel[] | undefined;
+}
+
+export class ListEventModel implements IListEventModel {
+    id?: number;
+    key?: string | undefined;
+    startDate?: string | undefined;
+    endDate?: string | undefined;
+
+    constructor(data?: IListEventModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.key = _data["key"];
+            this.startDate = _data["startDate"];
+            this.endDate = _data["endDate"];
+        }
+    }
+
+    static fromJS(data: any): ListEventModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListEventModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["key"] = this.key;
+        data["startDate"] = this.startDate;
+        data["endDate"] = this.endDate;
+        return data;
+    }
+}
+
+export interface IListEventModel {
+    id?: number;
+    key?: string | undefined;
+    startDate?: string | undefined;
+    endDate?: string | undefined;
 }
 
 export class ListProductModel implements IListProductModel {

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { IAddress } from "~/interfaces/IAddress";
+import { FullAddressModel } from "~/api/api";
 
 export interface IGeographyService {
-  getBlankAddress: () => IAddress;
+  getBlankAddress: () => FullAddressModel;
   getCountyFromZipCode: (zipCode: string) => Promise<string>;
 }
 
@@ -11,7 +11,7 @@ export const useGeographyService = () => {
 
   useEffect(() => {
     setGeographyService({
-      getBlankAddress: (): IAddress => {
+      getBlankAddress: (): FullAddressModel => {
         return {
           Id: -1,
           CreatedOn: new Date().toISOString(),

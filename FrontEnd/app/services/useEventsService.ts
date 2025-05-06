@@ -1,86 +1,20 @@
 import { useEffect, useState } from "react";
 import { IEventRegistrationFormData } from "~/interfaces/IEventRegistrationFormData";
-import { IEvent } from "../interfaces/IEvent";
 import { useGeographyService } from "./useGeographyService";
 import { IEventRegistration } from "~/interfaces/IEventRegistration";
+import { FullEventModel, ListEventModel } from "~/api/api";
 
 export interface IEventsService {
-  addEvent: (event: IEvent) => Promise<boolean>;
+  addEvent: (event: FullEventModel) => Promise<boolean>;
   getEventRegistrationDtoFromFormData: (formData: IEventRegistrationFormData) => IEventRegistration;
   deleteEvent: (eventId: number) => Promise<boolean>;
-  getAllEvents: () => Promise<IEvent[]>;
-  getBlankEvent: (formData: IEventRegistrationFormData) => IEvent;
-  getPastEvents: () => Promise<IEvent[]>;
-  getUpcomingEvents: () => Promise<IEvent[]>;
+  getAllEvents: () => Promise<ListEventModel[]>;
+  getBlankEvent: (formData: IEventRegistrationFormData) => FullEventModel;
+  getPastEvents: () => Promise<ListEventModel[]>;
+  getUpcomingEvents: () => Promise<ListEventModel[]>;
   submitEventRegistration: (eventRegistrationDto: IEventRegistration) => Promise<boolean>;
-  updateEvent: (event: IEvent) => Promise<boolean>;
+  updateEvent: (event: FullEventModel) => Promise<boolean>;
 }
-
-const dummyEvents: IEvent[] = [
-  {
-    Id: 1,
-    CreatedOn: new Date().toISOString(),
-    StartDate: new Date("10/26/2024 09:00").toISOString(),
-    EndDate: new Date("10/26/2024 13:00").toISOString(),
-    IsActive: true,
-    IsDeleted: false,
-    Address: {
-      Id: 1,
-      CreatedOn: new Date().toISOString(),
-      IsActive: true,
-      IsDeleted: false,
-      Street1: "123 Main St",
-      Street2: "",
-      City: "Lumberton",
-      Region: "Texas",
-      ZipCode: "77657",
-    },
-    HostUserId: 1,
-    Users: []
-  },
-  {
-    Id: 2,
-    CreatedOn: new Date().toISOString(),
-    StartDate: new Date("11/09/2024 09:00").toISOString(),
-    EndDate: new Date("11/09/2024 13:00").toISOString(),
-    IsActive: true,
-    IsDeleted: false,
-    Address: {
-      Id: 2,
-      CreatedOn: new Date().toISOString(),
-      IsActive: true,
-      IsDeleted: false,
-      Street1: "123 Main St",
-      Street2: "",
-      City: "Lumberton",
-      Region: "Texas",
-      ZipCode: "77657",
-    },
-    HostUserId: 1,
-    Users: []
-  },
-  {
-    Id: 3,
-    CreatedOn: new Date().toISOString(),
-    StartDate: new Date("11/23/2024 09:00").toISOString(),
-    EndDate: new Date("11/23/2024 13:00").toISOString(),
-    IsActive: true,
-    IsDeleted: false,
-    Address: {
-      Id: 3,
-      CreatedOn: new Date().toISOString(),
-      IsActive: true,
-      IsDeleted: false,
-      Street1: "123 Main St",
-      Street2: "",
-      City: "Lumberton",
-      Region: "Texas",
-      ZipCode: "77657",
-    },
-    HostUserId: 1,
-    Users: []
-  },
-];
 
 export const useEventsService = (): IEventsService | undefined => {
   const [ eventsService, setEventsService ] = useState<IEventsService | undefined>();
@@ -92,24 +26,21 @@ export const useEventsService = (): IEventsService | undefined => {
       return;
     }
     const service = {
-      addEvent: async (event: IEvent): Promise<boolean> => {
+      addEvent: async (event: FullEventModel): Promise<boolean> => {
         await Promise.resolve(event);
         return true;
       },
 
-      getBlankEvent: (): IEvent => {
+      getBlankEvent: (): FullEventModel => {
         return {
-          Address: geographyService.getBlankAddress(),
-          Id: -1,
-          CreatedOn: new Date().toISOString(),
-          IsActive: true,
-          IsDeleted: false,
-          EndDate: "",
-          HostUserId: -1,
-          StartDate: "",
-          Users: [],
-          Key: "",
-        };
+          address: geographyService.getBlankAddress(),
+          id: -1,
+          endDate: "",
+          hostUserId: -1,
+          startDate: "",
+          key: "",
+          addressId: -1,
+        } as FullEventModel;
       },
     
       getEventRegistrationDtoFromFormData: (formData: IEventRegistrationFormData): IEventRegistration => {
@@ -128,24 +59,24 @@ export const useEventsService = (): IEventsService | undefined => {
         return true;
       },
   
-      getAllEvents: (): Promise<IEvent[]> => {
-        return Promise.resolve(dummyEvents);
+      getAllEvents: (): Promise<ListEventModel[]> => {
+        return Promise.resolve([]);
       },
     
-      getPastEvents: (): Promise<IEvent[]> => {
+      getPastEvents: (): Promise<ListEventModel[]> => {
         return new Promise((resolve) => {
           const timeout = setTimeout(() => {
             clearTimeout(timeout);
-            resolve(dummyEvents);
+            resolve([]);
           }, 1500);
         });
       },
   
-      getUpcomingEvents: (): Promise<IEvent[]> => {
+      getUpcomingEvents: (): Promise<ListEventModel[]> => {
         return new Promise((resolve) => {
           const timeout = setTimeout(() => {
             clearTimeout(timeout);
-            resolve(dummyEvents);
+            resolve([]);
           }, 1500);
         });
       },
@@ -155,7 +86,7 @@ export const useEventsService = (): IEventsService | undefined => {
         return true;
       },
   
-      updateEvent: async (user: IEvent): Promise<boolean> => {
+      updateEvent: async (user: FullEventModel): Promise<boolean> => {
         await Promise.resolve(user);
         return true;
       },

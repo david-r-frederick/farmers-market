@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import { IEvent } from "../interfaces/IEvent";
 import { IUIStatus, useUIStatus } from "./useUIStatus";
-import EventsService from "../services/EventsService";
+import { useEventsService } from "../services/useEventsService";
+import { ListEventModel } from "~/api/api";
 
 interface IUseUpcomingEventsData {
-  upcomingEvents: IEvent[] | null;
+  upcomingEvents: ListEventModel[] | null;
   UIStatus: IUIStatus;
 }
 
 export const useUpcomingEvents = (): IUseUpcomingEventsData => {
-  const [ upcomingEvents, setUpcomingEvents ] = useState<IEvent[] | null>(null);
+  const [ upcomingEvents, setUpcomingEvents ] = useState<ListEventModel[] | null>(null);
 
   const {
     UIStatus,
@@ -17,11 +17,16 @@ export const useUpcomingEvents = (): IUseUpcomingEventsData => {
     endProcessing
   } = useUIStatus();
 
+  const eventsService = useEventsService();
+
   useEffect(() => {
+    if (!eventsService) {
+      return;
+    }
     const fetchUpcomingEvents = async () => {
       beginProcessing();
       try {
-        const res = await EventsService.getUpcomingEvents();
+        const res = await eventsService.getUpcomingEvents();
         setUpcomingEvents(res);
         endProcessing();
       } catch (err: unknown) {
@@ -29,7 +34,7 @@ export const useUpcomingEvents = (): IUseUpcomingEventsData => {
       }
     };
     fetchUpcomingEvents();
-  }, []);
+  }, [ eventsService ]);
 
   return {
     upcomingEvents,

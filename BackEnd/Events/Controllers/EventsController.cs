@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Events.DataModel.Models;
 using Events.Repository;
+using Core.DataModel.Models;
 
 [Route("api/events")]
 [ApiController]
@@ -28,5 +29,12 @@ public class EventsController : ControllerBase
     {
         await _eventsRepository.AddAsync(ev);
         return CreatedAtAction(nameof(GetEvent), new { id = ev.Id }, ev);
+    }
+
+    [HttpPost("all")]
+    public async Task<ActionResult<List<ListEventModel>>> GetAllEvents([FromBody] Paging paging)
+    {
+        var events = await _eventsRepository.GetAllAsync(paging);
+        return Ok(events);
     }
 }

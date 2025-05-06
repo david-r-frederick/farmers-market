@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import { IEvent } from "../interfaces/IEvent";
 import { IUIStatus, useUIStatus } from "./useUIStatus";
-import EventsService from "../services/EventsService";
+import { useEventsService } from "../services/useEventsService";
+import { ListEventModel } from "~/api/api";
 
 interface IUsePastEventsData {
-  pastEvents: IEvent[] | null;
+  pastEvents: ListEventModel[] | null;
   UIStatus: IUIStatus;
 }
 
 export const usePastEvents = (): IUsePastEventsData => {
-  const [ pastEvents, setPastEvents ] = useState<IEvent[] | null>(null);
+  const [ pastEvents, setPastEvents ] = useState<ListEventModel[] | null>(null);
 
   const {
     UIStatus,
@@ -17,11 +17,16 @@ export const usePastEvents = (): IUsePastEventsData => {
     endProcessing
   } = useUIStatus();
 
+  const eventsService = useEventsService();
+
   useEffect(() => {
+    if (!eventsService) {
+      return;
+    }
     const loadPastEvents = async () => {
       beginProcessing();
       try {
-        const res = await EventsService.getPastEvents();
+        const res = await eventsService.getPastEvents();
         setPastEvents(res);
         endProcessing();
       } catch (err: unknown) {
@@ -29,7 +34,7 @@ export const usePastEvents = (): IUsePastEventsData => {
       }
     };
     loadPastEvents();
-  }, []);
+  }, [ eventsService ]);
 
   return {
     pastEvents,
