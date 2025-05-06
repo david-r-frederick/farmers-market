@@ -4,48 +4,67 @@ using AutoMapper;
 using Core;
 using Core.Models;
 using Customers.DataModel.Entities;
+using Customers.DataModel.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 public class UsersRepository : IUsersRepository
 {
     protected readonly IDatabaseContext _databaseContext;
     protected readonly IMapper _mapper;
+    protected readonly UserManager<User> _userManager;
+    protected readonly RoleManager<Role> _roleManager;
 
     public UsersRepository(
         IDatabaseContext databaseContext,
-        IMapper mapper)
+        IMapper mapper,
+        UserManager<User> userManager,
+        RoleManager<Role> roleManager)
     {
         _databaseContext = databaseContext;
         _mapper = mapper;
+        _userManager = userManager;
+        _roleManager = roleManager;
     }
 
-    public async Task<User?> GetByIdAsync(int id)
+    public async Task<FullUserModel?> GetByIdAsync(int id)
     {
-        return await _databaseContext.Set<User>()
+        var user = await _databaseContext.Set<User>()
             .Where(x => !x.IsDeleted && x.IsActive && x.Id == id)
             .FirstOrDefaultAsync();
+        return _mapper.Map<FullUserModel>(user);
     }
 
-    public async Task<List<User>> GetAllAsync(Paging paging)
+    public async Task<List<ListUserModel>> GetAllAsync(Paging paging)
     {
         var result = await _databaseContext.Set<User>()
             .Where(x => !x.IsDeleted && x.IsActive)
             .ToListAsync();
-        return result.Select(x => _mapper.Map<User>(x))
+        return result.Select(x => _mapper.Map<ListUserModel>(x))
             .ToList();
     }
 
-    public async Task<int> AddAsync(User entity)
+    public async Task<int> AddAsync(FullUserModel fullUserModel, string password)
     {
-        await _databaseContext.Set<User>().AddAsync(entity);
-        await _databaseContext.SaveChangesAsync();
-        return entity.Id;
+        var asEntity = _mapper.Map<User>(fullUserModel);
+        var result = await _userManager.CreateAsync(asEntity, password);
+        if (!result.Succeeded)
+        {
+            throw new Exception(
+                $"""
+                    ERROR! Unable to create user with provided information.
+                    {string.Join(", ", result.Errors.Select(e => e.Description))}
+                """
+            );
+        }
+        await _userManager.AddToRoleAsync(asEntity, "Vendor");
+        return asEntity.Id;
     }
 
-    public async Task UpdateAsync(User user)
+    public async Task UpdateAsync(FullUserModel fullUserModel)
     {
         var entity = await _databaseContext.Set<User>()
-            .Where(x => x.Id == user.Id && !x.IsDeleted)
+            .Where(x => x.Id == fullUserModel.Id && !x.IsDeleted)
             .FirstOrDefaultAsync();
         if (entity == null)
         {
