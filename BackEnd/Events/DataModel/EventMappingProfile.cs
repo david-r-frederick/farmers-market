@@ -7,7 +7,7 @@ public class EventMappingProfile : Profile
 {
     public EventMappingProfile()
     {
-        CreateMap<CreateEventForm, FullEventModel>()
+        CreateMap<EventForm, FullEventModel>()
             .ForMember(dest => dest.HostUserId, opt => opt.Ignore())
             .ForMember(dest => dest.AddressId, opt => opt.MapFrom(src => src.Address.Id));
     }

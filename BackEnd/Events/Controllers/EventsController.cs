@@ -30,11 +30,19 @@ public class EventsController : ControllerBase
     }
 
     [HttpPost("create")]
-    public async Task<IActionResult> CreateEvent([FromBody] CreateEventForm eventForm)
+    public async Task<IActionResult> CreateEvent([FromBody] EventForm eventForm)
     {
         var fullEvent = _mapper.Map<FullEventModel>(eventForm);
         await _eventsRepository.AddAsync(fullEvent);
         return CreatedAtAction(nameof(GetEvent), new { id = fullEvent.Id }, fullEvent);
+    }
+
+    [HttpPost("update")]
+    public async Task<IActionResult> UpdateEvent([FromBody] EventForm eventForm)
+    {
+        var fullEvent = _mapper.Map<FullEventModel>(eventForm);
+        await _eventsRepository.UpdateAsync(fullEvent);
+        return Ok();
     }
 
     [HttpPost("all")]

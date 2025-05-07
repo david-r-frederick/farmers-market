@@ -2,7 +2,7 @@
 
 namespace Events.DataModel.Models;
 
-public class CreateEventForm
+public class EventForm
 {
     public FullAddressModel Address { get; set; } = null!;
 

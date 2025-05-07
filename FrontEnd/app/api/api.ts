@@ -348,7 +348,7 @@ export class Api {
      * @param body (optional) 
      * @return OK
      */
-    events_CreateEvent(body: CreateEventForm | undefined, cancelToken?: CancelToken): Promise<void> {
+    events_CreateEvent(body: EventForm | undefined, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/events/create";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -376,6 +376,58 @@ export class Api {
     }
 
     protected processEvents_CreateEvent(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    events_UpdateEvent(body: EventForm | undefined, cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/api/events/update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processEvents_UpdateEvent(_response);
+        });
+    }
+
+    protected processEvents_UpdateEvent(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1042,50 +1094,6 @@ export interface IConnectedResponse {
     connected?: boolean;
 }
 
-export class CreateEventForm implements ICreateEventForm {
-    address?: FullAddressModel;
-    startDate?: string | undefined;
-    endDate?: string | undefined;
-
-    constructor(data?: ICreateEventForm) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.address = _data["address"] ? FullAddressModel.fromJS(_data["address"]) : <any>undefined;
-            this.startDate = _data["startDate"];
-            this.endDate = _data["endDate"];
-        }
-    }
-
-    static fromJS(data: any): CreateEventForm {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateEventForm();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
-        data["startDate"] = this.startDate;
-        data["endDate"] = this.endDate;
-        return data;
-    }
-}
-
-export interface ICreateEventForm {
-    address?: FullAddressModel;
-    startDate?: string | undefined;
-    endDate?: string | undefined;
-}
-
 export class Customer implements ICustomer {
     id?: number;
     key?: string | undefined;
@@ -1160,6 +1168,50 @@ export interface ICustomer {
     deletedOn?: Date | undefined;
     updatedBy?: string | undefined;
     updatedOn?: Date | undefined;
+}
+
+export class EventForm implements IEventForm {
+    address?: FullAddressModel;
+    startDate?: string | undefined;
+    endDate?: string | undefined;
+
+    constructor(data?: IEventForm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.address = _data["address"] ? FullAddressModel.fromJS(_data["address"]) : <any>undefined;
+            this.startDate = _data["startDate"];
+            this.endDate = _data["endDate"];
+        }
+    }
+
+    static fromJS(data: any): EventForm {
+        data = typeof data === 'object' ? data : {};
+        let result = new EventForm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
+        data["startDate"] = this.startDate;
+        data["endDate"] = this.endDate;
+        return data;
+    }
+}
+
+export interface IEventForm {
+    address?: FullAddressModel;
+    startDate?: string | undefined;
+    endDate?: string | undefined;
 }
 
 export class FullAddressModel implements IFullAddressModel {
