@@ -34,6 +34,7 @@
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Exec
 			Command="dotnet tool restore &amp;&amp; dotnet swagger tofile --output &quot;swagger.json&quot; &quot;bin/Debug/net8.0/WebApp.dll&quot; &quot;v1&quot;"
-			EnvironmentVariables="ASPNETCORE_ENVIRONMENT=$(ASPNETCORE_ENVIRONMENT)" />
+			EnvironmentVariables="ASPNETCORE_ENVIRONMENT=$(ASPNETCORE_ENVIRONMENT)"
+			IgnoreExitCode="true" />
 	</Target>
 </Project>
