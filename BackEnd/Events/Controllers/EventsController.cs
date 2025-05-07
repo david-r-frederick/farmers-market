@@ -4,16 +4,21 @@ using Microsoft.AspNetCore.Mvc;
 using Events.DataModel.Models;
 using Events.Repository;
 using Core.DataModel.Models;
+using AutoMapper;
 
 [Route("api/events")]
 [ApiController]
 public class EventsController : ControllerBase
 {
     private readonly IEventsRepository _eventsRepository;
+    private readonly IMapper _mapper;
 
-    public EventsController(IEventsRepository eventRepository)
+    public EventsController(
+        IEventsRepository eventRepository,
+        IMapper mapper)
     {
         _eventsRepository = eventRepository;
+        _mapper = mapper;
     }
 
     [HttpGet("{id}")]
@@ -24,11 +29,12 @@ public class EventsController : ControllerBase
         return Ok(ev);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateEvent([FromBody] FullEventModel ev)
+    [HttpPost("create")]
+    public async Task<IActionResult> CreateEvent([FromBody] CreateEventForm eventForm)
     {
-        await _eventsRepository.AddAsync(ev);
-        return CreatedAtAction(nameof(GetEvent), new { id = ev.Id }, ev);
+        var fullEvent = _mapper.Map<FullEventModel>(eventForm);
+        await _eventsRepository.AddAsync(fullEvent);
+        return CreatedAtAction(nameof(GetEvent), new { id = fullEvent.Id }, fullEvent);
     }
 
     [HttpPost("all")]
@@ -36,5 +42,13 @@ public class EventsController : ControllerBase
     {
         var events = await _eventsRepository.GetAllAsync(paging);
         return Ok(events);
+    }
+
+    [HttpPost("register")]
+    public async Task<ActionResult<bool>> RegisterForEvent([FromBody] RegisterForEventForm eventRegistrationForm)
+    {
+        // TODO
+        await Task.Delay(100);
+        return Ok(true);
     }
 }

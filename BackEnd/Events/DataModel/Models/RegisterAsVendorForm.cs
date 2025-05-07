@@ -1,6 +1,6 @@
 ﻿namespace Events.DataModel.Models;
 
-public class VendorRegistrationFormData
+public class RegisterAsVendorForm
 {
     public string FirstName { get; set; } = null!;
 

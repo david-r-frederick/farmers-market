@@ -1,8 +1,11 @@
 import { useForm } from "react-hook-form";
-import { IEventRegistrationFormData } from "~/interfaces/IEventRegistrationFormData";
+import { IRegisterForEventForm } from "~/api/api";
 import { Label } from "../common/form/Label";
 import TextInput from "../common/form/TextInput";
-import { IEventRegistrationFormProps } from "~/interfaces/IEventRegistrationFormProps";
+
+export interface IEventRegistrationFormProps {
+  onSubmit: (formData: IRegisterForEventForm) => void;
+}
 
 export const EventRegistrationForm = (props: IEventRegistrationFormProps): JSX.Element => {
   const { onSubmit } = props;
@@ -11,7 +14,7 @@ export const EventRegistrationForm = (props: IEventRegistrationFormProps): JSX.E
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IEventRegistrationFormData>();
+  } = useForm<IRegisterForEventForm>();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -19,52 +22,50 @@ export const EventRegistrationForm = (props: IEventRegistrationFormProps): JSX.E
 
       <div className="mb-4">
         <Label htmlFor="EventDate">
-          Event Date
+          Event
         </Label>
-        <select {...register("EventDate", { required: true })}>
-          <option>03/23/2024</option>
+        <select {...register("eventId", { required: true })}>
+          <option value="1">03/23/2024</option>
         </select>
-        {errors.EventDate && <p className="text-red-500 text-sm mt-1">
-          Event Date is required
+        {errors.eventId && <p className="text-red-500 text-sm mt-1">
+          Event is required
         </p>}
       </div>
 
       {/* Preferred Spot Number */}
       <div className="mb-4">
-        <Label htmlFor="PreferredSpotNumber">
+        <Label htmlFor="boothId">
           Preferred Spot Number
         </Label>
-        <TextInput
-          type="number"
-          {...register("PreferredSpotNumber", { required: true })}
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
-        />
-        {errors.PreferredSpotNumber && <p className="text-red-500 text-sm mt-1">
-          Preferred Spot Number is required
+        <select {...register("boothId", { required: true })}>
+          <option value="1">1</option>
+        </select>
+        {errors.boothId && <p className="text-red-500 text-sm mt-1">
+          Spot selection is required
         </p>}
       </div>
 
       {/* Products You Sell */}
       <div className="mb-4">
-        <Label htmlFor="ProductsSelling">
+        <Label htmlFor="productsSelling">
           Products You Sell (Optional)
         </Label>
         <TextInput
           type="text"
-          {...register("ProductsSelling")}
+          {...register("productsSelling", { required: false })}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
         />
       </div>
 
       <div className="mb-4 flex items-center">
         <TextInput type="checkbox"
-          {...register("AgreeToPayUponArrival", { required: true })}
+          {...register("agreesToPayUponArrival", { required: true })}
           className="mr-2 w-fit"
         />
-        <Label htmlFor="AgreeToPayUponArrival">
+        <Label htmlFor="agreesToPayUponArrival">
           I understand I will have to pay upon arrival
         </Label>
-        {errors.AgreeToPayUponArrival && <p className="text-red-500 text-sm ml-2">
+        {errors.agreesToPayUponArrival && <p className="text-red-500 text-sm ml-2">
           This field is required
         </p>}
       </div>

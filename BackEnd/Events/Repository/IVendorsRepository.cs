@@ -5,5 +5,5 @@ using Events.DataModel.Models;
 
 public interface IVendorsRepository : IRepository<FullVendorModel, ListVendorModel>
 {
-    Task<int> RegisterVendor(VendorRegistrationFormData formData);
+    Task<int> RegisterVendor(RegisterAsVendorForm formData);
 }

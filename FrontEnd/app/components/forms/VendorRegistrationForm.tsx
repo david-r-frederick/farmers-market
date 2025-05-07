@@ -1,10 +1,13 @@
 // Import required libraries and hooks
 import { useForm } from "react-hook-form";
-import { IVendorRegistrationFormProps } from "~/interfaces/IVendorRegistrationFormProps";
+import { IRegisterAsVendorForm } from "~/api/api";
 import { Label } from "../common/form/Label";
 import TextInput from "../common/form/TextInput";
 import PasswordInput from "../common/form/PasswordInput";
-import { VendorRegistrationFormData } from "~/api/api";
+
+interface IVendorRegistrationFormProps {
+  onSubmit: (formData: IRegisterAsVendorForm) => void;
+}
 
 export default function VendorRegistrationForm(props: IVendorRegistrationFormProps): JSX.Element {
   const { onSubmit } = props;
@@ -13,7 +16,7 @@ export default function VendorRegistrationForm(props: IVendorRegistrationFormPro
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<VendorRegistrationFormData>({
+  } = useForm<IRegisterAsVendorForm>({
     mode: "onChange",
     criteriaMode: "all",
   });

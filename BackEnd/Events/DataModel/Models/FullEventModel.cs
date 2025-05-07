@@ -1,7 +1,7 @@
 ﻿namespace Events.DataModel.Models;
 
 using Core.DataModel.Models;
-using Geography.DataModel.Entities;
+using Geography.DataModel.Models;
 
 public class FullEventModel : BaseModel
 {
@@ -13,5 +13,5 @@ public class FullEventModel : BaseModel
 
     public int AddressId { get; set; }
 
-    public Address Address { get; set; } = null!;
+    public FullAddressModel Address { get; set; } = null!;
 }

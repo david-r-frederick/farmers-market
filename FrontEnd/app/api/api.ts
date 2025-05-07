@@ -348,8 +348,8 @@ export class Api {
      * @param body (optional) 
      * @return OK
      */
-    events_CreateEvent(body: FullEventModel | undefined, cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/api/events";
+    events_CreateEvent(body: CreateEventForm | undefined, cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/api/events/create";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -457,6 +457,63 @@ export class Api {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Promise.resolve<ListEventModel[]>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    events_RegisterForEvent(body: RegisterForEventForm | undefined, cancelToken?: CancelToken): Promise<boolean> {
+        let url_ = this.baseUrl + "/api/events/register";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processEvents_RegisterForEvent(_response);
+        });
+    }
+
+    protected processEvents_RegisterForEvent(response: AxiosResponse): Promise<boolean> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return Promise.resolve<boolean>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<boolean>(null as any);
     }
 
     /**
@@ -844,7 +901,7 @@ export class Api {
      * @param body (optional) 
      * @return OK
      */
-    vendors_RegisterAsVendor(body: VendorRegistrationFormData | undefined, cancelToken?: CancelToken): Promise<number> {
+    vendors_RegisterAsVendor(body: RegisterAsVendorForm | undefined, cancelToken?: CancelToken): Promise<number> {
         let url_ = this.baseUrl + "/api/vendors/register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -949,102 +1006,6 @@ export class Api {
     }
 }
 
-export class Address implements IAddress {
-    id?: number;
-    key?: string | undefined;
-    isActive?: boolean;
-    createdBy?: string | undefined;
-    createdOn?: Date;
-    isDeleted?: boolean;
-    deletedBy?: string | undefined;
-    deletedOn?: Date | undefined;
-    updatedBy?: string | undefined;
-    updatedOn?: Date | undefined;
-    street1?: string | undefined;
-    street2?: string | undefined;
-    city?: string | undefined;
-    region?: string | undefined;
-    zipCode?: string | undefined;
-
-    constructor(data?: IAddress) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.isActive = true;
-            this.isDeleted = false;
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.key = _data["key"];
-            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
-            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
-            this.deletedBy = _data["deletedBy"];
-            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
-            this.updatedBy = _data["updatedBy"];
-            this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
-            this.street1 = _data["street1"];
-            this.street2 = _data["street2"];
-            this.city = _data["city"];
-            this.region = _data["region"];
-            this.zipCode = _data["zipCode"];
-        }
-    }
-
-    static fromJS(data: any): Address {
-        data = typeof data === 'object' ? data : {};
-        let result = new Address();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["key"] = this.key;
-        data["isActive"] = this.isActive;
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["isDeleted"] = this.isDeleted;
-        data["deletedBy"] = this.deletedBy;
-        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
-        data["updatedBy"] = this.updatedBy;
-        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
-        data["street1"] = this.street1;
-        data["street2"] = this.street2;
-        data["city"] = this.city;
-        data["region"] = this.region;
-        data["zipCode"] = this.zipCode;
-        return data;
-    }
-}
-
-export interface IAddress {
-    id?: number;
-    key?: string | undefined;
-    isActive?: boolean;
-    createdBy?: string | undefined;
-    createdOn?: Date;
-    isDeleted?: boolean;
-    deletedBy?: string | undefined;
-    deletedOn?: Date | undefined;
-    updatedBy?: string | undefined;
-    updatedOn?: Date | undefined;
-    street1?: string | undefined;
-    street2?: string | undefined;
-    city?: string | undefined;
-    region?: string | undefined;
-    zipCode?: string | undefined;
-}
-
 export class ConnectedResponse implements IConnectedResponse {
     connected?: boolean;
 
@@ -1079,6 +1040,50 @@ export class ConnectedResponse implements IConnectedResponse {
 
 export interface IConnectedResponse {
     connected?: boolean;
+}
+
+export class CreateEventForm implements ICreateEventForm {
+    address?: FullAddressModel;
+    startDate?: string | undefined;
+    endDate?: string | undefined;
+
+    constructor(data?: ICreateEventForm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.address = _data["address"] ? FullAddressModel.fromJS(_data["address"]) : <any>undefined;
+            this.startDate = _data["startDate"];
+            this.endDate = _data["endDate"];
+        }
+    }
+
+    static fromJS(data: any): CreateEventForm {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateEventForm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
+        data["startDate"] = this.startDate;
+        data["endDate"] = this.endDate;
+        return data;
+    }
+}
+
+export interface ICreateEventForm {
+    address?: FullAddressModel;
+    startDate?: string | undefined;
+    endDate?: string | undefined;
 }
 
 export class Customer implements ICustomer {
@@ -1272,7 +1277,7 @@ export class FullEventModel implements IFullEventModel {
     endDate?: string | undefined;
     hostUserId?: number;
     addressId?: number;
-    address?: Address;
+    address?: FullAddressModel;
 
     constructor(data?: IFullEventModel) {
         if (data) {
@@ -1291,7 +1296,7 @@ export class FullEventModel implements IFullEventModel {
             this.endDate = _data["endDate"];
             this.hostUserId = _data["hostUserId"];
             this.addressId = _data["addressId"];
-            this.address = _data["address"] ? Address.fromJS(_data["address"]) : <any>undefined;
+            this.address = _data["address"] ? FullAddressModel.fromJS(_data["address"]) : <any>undefined;
         }
     }
 
@@ -1322,7 +1327,7 @@ export interface IFullEventModel {
     endDate?: string | undefined;
     hostUserId?: number;
     addressId?: number;
-    address?: Address;
+    address?: FullAddressModel;
 }
 
 export class FullProductModel implements IFullProductModel {
@@ -1637,6 +1642,158 @@ export interface IProductType {
     name?: string | undefined;
 }
 
+export class RegisterAsVendorForm implements IRegisterAsVendorForm {
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    email?: string | undefined;
+    password?: string | undefined;
+    phone?: string | undefined;
+    street1?: string | undefined;
+    street2?: string | undefined;
+    city?: string | undefined;
+    county?: string | undefined;
+    state?: string | undefined;
+    zipCode?: string | undefined;
+    businessName?: string | undefined;
+    businessStartDate?: Date | undefined;
+
+    constructor(data?: IRegisterAsVendorForm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+            this.email = _data["email"];
+            this.password = _data["password"];
+            this.phone = _data["phone"];
+            this.street1 = _data["street1"];
+            this.street2 = _data["street2"];
+            this.city = _data["city"];
+            this.county = _data["county"];
+            this.state = _data["state"];
+            this.zipCode = _data["zipCode"];
+            this.businessName = _data["businessName"];
+            this.businessStartDate = _data["businessStartDate"] ? new Date(_data["businessStartDate"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): RegisterAsVendorForm {
+        data = typeof data === 'object' ? data : {};
+        let result = new RegisterAsVendorForm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["email"] = this.email;
+        data["password"] = this.password;
+        data["phone"] = this.phone;
+        data["street1"] = this.street1;
+        data["street2"] = this.street2;
+        data["city"] = this.city;
+        data["county"] = this.county;
+        data["state"] = this.state;
+        data["zipCode"] = this.zipCode;
+        data["businessName"] = this.businessName;
+        data["businessStartDate"] = this.businessStartDate ? this.businessStartDate.toISOString() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IRegisterAsVendorForm {
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    email?: string | undefined;
+    password?: string | undefined;
+    phone?: string | undefined;
+    street1?: string | undefined;
+    street2?: string | undefined;
+    city?: string | undefined;
+    county?: string | undefined;
+    state?: string | undefined;
+    zipCode?: string | undefined;
+    businessName?: string | undefined;
+    businessStartDate?: Date | undefined;
+}
+
+export class RegisterForEventForm implements IRegisterForEventForm {
+    eventId?: number;
+    productsSelling?: FullProductModel[] | undefined;
+    boothId?: number;
+    preferredBoothId?: number | undefined;
+    doesAgreeToTerms?: boolean;
+    agreesToPayUponArrival?: boolean;
+    spotSizeOrLocation?: string | undefined;
+
+    constructor(data?: IRegisterForEventForm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.eventId = _data["eventId"];
+            if (Array.isArray(_data["productsSelling"])) {
+                this.productsSelling = [] as any;
+                for (let item of _data["productsSelling"])
+                    this.productsSelling!.push(FullProductModel.fromJS(item));
+            }
+            this.boothId = _data["boothId"];
+            this.preferredBoothId = _data["preferredBoothId"];
+            this.doesAgreeToTerms = _data["doesAgreeToTerms"];
+            this.agreesToPayUponArrival = _data["agreesToPayUponArrival"];
+            this.spotSizeOrLocation = _data["spotSizeOrLocation"];
+        }
+    }
+
+    static fromJS(data: any): RegisterForEventForm {
+        data = typeof data === 'object' ? data : {};
+        let result = new RegisterForEventForm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["eventId"] = this.eventId;
+        if (Array.isArray(this.productsSelling)) {
+            data["productsSelling"] = [];
+            for (let item of this.productsSelling)
+                data["productsSelling"].push(item.toJSON());
+        }
+        data["boothId"] = this.boothId;
+        data["preferredBoothId"] = this.preferredBoothId;
+        data["doesAgreeToTerms"] = this.doesAgreeToTerms;
+        data["agreesToPayUponArrival"] = this.agreesToPayUponArrival;
+        data["spotSizeOrLocation"] = this.spotSizeOrLocation;
+        return data;
+    }
+}
+
+export interface IRegisterForEventForm {
+    eventId?: number;
+    productsSelling?: FullProductModel[] | undefined;
+    boothId?: number;
+    preferredBoothId?: number | undefined;
+    doesAgreeToTerms?: boolean;
+    agreesToPayUponArrival?: boolean;
+    spotSizeOrLocation?: string | undefined;
+}
+
 export class Role implements IRole {
     name?: string | undefined;
     normalizedName?: string | undefined;
@@ -1939,90 +2096,6 @@ export interface IUser {
     postalCode: string;
     fullName?: string | undefined;
     roles?: Role[] | undefined;
-}
-
-export class VendorRegistrationFormData implements IVendorRegistrationFormData {
-    firstName?: string | undefined;
-    lastName?: string | undefined;
-    email?: string | undefined;
-    password?: string | undefined;
-    phone?: string | undefined;
-    street1?: string | undefined;
-    street2?: string | undefined;
-    city?: string | undefined;
-    county?: string | undefined;
-    state?: string | undefined;
-    zipCode?: string | undefined;
-    businessName?: string | undefined;
-    businessStartDate?: Date | undefined;
-
-    constructor(data?: IVendorRegistrationFormData) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.firstName = _data["firstName"];
-            this.lastName = _data["lastName"];
-            this.email = _data["email"];
-            this.password = _data["password"];
-            this.phone = _data["phone"];
-            this.street1 = _data["street1"];
-            this.street2 = _data["street2"];
-            this.city = _data["city"];
-            this.county = _data["county"];
-            this.state = _data["state"];
-            this.zipCode = _data["zipCode"];
-            this.businessName = _data["businessName"];
-            this.businessStartDate = _data["businessStartDate"] ? new Date(_data["businessStartDate"].toString()) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): VendorRegistrationFormData {
-        data = typeof data === 'object' ? data : {};
-        let result = new VendorRegistrationFormData();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["firstName"] = this.firstName;
-        data["lastName"] = this.lastName;
-        data["email"] = this.email;
-        data["password"] = this.password;
-        data["phone"] = this.phone;
-        data["street1"] = this.street1;
-        data["street2"] = this.street2;
-        data["city"] = this.city;
-        data["county"] = this.county;
-        data["state"] = this.state;
-        data["zipCode"] = this.zipCode;
-        data["businessName"] = this.businessName;
-        data["businessStartDate"] = this.businessStartDate ? this.businessStartDate.toISOString() : <any>undefined;
-        return data;
-    }
-}
-
-export interface IVendorRegistrationFormData {
-    firstName?: string | undefined;
-    lastName?: string | undefined;
-    email?: string | undefined;
-    password?: string | undefined;
-    phone?: string | undefined;
-    street1?: string | undefined;
-    street2?: string | undefined;
-    city?: string | undefined;
-    county?: string | undefined;
-    state?: string | undefined;
-    zipCode?: string | undefined;
-    businessName?: string | undefined;
-    businessStartDate?: Date | undefined;
 }
 
 export class ApiException extends Error {

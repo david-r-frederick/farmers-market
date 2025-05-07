@@ -16,7 +16,7 @@ public class VendorsController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<ActionResult<int>> RegisterAsVendor([FromBody] VendorRegistrationFormData formData)
+    public async Task<ActionResult<int>> RegisterAsVendor([FromBody] RegisterAsVendorForm formData)
     {
         var userId = await _vendorsRepository.RegisterVendor(formData);
         return Ok(userId);

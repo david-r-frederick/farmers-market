@@ -8,7 +8,7 @@ public class VendorMappingProfile : Profile
 {
     public VendorMappingProfile()
     {
-        CreateMap<VendorRegistrationFormData, FullUserModel>()
+        CreateMap<RegisterAsVendorForm, FullUserModel>()
             .ForMember(dest => dest.PostalCode, opt => opt.MapFrom(src => src.ZipCode));
     }
 }

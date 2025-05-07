@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
-import { IEventRegistrationFormData } from "~/interfaces/IEventRegistrationFormData";
 import { useGeographyService } from "./useGeographyService";
-import { IEventRegistration } from "~/interfaces/IEventRegistration";
-import { IFullEventModel, IListEventModel } from "~/api/api";
+import { IFullEventModel, IListEventModel, IRegisterForEventForm } from "~/api/api";
 
 export interface IEventsService {
   addEvent: (event: IFullEventModel) => Promise<boolean>;
-  getEventRegistrationDtoFromFormData: (formData: IEventRegistrationFormData) => IEventRegistration;
   deleteEvent: (eventId: number) => Promise<boolean>;
   getAllEvents: () => Promise<IListEventModel[]>;
-  getBlankEvent: (formData: IEventRegistrationFormData) => IFullEventModel;
+  getBlankEvent: (formData: IRegisterForEventForm) => IFullEventModel;
   getPastEvents: () => Promise<IListEventModel[]>;
   getUpcomingEvents: () => Promise<IListEventModel[]>;
-  submitEventRegistration: (eventRegistrationDto: IEventRegistration) => Promise<boolean>;
+  submitEventRegistration: (eventRegistrationDto: IRegisterForEventForm) => Promise<boolean>;
   updateEvent: (event: IFullEventModel) => Promise<boolean>;
 }
 
@@ -40,17 +37,6 @@ export const useEventsService = (): IEventsService | undefined => {
           startDate: "",
           key: "",
           addressId: -1,
-        };
-      },
-    
-      getEventRegistrationDtoFromFormData: (formData: IEventRegistrationFormData): IEventRegistration => {
-        const { EventDate, ProductsSelling, PreferredSpotNumber, SpotSizeOrLocation } = formData;
-        return {
-          ...service.getBlankEvent(),
-          EventDate,
-          ProductsSelling,
-          SpotNumber: PreferredSpotNumber,
-          SpotSizeOrLocation,
         };
       },
   
@@ -81,7 +67,7 @@ export const useEventsService = (): IEventsService | undefined => {
         });
       },
   
-      submitEventRegistration: async (eventRegistrationDto: IEventRegistration): Promise<boolean> => {
+      submitEventRegistration: async (eventRegistrationDto: IRegisterForEventForm): Promise<boolean> => {
         await Promise.resolve(eventRegistrationDto);
         return true;
       },

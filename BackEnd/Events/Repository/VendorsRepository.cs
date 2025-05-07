@@ -23,7 +23,7 @@ public class VendorsRepository : Repository<Vendor, FullVendorModel, ListVendorM
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<int> RegisterVendor(VendorRegistrationFormData formData)
+    public async Task<int> RegisterVendor(RegisterAsVendorForm formData)
     {
         using var context = _dbFactory.GetContext();
         var fullUser = MapRegistrationFormToFullUser(formData);
@@ -31,7 +31,7 @@ public class VendorsRepository : Repository<Vendor, FullVendorModel, ListVendorM
         return userId;
     }
 
-    private FullUserModel MapRegistrationFormToFullUser(VendorRegistrationFormData formData)
+    private FullUserModel MapRegistrationFormToFullUser(RegisterAsVendorForm formData)
     {
         var fullUser = _mapper.Map<FullUserModel>(formData);
         fullUser.IsActive = true;

@@ -24,7 +24,7 @@ public class ProductsController : ControllerBase
         return Ok(product);
     }
 
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<IActionResult> CreateProduct([FromBody] FullProductModel product)
     {
         await _productsRepository.AddAsync(product);
