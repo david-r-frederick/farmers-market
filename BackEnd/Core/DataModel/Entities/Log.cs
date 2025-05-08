@@ -19,6 +19,9 @@ public class Log
     [Column(Order = 3)]
     public string Description { get; set; } = null!;
 
+    [Column(Order = 4)]
+    public string MethodName { get; set; } = null!;
+
     public string? StackTrace { get; set; } = null!;
 
     public int? UserID { get; set; }

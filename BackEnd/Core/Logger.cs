@@ -25,6 +25,7 @@ public class Logger
 
     public static async Task<int> LogErrorAsync(
         string description,
+        string methodName,
         string? stackTrace,
         string? requestPath)
     {
@@ -34,6 +35,7 @@ public class Logger
             Description = description,
             StackTrace = stackTrace,
             RequestPath = requestPath,
+            MethodName = methodName,
         };
 
         return await LogInnerAsync(log);
