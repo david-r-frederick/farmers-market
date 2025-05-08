@@ -17,7 +17,8 @@ public class VendorsRepository : Repository<Vendor, FullVendorModel, ListVendorM
         IDbContextFactoryWrapper dbFactory,
         IMapper mapper,
         IUsersRepository usersRepository,
-        IHttpContextAccessor httpContextAccessor) : base(dbFactory, mapper)
+        IHttpContextAccessor httpContextAccessor,
+        UserManager<User> userManager) : base(dbFactory, mapper, httpContextAccessor)
     {
         _usersRepository = usersRepository;
         _httpContextAccessor = httpContextAccessor;

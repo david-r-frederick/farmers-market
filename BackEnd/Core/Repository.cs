@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Core.DataModel.Entities;
 using Core.DataModel.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 public abstract class Repository<TEntity, TFullModel, TListModel> : IRepository<TFullModel, TListModel>
@@ -14,13 +15,16 @@ public abstract class Repository<TEntity, TFullModel, TListModel> : IRepository<
 {
     protected readonly IDbContextFactoryWrapper _dbFactory;
     protected readonly IMapper _mapper;
+    protected readonly IHttpContextAccessor _httpContextAccessor;
 
     protected Repository(
         IDbContextFactoryWrapper dbContextFactoryWrapper,
-        IMapper mapper)
+        IMapper mapper,
+        IHttpContextAccessor httpContextAccessor)
     {
         _dbFactory = dbContextFactoryWrapper;
         _mapper = mapper;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public virtual async Task<TFullModel?> GetByIdAsync(int id)

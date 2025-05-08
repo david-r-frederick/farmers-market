@@ -5,12 +5,14 @@ using Products.DataModel.Entities;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Products.DataModel.Models;
+using Microsoft.AspNetCore.Http;
 
 public class ProductsRepository : Repository<Product, FullProductModel, ListProductModel>, IProductsRepository
 {
     public ProductsRepository(
         IDbContextFactoryWrapper dbFactory,
-        IMapper mapper) : base(dbFactory, mapper)
+        IMapper mapper,
+        IHttpContextAccessor httpContextAccessor) : base(dbFactory, mapper, httpContextAccessor)
     {
     }
 

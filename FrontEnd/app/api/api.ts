@@ -953,6 +953,63 @@ export class Api {
      * @param body (optional) 
      * @return OK
      */
+    users_LogIn(body: LogInRequest | undefined, cancelToken?: CancelToken): Promise<boolean> {
+        let url_ = this.baseUrl + "/api/users/log-in";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processUsers_LogIn(_response);
+        });
+    }
+
+    protected processUsers_LogIn(response: AxiosResponse): Promise<boolean> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return Promise.resolve<boolean>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<boolean>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
     vendors_RegisterAsVendor(body: RegisterAsVendorForm | undefined, cancelToken?: CancelToken): Promise<number> {
         let url_ = this.baseUrl + "/api/vendors/register";
         url_ = url_.replace(/[?&]$/, "");
@@ -1572,6 +1629,46 @@ export interface IListProductModel {
     price?: number;
     typeId?: number;
     type?: ProductType;
+}
+
+export class LogInRequest implements ILogInRequest {
+    userName?: string | undefined;
+    password?: string | undefined;
+
+    constructor(data?: ILogInRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userName = _data["userName"];
+            this.password = _data["password"];
+        }
+    }
+
+    static fromJS(data: any): LogInRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new LogInRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userName"] = this.userName;
+        data["password"] = this.password;
+        return data;
+    }
+}
+
+export interface ILogInRequest {
+    userName?: string | undefined;
+    password?: string | undefined;
 }
 
 export class Paging implements IPaging {
