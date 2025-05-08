@@ -8,6 +8,7 @@ export interface IUsersService {
   getAllUsers: () => Promise<IUser[]>;
   getBlankUser: () => IUser;
   getUsersForEvent: (eventId: number) => Promise<IUser[]>;
+  logIn: (userName: string, password: string) => Promise<boolean>;
   updateUser: (user: IUser) => Promise<boolean>;
 }
 
@@ -58,7 +59,13 @@ export const useUsersService = (): IUsersService | undefined => {
         await Promise.resolve(eventId);
         return [];
       },
-    
+
+      logIn: async (userName: string, password: string): Promise<boolean> => {
+        // @ts-ignore, missing init and toJson
+        await api.users_LogIn({ userName, password });
+        return true;
+      },
+
       updateUser: async (user: IUser): Promise<boolean> => {
         await Promise.resolve(user);
         return true;

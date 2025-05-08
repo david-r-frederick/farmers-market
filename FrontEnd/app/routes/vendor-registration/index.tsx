@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { VendorRegistrationFormData } from "~/api/api";
+import { RegisterAsVendorForm } from "~/api/api";
 import VendorRegistrationForm from "~/components/forms/VendorRegistrationForm";
 import { useUIStatus } from "~/hooks/useUIStatus";
+import { useUsersService } from "~/services/useUsersService";
 import useVendorsService from "~/services/useVendorsService";
 
 const VendorRegistrationPage = (): JSX.Element => {
@@ -14,13 +15,15 @@ const VendorRegistrationPage = (): JSX.Element => {
   } = useUIStatus();
 
   const vendorsService = useVendorsService();
+  const usersService = useUsersService();
 
-  const handleVendorRegistrationFormSubmit = (formData: VendorRegistrationFormData): void => {
+  const handleVendorRegistrationFormSubmit = (formData: RegisterAsVendorForm): void => {
     // a separate function so I can use async/await
     const doSubmit = async () => {
       beginProcessing();
       try {
-        await vendorsService!.createVendor(formData);
+        await vendorsService!.registerAsVendor(formData);
+        await usersService!.logIn(formData.email!, formData.password!);
         setDidSave(true);
         endProcessing();
       } catch (err) {
@@ -33,6 +36,7 @@ const VendorRegistrationPage = (): JSX.Element => {
   return (
     <div className="bg-secondary py-8">
       <div className="max-w-lg mx-auto p-6">
+        {/* @ts-ignore, missing init and toJson */}
         <VendorRegistrationForm onSubmit={handleVendorRegistrationFormSubmit} />
         {UIStatus.processing && <span>Loading...</span>}
         {didSave && <span>Saved!</span>}

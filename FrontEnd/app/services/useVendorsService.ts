@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useGeographyService } from "./useGeographyService";
-import { VendorRegistrationFormData } from "~/api/api";
+import { IRegisterAsVendorForm } from "~/api/api";
 import { useApi } from "~/api/useApi";
 
 export interface IVendorsService {
-  createVendor: (formData: VendorRegistrationFormData) => Promise<number>;
+  registerAsVendor: (formData: IRegisterAsVendorForm) => Promise<number>;
 }
 
 const useVendorsService = (): IVendorsService | undefined => {
@@ -18,9 +18,13 @@ const useVendorsService = (): IVendorsService | undefined => {
       return;
     }
     setVendorsService({
-      createVendor: async (formData: VendorRegistrationFormData): Promise<number> => {
+      registerAsVendor: async (formData: IRegisterAsVendorForm): Promise<number> => {
         const county = await geographyService.getCountyFromZipCode(formData.zipCode as string);
-        await api.vendors_RegisterAsVendor(formData);
+        // @ts-ignore, missing init and toJson
+        await api.vendors_RegisterAsVendor({
+          ...formData,
+          county: "Hardin"
+        });
         return 1;
       }
     });

@@ -2,16 +2,18 @@
 
 using AutoMapper;
 using Core;
+using Customers.DataModel.Entities;
 using Customers.DataModel.Models;
 using Customers.Repository;
 using Events.DataModel.Entities;
 using Events.DataModel.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 
 public class VendorsRepository : Repository<Vendor, FullVendorModel, ListVendorModel>, IVendorsRepository
 {
     private readonly IUsersRepository _usersRepository;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly UserManager<User> _userManager;
 
     public VendorsRepository(
         IDbContextFactoryWrapper dbFactory,
@@ -21,15 +23,16 @@ public class VendorsRepository : Repository<Vendor, FullVendorModel, ListVendorM
         UserManager<User> userManager) : base(dbFactory, mapper, httpContextAccessor)
     {
         _usersRepository = usersRepository;
-        _httpContextAccessor = httpContextAccessor;
+        _userManager = userManager;
     }
 
     public async Task<int> RegisterVendor(RegisterAsVendorForm formData)
     {
         using var context = _dbFactory.GetContext();
         var fullUser = MapRegistrationFormToFullUser(formData);
-        var userId = await _usersRepository.AddAsync(fullUser, formData.Password);
-        return userId;
+        var user = await _usersRepository.AddAsync(fullUser, formData.Password);
+        await _userManager.AddToRoleAsync(user, "Vendor");
+        return user.Id;
     }
 
     private FullUserModel MapRegistrationFormToFullUser(RegisterAsVendorForm formData)
