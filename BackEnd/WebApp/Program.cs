@@ -1,6 +1,7 @@
 using Context;
 using Core;
 using Core.DataModel.Seeding;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -27,7 +28,8 @@ builder.Services.AddIdentity<
     {
         options.SignIn.RequireConfirmedAccount = false;
     })
-    .AddEntityFrameworkStores<FarmersMarketDb>();
+    .AddEntityFrameworkStores<FarmersMarketDb>()
+    .AddDefaultTokenProviders();
 
 var assemblies = AppDomain.CurrentDomain.GetAssemblies()
     .Where(a => !a.IsDynamic)

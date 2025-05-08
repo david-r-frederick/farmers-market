@@ -10,26 +10,31 @@ using Microsoft.EntityFrameworkCore;
 
 public class UsersRepository : IUsersRepository
 {
-    protected readonly IDatabaseContext _databaseContext;
+    protected readonly IDbContextFactoryWrapper _dbFactory;
     protected readonly IMapper _mapper;
     protected readonly UserManager<User> _userManager;
     protected readonly RoleManager<Role> _roleManager;
+    protected readonly SignInManager<User> _signInManager;
 
     public UsersRepository(
         IDatabaseContext databaseContext,
+        IDbContextFactoryWrapper dbFactory,
         IMapper mapper,
         UserManager<User> userManager,
-        RoleManager<Role> roleManager)
+        RoleManager<Role> roleManager,
+        SignInManager<User> signInManager)
     {
-        _databaseContext = databaseContext;
+        _dbFactory = dbFactory;
         _mapper = mapper;
         _userManager = userManager;
         _roleManager = roleManager;
+        _signInManager = signInManager;
     }
 
     public async Task<FullUserModel?> GetByIdAsync(int id)
     {
-        var user = await _databaseContext.Set<User>()
+        using var context = _dbFactory.GetContext();
+        var user = await context.Set<User>()
             .Where(x => !x.IsDeleted && x.IsActive && x.Id == id)
             .FirstOrDefaultAsync();
         return _mapper.Map<FullUserModel>(user);
@@ -37,55 +42,90 @@ public class UsersRepository : IUsersRepository
 
     public async Task<List<ListUserModel>> GetAllAsync(Paging paging)
     {
-        var result = await _databaseContext.Set<User>()
+        using var context = _dbFactory.GetContext();
+        var result = await context.Set<User>()
             .Where(x => !x.IsDeleted && x.IsActive)
             .ToListAsync();
         return result.Select(x => _mapper.Map<ListUserModel>(x))
             .ToList();
     }
 
-    public async Task<int> AddAsync(FullUserModel fullUserModel, string password)
+    public async Task<User> AddAsync(FullUserModel fullUserModel, string password)
     {
         var asEntity = _mapper.Map<User>(fullUserModel);
         var result = await _userManager.CreateAsync(asEntity, password);
         if (!result.Succeeded)
         {
-            throw new Exception(
-                $"""
-                    ERROR! Unable to create user with provided information.
-                    {string.Join(", ", result.Errors.Select(e => e.Description))}
-                """
-            );
+            var description = $"""
+                ERROR! Unable to create user with provided information.
+                FullUserModel: {fullUserModel.ToString()}.
+                {string.Join(", ", result.Errors.Select(e => e.Description))}
+            """;
+            await Logger.LogErrorAsync(
+                description,
+                "UsersRepository.AddAsync",
+                null,
+                null);
+            throw new Exception(description);
         }
-        await _userManager.AddToRoleAsync(asEntity, "Vendor");
         await Logger.LogInfoAsync("A user was created.");
-        return asEntity.Id;
+        return asEntity;
     }
 
     public async Task UpdateAsync(FullUserModel fullUserModel)
     {
-        var entity = await _databaseContext.Set<User>()
+        using var context = _dbFactory.GetContext();
+        var entity = await context.Set<User>()
             .Where(x => x.Id == fullUserModel.Id && !x.IsDeleted)
             .FirstOrDefaultAsync();
         if (entity == null)
         {
             throw new Exception("Unable to find an entity that matches the provided user's Id.");
         }
-        _databaseContext.Set<User>().Update(entity);
-        await _databaseContext.SaveChangesAsync();
+        context.Set<User>().Update(entity);
+        await context.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(int id)
     {
-        var entity = await _databaseContext.Set<User>()
+        using var context = _dbFactory.GetContext();
+        var entity = await context.Set<User>()
             .Where(x => x.Id == id && !x.IsDeleted)
             .FirstOrDefaultAsync();
         if (entity != null)
         {
             entity.IsDeleted = true;
             entity.DeletedOn = DateTime.UtcNow;
-            _databaseContext.Set<User>().Update(entity);
-            await _databaseContext.SaveChangesAsync();
+            context.Set<User>().Update(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+
+    public async Task<bool> LogInAsync(
+        string userName,
+        string password)
+    {
+        using var context = _dbFactory.GetContext();
+        var user = await context.Set<User>()
+            .Where(x => x.IsActive && x.Email == userName)
+            .SingleOrDefaultAsync();
+        if (user is null)
+        {
+            throw new Exception("Username or password not recognized.");
+        }
+        try
+        {
+            await _signInManager.SignInAsync(user, false);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            await Logger.LogErrorAsync(
+                $"Signing user in failed. UserName: {userName}. Message: {ex.Message}",
+                methodName: "UsersRepository.LogInAsync",
+                ex.StackTrace,
+                null);
+            return false;
         }
     }
 }
