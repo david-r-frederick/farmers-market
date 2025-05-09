@@ -13,12 +13,15 @@ public class Logger
         _serviceProvider = serviceProvider;
     }
 
-    public static async Task<int> LogInfoAsync(string description)
+    public static async Task<int> LogInfoAsync(
+        string description,
+        string methodName)
     {
         var log = new Log
         {
             TypeId = 1,
             Description = description,
+            MethodName = methodName,
         };
         return await LogInnerAsync(log);
     }
