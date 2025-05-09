@@ -17,6 +17,7 @@ public class ProductsPlugin : IPlugin
 
     public void Initialize(IServiceCollection services)
     {
+        ProductsRepository.Initialize(services);
         services.AddScoped<IProductsRepository, ProductsRepository>();
         services.AddScoped<ISeeder, ProductTypeSeeder>();
         services.AddScoped<ISeeder, ProductSeeder>();

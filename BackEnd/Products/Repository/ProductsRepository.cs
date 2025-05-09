@@ -3,19 +3,10 @@
 using Core;
 using Products.DataModel.Entities;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
 using Products.DataModel.Models;
-using Microsoft.AspNetCore.Http;
 
 public class ProductsRepository : Repository<Product, FullProductModel, ListProductModel>, IProductsRepository
 {
-    public ProductsRepository(
-        IDbContextFactoryWrapper dbFactory,
-        IMapper mapper,
-        IHttpContextAccessor httpContextAccessor) : base(dbFactory, mapper, httpContextAccessor)
-    {
-    }
-
     public override async Task<FullProductModel?> GetByIdAsync(int productId)
     {
         using var context = _dbFactory.GetContext();

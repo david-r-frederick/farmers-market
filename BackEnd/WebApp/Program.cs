@@ -45,6 +45,7 @@ assemblies.AddRange(new[]
     typeof(Categories.CategoriesPlugin).Assembly,
     typeof(Core.Mapping.BaseMappingProfile).Assembly,
 }.Distinct());
+builder.Services.AddAutoMapper(assemblies);
 var plugins = new List<IPlugin>();
 foreach (var assembly in assemblies)
 {
@@ -78,7 +79,6 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddAutoMapper(assemblies);
 var allowedOrigins = builder.Configuration
     .GetSection("AllowedOrigins")
     .Get<string[]>();
@@ -96,7 +96,6 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
-
 Logger.Initialize(app.Services);
 
 using (var scope = app.Services.CreateScope())

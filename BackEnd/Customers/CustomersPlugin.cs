@@ -18,6 +18,7 @@ public class CustomersPlugin : IPlugin
     public void Initialize(IServiceCollection services)
     {
         services.AddScoped<ISeeder, RoleSeeder>();
+        CustomersRepository.Initialize(services);
         services.AddScoped<ICustomersRepository, CustomersRepository>();
         services.AddScoped<IUsersRepository, UsersRepository>();
     }

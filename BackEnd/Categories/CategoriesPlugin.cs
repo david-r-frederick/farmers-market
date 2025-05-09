@@ -13,6 +13,7 @@ public class CategoriesPlugin : IPlugin
 
     public void Initialize(IServiceCollection services)
     {
+        CategoriesRepository.Initialize(services);
         services.AddScoped<ICategoriesRepository, CategoriesRepository>();
     }
 

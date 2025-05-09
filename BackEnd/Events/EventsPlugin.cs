@@ -15,7 +15,9 @@ public class EventsPlugin : IPlugin
 
     public void Initialize(IServiceCollection services)
     {
+        EventsRepository.Initialize(services);
         services.AddScoped<IEventsRepository, EventsRepository>();
+        VendorsRepository.Initialize(services);
         services.AddScoped<IVendorsRepository, VendorsRepository>();
     }
 

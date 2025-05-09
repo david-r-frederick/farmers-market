@@ -15,6 +15,7 @@ public class GeographyPlugin : IPlugin
 
     public void Initialize(IServiceCollection services)
     {
+        AddressesRepository.Initialize(services);
         services.AddScoped<IAddressesRepository, AddressesRepository>();
     }
 

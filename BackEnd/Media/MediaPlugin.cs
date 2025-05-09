@@ -12,6 +12,7 @@ public class MediaPlugin : IPlugin
 
     public void Initialize(IServiceCollection services)
     {
+        MediaRepository.Initialize(services);
         services.AddScoped<IMediaRepository, MediaRepository>();
     }
 

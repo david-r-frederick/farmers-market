@@ -63,12 +63,12 @@ public class UsersRepository : IUsersRepository
             """;
             await Logger.LogErrorAsync(
                 description,
-                "UsersRepository.AddAsync",
+                methodName: "UsersRepository.AddAsync",
                 null,
                 null);
             throw new Exception(description);
         }
-        await Logger.LogInfoAsync("A user was created.");
+        await Logger.LogInfoAsync("A user was created.", "UsersRepository.AddAsync");
         return asEntity;
     }
 

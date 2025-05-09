@@ -6,6 +6,7 @@ using Core.DataModel.Entities;
 using Core.DataModel.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 public abstract class Repository<TEntity, TFullModel, TListModel> : IRepository<TFullModel, TListModel>
     where TEntity : BaseEntity
@@ -13,18 +14,26 @@ public abstract class Repository<TEntity, TFullModel, TListModel> : IRepository<
     where TListModel : BaseModel
 
 {
+    private static IServiceProvider? _serviceProvider;
     protected readonly IDbContextFactoryWrapper _dbFactory;
     protected readonly IMapper _mapper;
     protected readonly IHttpContextAccessor _httpContextAccessor;
 
-    protected Repository(
-        IDbContextFactoryWrapper dbContextFactoryWrapper,
-        IMapper mapper,
-        IHttpContextAccessor httpContextAccessor)
+    protected Repository()
     {
-        _dbFactory = dbContextFactoryWrapper;
-        _mapper = mapper;
-        _httpContextAccessor = httpContextAccessor;
+        if (_serviceProvider is null)
+        {
+            throw new InvalidOperationException(
+                "Repository has not been initialized. Call Repository.Initialize with a valid IServiceProvider.");
+        }
+        _dbFactory = _serviceProvider.GetRequiredService<IDbContextFactoryWrapper>();
+        _mapper = _serviceProvider.GetRequiredService<IMapper>();
+        _httpContextAccessor = _serviceProvider.GetRequiredService<IHttpContextAccessor>();
+    }
+
+    public static void Initialize(IServiceCollection services)
+    {
+        _serviceProvider = services.BuildServiceProvider() ?? throw new ArgumentNullException("Missing services in Repository");
     }
 
     public virtual async Task<TFullModel?> GetByIdAsync(int id)

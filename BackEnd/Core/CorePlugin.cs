@@ -14,6 +14,7 @@ public class CorePlugin : IPlugin
     public void Initialize(IServiceCollection services)
     {
         services.AddScoped<ISeeder, LogTypeSeeder>();
+        SettingsRepository.Initialize(services);
         services.AddScoped<ISettingsRepository, SettingsRepository>();
         services.AddScoped<ISeeder, SettingSeeder>();
     }

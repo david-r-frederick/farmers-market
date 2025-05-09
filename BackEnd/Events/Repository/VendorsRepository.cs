@@ -16,11 +16,8 @@ public class VendorsRepository : Repository<Vendor, FullVendorModel, ListVendorM
     private readonly UserManager<User> _userManager;
 
     public VendorsRepository(
-        IDbContextFactoryWrapper dbFactory,
-        IMapper mapper,
         IUsersRepository usersRepository,
-        IHttpContextAccessor httpContextAccessor,
-        UserManager<User> userManager) : base(dbFactory, mapper, httpContextAccessor)
+        UserManager<User> userManager)
     {
         _usersRepository = usersRepository;
         _userManager = userManager;
