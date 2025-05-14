@@ -68,7 +68,7 @@ export class Api {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = FullAddressModel.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve<FullAddressModel>(result200);
 
         } else if (status !== 200 && status !== 204) {
@@ -174,7 +174,7 @@ export class Api {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = FullCategoryModel.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve<FullCategoryModel>(result200);
 
         } else if (status !== 200 && status !== 204) {
@@ -280,7 +280,7 @@ export class Api {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = Customer.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve<Customer>(result200);
 
         } else if (status !== 200 && status !== 204) {
@@ -334,7 +334,7 @@ export class Api {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = FullEventModel.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve<FullEventModel>(result200);
 
         } else if (status !== 200 && status !== 204) {
@@ -494,14 +494,7 @@ export class Api {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(ListEventModel.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
+            result200 = JSON.parse(resultData200);
             return Promise.resolve<ListEventModel[]>(result200);
 
         } else if (status !== 200 && status !== 204) {
@@ -557,8 +550,7 @@ export class Api {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
+            result200 = JSON.parse(resultData200);
             return Promise.resolve<boolean>(result200);
 
         } else if (status !== 200 && status !== 204) {
@@ -612,7 +604,7 @@ export class Api {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = FullProductModel.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve<FullProductModel>(result200);
 
         } else if (status !== 200 && status !== 204) {
@@ -720,14 +712,7 @@ export class Api {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(ListProductModel.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
+            result200 = JSON.parse(resultData200);
             return Promise.resolve<ListProductModel[]>(result200);
 
         } else if (status !== 200 && status !== 204) {
@@ -781,7 +766,7 @@ export class Api {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = SettingModel.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve<SettingModel>(result200);
 
         } else if (status !== 200 && status !== 204) {
@@ -939,7 +924,7 @@ export class Api {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = User.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve<User>(result200);
 
         } else if (status !== 200 && status !== 204) {
@@ -995,8 +980,7 @@ export class Api {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
+            result200 = JSON.parse(resultData200);
             return Promise.resolve<boolean>(result200);
 
         } else if (status !== 200 && status !== 204) {
@@ -1052,8 +1036,7 @@ export class Api {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
+            result200 = JSON.parse(resultData200);
             return Promise.resolve<number>(result200);
 
         } else if (status !== 200 && status !== 204) {
@@ -1104,7 +1087,7 @@ export class Api {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = ConnectedResponse.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve<ConnectedResponse>(result200);
 
         } else if (status !== 200 && status !== 204) {
@@ -1115,106 +1098,11 @@ export class Api {
     }
 }
 
-export class ConnectedResponse implements IConnectedResponse {
-    connected?: boolean;
-
-    constructor(data?: IConnectedResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.connected = _data["connected"];
-        }
-    }
-
-    static fromJS(data: any): ConnectedResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new ConnectedResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["connected"] = this.connected;
-        return data;
-    }
-}
-
-export interface IConnectedResponse {
+export interface ConnectedResponse {
     connected?: boolean;
 }
 
-export class Customer implements ICustomer {
-    id?: number;
-    key?: string | undefined;
-    isActive?: boolean;
-    createdBy?: string | undefined;
-    createdOn?: Date;
-    isDeleted?: boolean;
-    deletedBy?: string | undefined;
-    deletedOn?: Date | undefined;
-    updatedBy?: string | undefined;
-    updatedOn?: Date | undefined;
-
-    constructor(data?: ICustomer) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.isActive = true;
-            this.isDeleted = false;
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.key = _data["key"];
-            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
-            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
-            this.deletedBy = _data["deletedBy"];
-            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
-            this.updatedBy = _data["updatedBy"];
-            this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): Customer {
-        data = typeof data === 'object' ? data : {};
-        let result = new Customer();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["key"] = this.key;
-        data["isActive"] = this.isActive;
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["isDeleted"] = this.isDeleted;
-        data["deletedBy"] = this.deletedBy;
-        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
-        data["updatedBy"] = this.updatedBy;
-        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
-        return data;
-    }
-}
-
-export interface ICustomer {
+export interface Customer {
     id?: number;
     key?: string | undefined;
     isActive?: boolean;
@@ -1227,101 +1115,13 @@ export interface ICustomer {
     updatedOn?: Date | undefined;
 }
 
-export class EventForm implements IEventForm {
-    address?: FullAddressModel;
-    startDate?: string | undefined;
-    endDate?: string | undefined;
-
-    constructor(data?: IEventForm) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.address = _data["address"] ? FullAddressModel.fromJS(_data["address"]) : <any>undefined;
-            this.startDate = _data["startDate"];
-            this.endDate = _data["endDate"];
-        }
-    }
-
-    static fromJS(data: any): EventForm {
-        data = typeof data === 'object' ? data : {};
-        let result = new EventForm();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
-        data["startDate"] = this.startDate;
-        data["endDate"] = this.endDate;
-        return data;
-    }
-}
-
-export interface IEventForm {
+export interface EventForm {
     address?: FullAddressModel;
     startDate?: string | undefined;
     endDate?: string | undefined;
 }
 
-export class FullAddressModel implements IFullAddressModel {
-    id?: number;
-    key?: string | undefined;
-    street1?: string | undefined;
-    street2?: string | undefined;
-    city?: string | undefined;
-    region?: string | undefined;
-    zipCode?: string | undefined;
-
-    constructor(data?: IFullAddressModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.key = _data["key"];
-            this.street1 = _data["street1"];
-            this.street2 = _data["street2"];
-            this.city = _data["city"];
-            this.region = _data["region"];
-            this.zipCode = _data["zipCode"];
-        }
-    }
-
-    static fromJS(data: any): FullAddressModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new FullAddressModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["key"] = this.key;
-        data["street1"] = this.street1;
-        data["street2"] = this.street2;
-        data["city"] = this.city;
-        data["region"] = this.region;
-        data["zipCode"] = this.zipCode;
-        return data;
-    }
-}
-
-export interface IFullAddressModel {
+export interface FullAddressModel {
     id?: number;
     key?: string | undefined;
     street1?: string | undefined;
@@ -1331,105 +1131,14 @@ export interface IFullAddressModel {
     zipCode?: string | undefined;
 }
 
-export class FullCategoryModel implements IFullCategoryModel {
-    id?: number;
-    key?: string | undefined;
-    name?: string | undefined;
-    parentId?: number | undefined;
-
-    constructor(data?: IFullCategoryModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.key = _data["key"];
-            this.name = _data["name"];
-            this.parentId = _data["parentId"];
-        }
-    }
-
-    static fromJS(data: any): FullCategoryModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new FullCategoryModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["key"] = this.key;
-        data["name"] = this.name;
-        data["parentId"] = this.parentId;
-        return data;
-    }
-}
-
-export interface IFullCategoryModel {
+export interface FullCategoryModel {
     id?: number;
     key?: string | undefined;
     name?: string | undefined;
     parentId?: number | undefined;
 }
 
-export class FullEventModel implements IFullEventModel {
-    id?: number;
-    key?: string | undefined;
-    startDate?: string | undefined;
-    endDate?: string | undefined;
-    hostUserId?: number;
-    addressId?: number;
-    address?: FullAddressModel;
-
-    constructor(data?: IFullEventModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.key = _data["key"];
-            this.startDate = _data["startDate"];
-            this.endDate = _data["endDate"];
-            this.hostUserId = _data["hostUserId"];
-            this.addressId = _data["addressId"];
-            this.address = _data["address"] ? FullAddressModel.fromJS(_data["address"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): FullEventModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new FullEventModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["key"] = this.key;
-        data["startDate"] = this.startDate;
-        data["endDate"] = this.endDate;
-        data["hostUserId"] = this.hostUserId;
-        data["addressId"] = this.addressId;
-        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
-        return data;
-    }
-}
-
-export interface IFullEventModel {
+export interface FullEventModel {
     id?: number;
     key?: string | undefined;
     startDate?: string | undefined;
@@ -1439,77 +1148,7 @@ export interface IFullEventModel {
     address?: FullAddressModel;
 }
 
-export class FullProductModel implements IFullProductModel {
-    id?: number;
-    key?: string | undefined;
-    name?: string | undefined;
-    description?: string | undefined;
-    ingredients?: string | undefined;
-    disclaimer?: string | undefined;
-    allergens?: string | undefined;
-    price?: number;
-    typeId?: number;
-    type?: ProductType;
-    categories?: FullCategoryModel[] | undefined;
-
-    constructor(data?: IFullProductModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.key = _data["key"];
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.ingredients = _data["ingredients"];
-            this.disclaimer = _data["disclaimer"];
-            this.allergens = _data["allergens"];
-            this.price = _data["price"];
-            this.typeId = _data["typeId"];
-            this.type = _data["type"] ? ProductType.fromJS(_data["type"]) : <any>undefined;
-            if (Array.isArray(_data["categories"])) {
-                this.categories = [] as any;
-                for (let item of _data["categories"])
-                    this.categories!.push(FullCategoryModel.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): FullProductModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new FullProductModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["key"] = this.key;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["ingredients"] = this.ingredients;
-        data["disclaimer"] = this.disclaimer;
-        data["allergens"] = this.allergens;
-        data["price"] = this.price;
-        data["typeId"] = this.typeId;
-        data["type"] = this.type ? this.type.toJSON() : <any>undefined;
-        if (Array.isArray(this.categories)) {
-            data["categories"] = [];
-            for (let item of this.categories)
-                data["categories"].push(item.toJSON());
-        }
-        return data;
-    }
-}
-
-export interface IFullProductModel {
+export interface FullProductModel {
     id?: number;
     key?: string | undefined;
     name?: string | undefined;
@@ -1523,105 +1162,14 @@ export interface IFullProductModel {
     categories?: FullCategoryModel[] | undefined;
 }
 
-export class ListEventModel implements IListEventModel {
-    id?: number;
-    key?: string | undefined;
-    startDate?: string | undefined;
-    endDate?: string | undefined;
-
-    constructor(data?: IListEventModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.key = _data["key"];
-            this.startDate = _data["startDate"];
-            this.endDate = _data["endDate"];
-        }
-    }
-
-    static fromJS(data: any): ListEventModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new ListEventModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["key"] = this.key;
-        data["startDate"] = this.startDate;
-        data["endDate"] = this.endDate;
-        return data;
-    }
-}
-
-export interface IListEventModel {
+export interface ListEventModel {
     id?: number;
     key?: string | undefined;
     startDate?: string | undefined;
     endDate?: string | undefined;
 }
 
-export class ListProductModel implements IListProductModel {
-    id?: number;
-    key?: string | undefined;
-    name?: string | undefined;
-    ingredients?: string | undefined;
-    price?: number;
-    typeId?: number;
-    type?: ProductType;
-
-    constructor(data?: IListProductModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.key = _data["key"];
-            this.name = _data["name"];
-            this.ingredients = _data["ingredients"];
-            this.price = _data["price"];
-            this.typeId = _data["typeId"];
-            this.type = _data["type"] ? ProductType.fromJS(_data["type"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): ListProductModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new ListProductModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["key"] = this.key;
-        data["name"] = this.name;
-        data["ingredients"] = this.ingredients;
-        data["price"] = this.price;
-        data["typeId"] = this.typeId;
-        data["type"] = this.type ? this.type.toJSON() : <any>undefined;
-        return data;
-    }
-}
-
-export interface IListProductModel {
+export interface ListProductModel {
     id?: number;
     key?: string | undefined;
     name?: string | undefined;
@@ -1631,153 +1179,17 @@ export interface IListProductModel {
     type?: ProductType;
 }
 
-export class LogInRequest implements ILogInRequest {
-    userName?: string | undefined;
-    password?: string | undefined;
-
-    constructor(data?: ILogInRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.userName = _data["userName"];
-            this.password = _data["password"];
-        }
-    }
-
-    static fromJS(data: any): LogInRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new LogInRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["userName"] = this.userName;
-        data["password"] = this.password;
-        return data;
-    }
-}
-
-export interface ILogInRequest {
+export interface LogInRequest {
     userName?: string | undefined;
     password?: string | undefined;
 }
 
-export class Paging implements IPaging {
-    pageNumber?: number | undefined;
-    pageSize?: number | undefined;
-
-    constructor(data?: IPaging) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.pageNumber = _data["pageNumber"];
-            this.pageSize = _data["pageSize"];
-        }
-    }
-
-    static fromJS(data: any): Paging {
-        data = typeof data === 'object' ? data : {};
-        let result = new Paging();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["pageNumber"] = this.pageNumber;
-        data["pageSize"] = this.pageSize;
-        return data;
-    }
-}
-
-export interface IPaging {
+export interface Paging {
     pageNumber?: number | undefined;
     pageSize?: number | undefined;
 }
 
-export class ProductType implements IProductType {
-    id?: number;
-    key?: string | undefined;
-    isActive?: boolean;
-    createdBy?: string | undefined;
-    createdOn?: Date;
-    isDeleted?: boolean;
-    deletedBy?: string | undefined;
-    deletedOn?: Date | undefined;
-    updatedBy?: string | undefined;
-    updatedOn?: Date | undefined;
-    name?: string | undefined;
-
-    constructor(data?: IProductType) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.isActive = true;
-            this.isDeleted = false;
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.key = _data["key"];
-            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
-            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
-            this.deletedBy = _data["deletedBy"];
-            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
-            this.updatedBy = _data["updatedBy"];
-            this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
-            this.name = _data["name"];
-        }
-    }
-
-    static fromJS(data: any): ProductType {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProductType();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["key"] = this.key;
-        data["isActive"] = this.isActive;
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["isDeleted"] = this.isDeleted;
-        data["deletedBy"] = this.deletedBy;
-        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
-        data["updatedBy"] = this.updatedBy;
-        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
-        data["name"] = this.name;
-        return data;
-    }
-}
-
-export interface IProductType {
+export interface ProductType {
     id?: number;
     key?: string | undefined;
     isActive?: boolean;
@@ -1791,75 +1203,7 @@ export interface IProductType {
     name?: string | undefined;
 }
 
-export class RegisterAsVendorForm implements IRegisterAsVendorForm {
-    firstName?: string | undefined;
-    lastName?: string | undefined;
-    email?: string | undefined;
-    password?: string | undefined;
-    phone?: string | undefined;
-    street1?: string | undefined;
-    street2?: string | undefined;
-    city?: string | undefined;
-    county?: string | undefined;
-    state?: string | undefined;
-    zipCode?: string | undefined;
-    businessName?: string | undefined;
-    businessStartDate?: Date | undefined;
-
-    constructor(data?: IRegisterAsVendorForm) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.firstName = _data["firstName"];
-            this.lastName = _data["lastName"];
-            this.email = _data["email"];
-            this.password = _data["password"];
-            this.phone = _data["phone"];
-            this.street1 = _data["street1"];
-            this.street2 = _data["street2"];
-            this.city = _data["city"];
-            this.county = _data["county"];
-            this.state = _data["state"];
-            this.zipCode = _data["zipCode"];
-            this.businessName = _data["businessName"];
-            this.businessStartDate = _data["businessStartDate"] ? new Date(_data["businessStartDate"].toString()) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): RegisterAsVendorForm {
-        data = typeof data === 'object' ? data : {};
-        let result = new RegisterAsVendorForm();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["firstName"] = this.firstName;
-        data["lastName"] = this.lastName;
-        data["email"] = this.email;
-        data["password"] = this.password;
-        data["phone"] = this.phone;
-        data["street1"] = this.street1;
-        data["street2"] = this.street2;
-        data["city"] = this.city;
-        data["county"] = this.county;
-        data["state"] = this.state;
-        data["zipCode"] = this.zipCode;
-        data["businessName"] = this.businessName;
-        data["businessStartDate"] = this.businessStartDate ? this.businessStartDate.toISOString() : <any>undefined;
-        return data;
-    }
-}
-
-export interface IRegisterAsVendorForm {
+export interface RegisterAsVendorForm {
     firstName?: string | undefined;
     lastName?: string | undefined;
     email?: string | undefined;
@@ -1875,65 +1219,7 @@ export interface IRegisterAsVendorForm {
     businessStartDate?: Date | undefined;
 }
 
-export class RegisterForEventForm implements IRegisterForEventForm {
-    eventId?: number;
-    productsSelling?: FullProductModel[] | undefined;
-    boothId?: number;
-    preferredBoothId?: number | undefined;
-    doesAgreeToTerms?: boolean;
-    agreesToPayUponArrival?: boolean;
-    spotSizeOrLocation?: string | undefined;
-
-    constructor(data?: IRegisterForEventForm) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.eventId = _data["eventId"];
-            if (Array.isArray(_data["productsSelling"])) {
-                this.productsSelling = [] as any;
-                for (let item of _data["productsSelling"])
-                    this.productsSelling!.push(FullProductModel.fromJS(item));
-            }
-            this.boothId = _data["boothId"];
-            this.preferredBoothId = _data["preferredBoothId"];
-            this.doesAgreeToTerms = _data["doesAgreeToTerms"];
-            this.agreesToPayUponArrival = _data["agreesToPayUponArrival"];
-            this.spotSizeOrLocation = _data["spotSizeOrLocation"];
-        }
-    }
-
-    static fromJS(data: any): RegisterForEventForm {
-        data = typeof data === 'object' ? data : {};
-        let result = new RegisterForEventForm();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["eventId"] = this.eventId;
-        if (Array.isArray(this.productsSelling)) {
-            data["productsSelling"] = [];
-            for (let item of this.productsSelling)
-                data["productsSelling"].push(item.toJSON());
-        }
-        data["boothId"] = this.boothId;
-        data["preferredBoothId"] = this.preferredBoothId;
-        data["doesAgreeToTerms"] = this.doesAgreeToTerms;
-        data["agreesToPayUponArrival"] = this.agreesToPayUponArrival;
-        data["spotSizeOrLocation"] = this.spotSizeOrLocation;
-        return data;
-    }
-}
-
-export interface IRegisterForEventForm {
+export interface RegisterForEventForm {
     eventId?: number;
     productsSelling?: FullProductModel[] | undefined;
     boothId?: number;
@@ -1943,79 +1229,7 @@ export interface IRegisterForEventForm {
     spotSizeOrLocation?: string | undefined;
 }
 
-export class Role implements IRole {
-    name?: string | undefined;
-    normalizedName?: string | undefined;
-    concurrencyStamp?: string | undefined;
-    id?: number;
-    key?: string | undefined;
-    isActive?: boolean;
-    createdOn?: Date;
-    createdBy?: string | undefined;
-    updatedBy?: string | undefined;
-    updatedOn?: Date | undefined;
-    isDeleted?: boolean;
-    deletedOn?: Date | undefined;
-    deletedBy?: string | undefined;
-
-    constructor(data?: IRole) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.isActive = true;
-            this.isDeleted = false;
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"];
-            this.normalizedName = _data["normalizedName"];
-            this.concurrencyStamp = _data["concurrencyStamp"];
-            this.id = _data["id"];
-            this.key = _data["key"];
-            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
-            this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
-            this.createdBy = _data["createdBy"];
-            this.updatedBy = _data["updatedBy"];
-            this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
-            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
-            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
-            this.deletedBy = _data["deletedBy"];
-        }
-    }
-
-    static fromJS(data: any): Role {
-        data = typeof data === 'object' ? data : {};
-        let result = new Role();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["normalizedName"] = this.normalizedName;
-        data["concurrencyStamp"] = this.concurrencyStamp;
-        data["id"] = this.id;
-        data["key"] = this.key;
-        data["isActive"] = this.isActive;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["createdBy"] = this.createdBy;
-        data["updatedBy"] = this.updatedBy;
-        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
-        data["isDeleted"] = this.isDeleted;
-        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
-        data["deletedBy"] = this.deletedBy;
-        return data;
-    }
-}
-
-export interface IRole {
+export interface Role {
     name?: string | undefined;
     normalizedName?: string | undefined;
     concurrencyStamp?: string | undefined;
@@ -2031,188 +1245,13 @@ export interface IRole {
     deletedBy?: string | undefined;
 }
 
-export class SettingModel implements ISettingModel {
-    id?: number;
-    key?: string | undefined;
-    value?: string | undefined;
-
-    constructor(data?: ISettingModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.key = _data["key"];
-            this.value = _data["value"];
-        }
-    }
-
-    static fromJS(data: any): SettingModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new SettingModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["key"] = this.key;
-        data["value"] = this.value;
-        return data;
-    }
-}
-
-export interface ISettingModel {
+export interface SettingModel {
     id?: number;
     key?: string | undefined;
     value?: string | undefined;
 }
 
-export class User implements IUser {
-    userName?: string | undefined;
-    normalizedUserName?: string | undefined;
-    email?: string | undefined;
-    normalizedEmail?: string | undefined;
-    emailConfirmed?: boolean;
-    phoneNumber?: string | undefined;
-    phoneNumberConfirmed?: boolean;
-    twoFactorEnabled?: boolean;
-    lockoutEnd?: Date | undefined;
-    lockoutEnabled?: boolean;
-    accessFailedCount?: number;
-    id?: number;
-    key?: string | undefined;
-    isActive?: boolean;
-    createdOn?: Date;
-    createdBy?: string | undefined;
-    updatedBy?: string | undefined;
-    updatedOn?: Date | undefined;
-    isDeleted?: boolean;
-    deletedOn?: Date | undefined;
-    deletedBy?: string | undefined;
-    firstName!: string;
-    middleInitial?: string | undefined;
-    lastName!: string;
-    street1!: string | undefined;
-    street2?: string | undefined;
-    city!: string;
-    county!: string;
-    state!: string;
-    postalCode!: string;
-    readonly fullName?: string | undefined;
-    roles?: Role[] | undefined;
-
-    constructor(data?: IUser) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.isActive = true;
-            this.isDeleted = false;
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.userName = _data["userName"];
-            this.normalizedUserName = _data["normalizedUserName"];
-            this.email = _data["email"];
-            this.normalizedEmail = _data["normalizedEmail"];
-            this.emailConfirmed = _data["emailConfirmed"];
-            this.phoneNumber = _data["phoneNumber"];
-            this.phoneNumberConfirmed = _data["phoneNumberConfirmed"];
-            this.twoFactorEnabled = _data["twoFactorEnabled"];
-            this.lockoutEnd = _data["lockoutEnd"] ? new Date(_data["lockoutEnd"].toString()) : <any>undefined;
-            this.lockoutEnabled = _data["lockoutEnabled"];
-            this.accessFailedCount = _data["accessFailedCount"];
-            this.id = _data["id"];
-            this.key = _data["key"];
-            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : true;
-            this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
-            this.createdBy = _data["createdBy"];
-            this.updatedBy = _data["updatedBy"];
-            this.updatedOn = _data["updatedOn"] ? new Date(_data["updatedOn"].toString()) : <any>undefined;
-            this.isDeleted = _data["isDeleted"] !== undefined ? _data["isDeleted"] : false;
-            this.deletedOn = _data["deletedOn"] ? new Date(_data["deletedOn"].toString()) : <any>undefined;
-            this.deletedBy = _data["deletedBy"];
-            this.firstName = _data["firstName"];
-            this.middleInitial = _data["middleInitial"];
-            this.lastName = _data["lastName"];
-            this.street1 = _data["street1"];
-            this.street2 = _data["street2"];
-            this.city = _data["city"];
-            this.county = _data["county"];
-            this.state = _data["state"];
-            this.postalCode = _data["postalCode"];
-            (<any>this).fullName = _data["fullName"];
-            if (Array.isArray(_data["roles"])) {
-                this.roles = [] as any;
-                for (let item of _data["roles"])
-                    this.roles!.push(Role.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): User {
-        data = typeof data === 'object' ? data : {};
-        let result = new User();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["userName"] = this.userName;
-        data["normalizedUserName"] = this.normalizedUserName;
-        data["email"] = this.email;
-        data["normalizedEmail"] = this.normalizedEmail;
-        data["emailConfirmed"] = this.emailConfirmed;
-        data["phoneNumber"] = this.phoneNumber;
-        data["phoneNumberConfirmed"] = this.phoneNumberConfirmed;
-        data["twoFactorEnabled"] = this.twoFactorEnabled;
-        data["lockoutEnd"] = this.lockoutEnd ? this.lockoutEnd.toISOString() : <any>undefined;
-        data["lockoutEnabled"] = this.lockoutEnabled;
-        data["accessFailedCount"] = this.accessFailedCount;
-        data["id"] = this.id;
-        data["key"] = this.key;
-        data["isActive"] = this.isActive;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["createdBy"] = this.createdBy;
-        data["updatedBy"] = this.updatedBy;
-        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString() : <any>undefined;
-        data["isDeleted"] = this.isDeleted;
-        data["deletedOn"] = this.deletedOn ? this.deletedOn.toISOString() : <any>undefined;
-        data["deletedBy"] = this.deletedBy;
-        data["firstName"] = this.firstName;
-        data["middleInitial"] = this.middleInitial;
-        data["lastName"] = this.lastName;
-        data["street1"] = this.street1;
-        data["street2"] = this.street2;
-        data["city"] = this.city;
-        data["county"] = this.county;
-        data["state"] = this.state;
-        data["postalCode"] = this.postalCode;
-        data["fullName"] = this.fullName;
-        if (Array.isArray(this.roles)) {
-            data["roles"] = [];
-            for (let item of this.roles)
-                data["roles"].push(item.toJSON());
-        }
-        return data;
-    }
-}
-
-export interface IUser {
+export interface User {
     userName?: string | undefined;
     normalizedUserName?: string | undefined;
     email?: string | undefined;
@@ -2243,7 +1282,7 @@ export interface IUser {
     county: string;
     state: string;
     postalCode: string;
-    fullName?: string | undefined;
+    readonly fullName?: string | undefined;
     roles?: Role[] | undefined;
 }
 
