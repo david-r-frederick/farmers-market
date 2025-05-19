@@ -1,6 +1,7 @@
 ﻿using Core.Controllers;
 using Core.DataModel.Seeding;
 using Core.Repository;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Core;
@@ -11,7 +12,7 @@ public class CorePlugin : IPlugin
 
     public string Description => "Contains CORE entities, repositories, and workflows.";
 
-    public void Initialize(IServiceCollection services)
+    public void Initialize(IServiceCollection services, IConfiguration _)
     {
         services.AddScoped<ISeeder, LogTypeSeeder>();
         SettingsRepository.Initialize(services);

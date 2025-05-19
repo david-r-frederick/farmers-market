@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Core;
 using Categories.Controllers;
 using Categories.Repository;
+using Microsoft.Extensions.Configuration;
 
 public class CategoriesPlugin : IPlugin
 {
@@ -11,7 +12,7 @@ public class CategoriesPlugin : IPlugin
 
     public string Description => "Contains entities, controllers, and repositories (workflows) for categories.";
 
-    public void Initialize(IServiceCollection services)
+    public void Initialize(IServiceCollection services, IConfiguration _)
     {
         CategoriesRepository.Initialize(services);
         services.AddScoped<ICategoriesRepository, CategoriesRepository>();

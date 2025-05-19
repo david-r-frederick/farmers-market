@@ -6,6 +6,7 @@ using Products.Controllers;
 using Products.Repository;
 using Products.Seeders;
 using Core.DataModel.Seeding;
+using Microsoft.Extensions.Configuration;
 
 public class ProductsPlugin : IPlugin
 {
@@ -15,7 +16,7 @@ public class ProductsPlugin : IPlugin
         "Products are not purchaseable on the site - they are only viewable when viewing a vendor " +
         "or to an admin. They do not have things an ecommerce site would have like inventory and pricing.";
 
-    public void Initialize(IServiceCollection services)
+    public void Initialize(IServiceCollection services, IConfiguration _)
     {
         ProductsRepository.Initialize(services);
         services.AddScoped<IProductsRepository, ProductsRepository>();

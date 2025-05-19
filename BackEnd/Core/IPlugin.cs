@@ -1,5 +1,6 @@
 ﻿namespace Core;
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 public interface IPlugin
@@ -8,7 +9,7 @@ public interface IPlugin
 
     string Description { get; }
 
-    void Initialize(IServiceCollection services);
+    void Initialize(IServiceCollection services, IConfiguration configuration);
 
     void RegisterControllers(IMvcBuilder builder);
 }

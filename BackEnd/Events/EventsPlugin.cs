@@ -1,9 +1,10 @@
 ﻿namespace Events;
 
 using Core;
-using Microsoft.Extensions.DependencyInjection;
 using Events.Repository;
 using Events.Controllers;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 
 public class EventsPlugin : IPlugin
 {
@@ -13,7 +14,7 @@ public class EventsPlugin : IPlugin
         "of a real life event - a birthday party, a wedding, etc. They are not tied to 'programming' events. Every event " +
         "has vendors and booths";
 
-    public void Initialize(IServiceCollection services)
+    public void Initialize(IServiceCollection services, IConfiguration _)
     {
         EventsRepository.Initialize(services);
         services.AddScoped<IEventsRepository, EventsRepository>();

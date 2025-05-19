@@ -15,7 +15,7 @@ public class CustomersPlugin : IPlugin
         "customers and users. A customer has nothing special about it at this time - it's just a way " +
         "for users to be grouped together (i.e. multiple vendors might eventually be connected somehow).";
 
-    public void Initialize(IServiceCollection services)
+    public void Initialize(IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<ISeeder, RoleSeeder>();
         CustomersRepository.Initialize(services);
