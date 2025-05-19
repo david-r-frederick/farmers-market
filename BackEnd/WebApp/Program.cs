@@ -22,6 +22,7 @@ builder.Services.AddScoped(provider =>
     var httpContextAccessor = provider.GetRequiredService<IHttpContextAccessor>();
     return new DbContextFactoryWrapper(factory, httpContextAccessor);
 });
+
 builder.Services.AddIdentity<
     Customers.DataModel.Entities.User,
     Customers.DataModel.Entities.Role>(options =>
@@ -47,18 +48,28 @@ assemblies.AddRange(new[]
 }.Distinct());
 builder.Services.AddAutoMapper(assemblies);
 var plugins = new List<IPlugin>();
+var initializedPluginTypes = new HashSet<Type>();
 foreach (var assembly in assemblies)
 {
     var pluginTypes = assembly.GetTypes()
         .Where(t => typeof(IPlugin).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
     foreach (var type in pluginTypes)
     {
+        if (initializedPluginTypes.Contains(type))
+        {
+            continue;
+        }
         try
         {
             var plugin = (IPlugin)Activator.CreateInstance(type)!;
             plugins.Add(plugin);
-            plugin.Initialize(builder.Services);
-            plugin.RegisterControllers(builder.Services.AddControllers());
+            plugin.Initialize(builder.Services, builder.Configuration);
+            plugin.RegisterControllers(builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+                options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+            }));
+            initializedPluginTypes.Add(type);
         }
         catch (Exception ex)
         {
